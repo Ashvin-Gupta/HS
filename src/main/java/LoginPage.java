@@ -8,7 +8,7 @@ public class LoginPage {
     static GraphicsConfiguration gc;
     JFrame frame  = new JFrame(gc);
     String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-    Connection conn= DriverManager.getConnection(dbUrl, "postgres", "Swamiji812!");
+    Connection conn= DriverManager.getConnection(dbUrl, "aidanpadraig", "aidanpadraig");
     private JButton logBut;
     private JLabel user;
     private JLabel pass;
