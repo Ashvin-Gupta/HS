@@ -7,7 +7,7 @@ public class WelcomePage extends JPanel{
 
     public WelcomePage(){
 //        setLayout(null);
-        t = new JLabel("happy new year motherfucker");
+        t = new JLabel("Holloway end me pls");
         t.setFont(new Font("Times New Roman",Font.BOLD, 60));
         t.setBounds(500,400,200,50);
         t.setForeground(Color.red);
