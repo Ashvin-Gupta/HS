@@ -1,6 +1,7 @@
 package Views;
 
 import Controller.UIController;
+import Database.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,8 @@ import java.sql.*;
 
 public class LoginPage extends JPanel {
 
-    String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-    Connection conn= DriverManager.getConnection(dbUrl, "aidanpadraig", "aidanpadraig");
+    DatabaseConnection dbConn = new DatabaseConnection();
+    Connection conn = dbConn.getConnection();
 
     private JButton logBut;
     private JLabel user;

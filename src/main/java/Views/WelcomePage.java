@@ -1,6 +1,7 @@
 package Views;
 
 import Data.PatientTableModel;
+import Database.DatabaseConnection;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -10,8 +11,9 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class WelcomePage extends JPanel {
-    String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-    Connection conn= DriverManager.getConnection(dbUrl, "aidanpadraig", "aidanpadraig");
+
+    DatabaseConnection dbConn = new DatabaseConnection();
+    Connection conn = dbConn.getConnection();
 
     private JLabel title;
     private JTable patienttable;
