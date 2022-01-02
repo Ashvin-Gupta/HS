@@ -1,8 +1,11 @@
+import Controller.UIController;
+
 import java.sql.SQLException;
 
 public class Main {
+
     public static void main(String[] args) throws SQLException {
-        new LoginPage();
+        UIController Controller = new UIController();
 
     }
 }
