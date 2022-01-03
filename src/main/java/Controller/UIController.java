@@ -22,11 +22,18 @@ public class UIController {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public static void laucnhLoginPage() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new LoginPage());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+    }
+
     public static void launchWelcomePage() throws SQLException {
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new WelcomePage());
+        frame.getContentPane().add(new WelcomePage().getmainpanel());
         frame.setVisible(true);
-        frame.setSize(new Dimension(1024,768));
+        frame.setSize(new Dimension(1200,800));
     }
 
 

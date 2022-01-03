@@ -31,6 +31,7 @@ public class LoginPage extends JPanel {
     }
 
     public void displayComponents() {
+
         title = new JLabel("Health Sentinel");
         title.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.1),900,60);
         title.setFont(new Font("Times New Roman",Font.BOLD, 60));
@@ -98,7 +99,7 @@ public class LoginPage extends JPanel {
                 }
                 catch (Exception ep){}
 
-                if (validLogin == true) {
+                if (validLogin) {
                     System.out.println("2nd Login successful");
                     try {
                         UIController.launchWelcomePage();

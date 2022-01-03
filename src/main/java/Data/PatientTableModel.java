@@ -12,6 +12,22 @@ public class PatientTableModel extends AbstractTableModel {
             {2, "Sam", "Wini"},
     };
 
+    public PatientTableModel(){
+        int rows, cols, rowCounter, colCounter;
+
+        rows = getRowCount();
+        cols = getColumnCount();
+
+        for (rowCounter=0; rowCounter < rows; rowCounter++)
+        {
+            for (colCounter=0; colCounter < cols; colCounter++)
+            {
+                setValueAt(data[rowCounter][colCounter],rowCounter,colCounter);
+            }
+        }
+
+    }
+
     public int getColumnCount() {
         return columnNames.length;
     }
