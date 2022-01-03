@@ -14,6 +14,9 @@ public class LoginPage extends JPanel {
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection conn = dbConn.getConnection();
 
+    protected final Color RED = new Color(195,60,86);
+    protected final Color BLUE  = new Color(37,78,112);
+
     private JButton logBut;
     private JLabel user;
     private JLabel pass;
@@ -34,25 +37,25 @@ public class LoginPage extends JPanel {
 
         title = new JLabel("Health Sentinel");
         title.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.1),900,60);
-        title.setFont(new Font("Times New Roman",Font.BOLD, 60));
-        title.setForeground(Color.blue);
+        title.setFont(new Font("Roboto",Font.BOLD, 60));
+        title.setForeground(BLUE);
         add(title);
 
         user = new JLabel("Username");
         user.setBounds((int) (WIDTH *0.32), (int) (HEIGHT *0.4),150,40);
-        user.setForeground(Color.black);
-        user.setFont(new Font("Times New Roman",Font.PLAIN, 32));
+        user.setForeground(RED);
+        user.setFont(new Font("Roboto",Font.PLAIN, 32));
         add(user);
 
         userfield = new TextField(20);
         userfield.setBounds((int) (WIDTH *0.5),(int) (HEIGHT *0.4),300,40);
-        userfield.setFont(new Font("Times New Roman",Font.PLAIN, 32));
+        userfield.setFont(new Font("Roboto",Font.PLAIN, 32));
         add(userfield);
 
         pass = new JLabel("Password");
         pass.setBounds((int) (WIDTH *0.32),(int) (HEIGHT *0.5),150,40);
-        pass.setForeground(Color.black);
-        pass.setFont(new Font("Times New Roman",Font.PLAIN, 32));
+        pass.setForeground(RED);
+        pass.setFont(new Font("Roboto",Font.PLAIN, 32));
         add(pass);
 
         passfield = new JPasswordField(20);
@@ -66,7 +69,8 @@ public class LoginPage extends JPanel {
     public void validateLogin() {
         logBut = new JButton("Login");
         logBut.setBounds((int) (WIDTH *0.465),(int) (HEIGHT *0.6),150,60);
-        logBut.setFont(new Font("Times New Roman",Font.PLAIN, 32));
+        logBut.setFont(new Font("Roboto",Font.PLAIN, 32));
+        logBut.setForeground(BLUE);
         logBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
