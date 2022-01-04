@@ -1,14 +1,13 @@
 package Views;
 
+import Controller.UIController;
 import Database.DatabaseConnection;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -67,10 +66,11 @@ public class CreateAccount extends JPanel {
     }
 
     private void makeLogin() {
-        account = new JButton("Login");
+        account = new JButton("Create Account");
         account.setFont(new Font("Roboto",Font.PLAIN, 40));
         account.setForeground(BLUE);
         account.setMargin(new Insets(6,6,6,6));
+        String quotes = "'";
         account.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,8 +78,10 @@ public class CreateAccount extends JPanel {
                 String passwordtext = passfield.getText();
                 try{
                     Statement s = conn.createStatement();
-                    String sqlStr = "INSERT INTO doctors (username,password) values (userfield.getText(),passfield.getText());";
-                    s.executeQuery(sqlStr);
+//                    ENTER USER INPUT INTO DATABASE
+                    String sqlStr = "INSERT INTO doctors (username,password) values (" +quotes + usertext +quotes + ","+quotes+ passwordtext + quotes+ ");";
+                    System.out.println(sqlStr);
+                    s.executeUpdate(sqlStr);
 
                     s.close();
                     conn.close();
@@ -87,6 +89,11 @@ public class CreateAccount extends JPanel {
                 }
                 catch (SQLException throwables) {
                     throwables.printStackTrace();
+                }
+                try {
+                    UIController.laucnhLoginPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

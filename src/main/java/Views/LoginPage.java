@@ -84,7 +84,7 @@ public class LoginPage extends JPanel {
                     System.out.println("Entered");
                     Statement s = conn.createStatement();
                     System.out.println(">>>>ABC");
-                    String sqlStr = "SELECT * FROM doctors WHERE id =1;";
+                    String sqlStr = "SELECT * FROM doctors WHERE id >0;";
                     System.out.println(">>>>Y");
                     ResultSet rset = s.executeQuery(sqlStr);
 
