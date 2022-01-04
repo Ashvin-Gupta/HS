@@ -1,5 +1,6 @@
 package Controller;
 
+import Views.CreateAccount;
 import Views.LoginPage;
 import Views.WelcomePage;
 
@@ -27,6 +28,14 @@ public class UIController {
         frame.getContentPane().add(new LoginPage());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
+    }
+
+    public static void launchAccountPage() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new CreateAccount());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+
     }
 
     public static void launchWelcomePage() throws SQLException {

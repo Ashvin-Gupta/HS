@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+
 public class LoginPage extends JPanel {
 
     DatabaseConnection dbConn = new DatabaseConnection();
@@ -17,66 +18,67 @@ public class LoginPage extends JPanel {
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
 
-    private JButton logBut;
-    private JLabel user;
-    private JLabel pass;
-    private TextField userfield;
-    private JPasswordField passfield;
     private JLabel title;
-    public int WIDTH = 1200;
-    public int HEIGHT = 800;
+    private JLabel user;
+    private TextField userfield;
+    private JLabel pass;
+    private JPasswordField passfield;
+    private JButton logBut;
+    private JButton account;
     public boolean validLogin = false;
 
     public LoginPage() throws SQLException {
-        setLayout(null);
         displayComponents();
         validateLogin();
+        createAccount();
     }
 
-    public void displayComponents() {
 
-        title = new JLabel("Health Sentinel");
-        title.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.1),900,60);
-        title.setFont(new Font("Roboto",Font.BOLD, 60));
+    public void displayComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.insets =  new Insets(5,0,20,0);
+
+        title = new JLabel("HealthSentinel");
+        title.setFont(new Font("Roboto",Font.BOLD, 72));
         title.setForeground(BLUE);
-        add(title);
+        add(title,gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         user = new JLabel("Username");
-        user.setBounds((int) (WIDTH *0.32), (int) (HEIGHT *0.4),150,40);
         user.setForeground(RED);
         user.setFont(new Font("Roboto",Font.PLAIN, 32));
-        add(user);
+        add(user,gbc);
 
-        userfield = new TextField(20);
-        userfield.setBounds((int) (WIDTH *0.5),(int) (HEIGHT *0.4),300,40);
+        userfield = new TextField();
         userfield.setFont(new Font("Roboto",Font.PLAIN, 32));
-        add(userfield);
+        add(userfield,gbc);
 
         pass = new JLabel("Password");
-        pass.setBounds((int) (WIDTH *0.32),(int) (HEIGHT *0.5),150,40);
         pass.setForeground(RED);
         pass.setFont(new Font("Roboto",Font.PLAIN, 32));
-        add(pass);
+        add(pass,gbc);
 
-        passfield = new JPasswordField(20);
-        passfield.setBounds((int) (WIDTH *0.5),(int) (HEIGHT *0.5),300,40);
-        passfield.setFont(new Font("Times New Roman",Font.PLAIN, 32));
-        add(passfield);
-
+        passfield = new JPasswordField();
+        passfield.setFont(new Font("Roboto",Font.PLAIN, 32));
+        add(passfield,gbc);
 
     }
 
     public void validateLogin() {
         logBut = new JButton("Login");
-        logBut.setBounds((int) (WIDTH *0.465),(int) (HEIGHT *0.6),150,60);
-        logBut.setFont(new Font("Roboto",Font.PLAIN, 32));
+        logBut.setFont(new Font("Roboto",Font.PLAIN, 40));
         logBut.setForeground(BLUE);
+        logBut.setMargin(new Insets(6,6,6,6));
         logBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String usertext = userfield.getText();
                 String passwordtext = String.valueOf(passfield.getPassword());
-                System.out.println(passwordtext);
 
                 try {
                     System.out.println("Entered");
@@ -112,5 +114,24 @@ public class LoginPage extends JPanel {
             }
         });
         add(logBut);
+    }
+
+
+    private void createAccount() {
+        account = new JButton("Create Account");
+        account.setFont(new Font("Roboto",Font.PLAIN, 40));
+        account.setForeground(BLUE);
+        account.setMargin(new Insets(6,6,6,6));
+        account.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchAccountPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        add(account);
     }
 }
