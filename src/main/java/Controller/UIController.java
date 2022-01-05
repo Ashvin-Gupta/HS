@@ -1,6 +1,7 @@
 package Controller;
 
 import Views.LoginPage;
+import Views.PatientDashboard;
 import Views.WelcomePage;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class UIController {
     public int HEIGHT = 800;
 
     public UIController() throws SQLException {
-        frame.getContentPane().add(new LoginPage());
+        frame.getContentPane().add(new PatientDashboard());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
