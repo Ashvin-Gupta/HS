@@ -1,5 +1,6 @@
 package Controller;
 
+import Views.ECGPage;
 import Views.LoginPage;
 import Views.WelcomePage;
 
@@ -16,7 +17,8 @@ public class UIController {
     public int HEIGHT = 800;
 
     public UIController() throws SQLException {
-        frame.getContentPane().add(new LoginPage());
+//        frame.getContentPane().add(new LoginPage());
+        frame.getContentPane().add(new ECGPage().getmainpanel());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -2,9 +2,13 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import Controller.UIController;
+import Database.DatabaseConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,13 +20,14 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 public class ECGPage implements ActionListener{
-
+    DatabaseConnection dbConn = new DatabaseConnection();
+    Connection conn = dbConn.getConnection();
 
     int WIDTH = 1000;
     int HEIGHT = 800;
 
     static GraphicsConfiguration gc;
-    static JFrame MainFrame = new JFrame(gc);
+    private JPanel mainpanel;
     private JPanel HRPanel;
     private JPanel HRPanel1;
     private JLabel LiveHRBox;
@@ -40,46 +45,49 @@ public class ECGPage implements ActionListener{
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color GREY = new Color(159,159,159);
 
-    public ECGPage(){
+    public ECGPage() throws SQLException {
+        mainpanel = new JPanel();
+        mainpanel.setLayout(new BorderLayout());
+
         HRPanel = new JPanel();
         HRPanel.setLayout(null);
         HRPanel.setPreferredSize(new Dimension(1000,800));
 
+        JPanel sidebar = new Sidebar();
+
         displayComponents();    // add display components to HR panel
 
-        // add HR panel to main frame
-        MainFrame.setSize(new Dimension(WIDTH, HEIGHT));
-        MainFrame.getContentPane().add(HRPanel);
-        MainFrame.setVisible(true);
-
+        mainpanel.add(HRPanel,BorderLayout.CENTER);
+        mainpanel.add(sidebar,BorderLayout.LINE_START);
     }
 
     public void displayComponents() {
         // main title format
         HRTitle = new JLabel("Heart Rate");
-        HRTitle.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.06),900,60);
+        HRTitle.setBounds(50,30,900,60);
         HRTitle.setFont(new Font("Roboto",Font.BOLD, 60));
-        HRTitle.setForeground(Color.BLUE);
+        HRTitle.setForeground(BLUE);
         HRPanel.add(HRTitle);
 
         // patient name format
+//        Need to display patient name from database
         PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.12),900,60);
+        PatientName.setBounds(50,90,900,60);
         PatientName.setFont(new Font("Roboto",Font.BOLD, 40));
-        PatientName.setForeground(Color.RED);
+        PatientName.setForeground(RED);
         HRPanel.add(PatientName);
 
         // Live HR display box set-up
         LiveHRBox = new JLabel(" ");
-        LiveHRBox.setForeground(Color.BLUE);
-        LiveHRBox.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.22),450,280);
-        LiveHRBox.setBackground(Color.BLUE);
+        LiveHRBox.setForeground(BLUE);
+        LiveHRBox.setBounds( (50),200,360,220);
+        LiveHRBox.setBackground(BLUE);
         LiveHRBox.setOpaque(true);
         HRPanel.add(LiveHRBox);
 
         // Time Selection box set-up
         TimeSelectBox = new JLabel(" ");
-        TimeSelectBox.setBounds((int) (WIDTH *0.87),(int) (HEIGHT *0.22),450,280);
+        TimeSelectBox.setBounds(525,200,360,220);
         TimeSelectBox.setBackground(Color.BLUE);
         TimeSelectBox.setOpaque(true);
         HRPanel.add(TimeSelectBox);
@@ -95,9 +103,10 @@ public class ECGPage implements ActionListener{
         HRPanel.add(TimeSelect);
 
         // updating HR and inner white box
-        HRupdated = new JLabel("Hello");
-        HRupdated.setBounds((int) (WIDTH *0.396),(int) (HEIGHT *0.25),390,230);
-        HRupdated.setForeground(Color.BLUE);
+        HRupdated = new JLabel("Hello",SwingConstants.CENTER);
+        HRupdated.setBounds(80,220,300,170);
+        HRupdated.setFont(new Font("Roboto",Font.BOLD, 60));
+        HRupdated.setForeground(BLUE);
         HRupdated.setOpaque(true);
         HRupdated.setBackground(Color.WHITE);
         HRupdated.setVisible(true);
@@ -122,6 +131,6 @@ public class ECGPage implements ActionListener{
         System.out.println(text);
     }
     public JPanel getmainpanel() {
-        return HRPanel;
+        return mainpanel;
     }
 }
