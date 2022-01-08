@@ -35,8 +35,8 @@ public class ECGPage implements ActionListener{
     int WIDTH = 1000;
     int HEIGHT = 800;
 
-    // static GraphicsConfiguration gc;
-    // static JFrame MainFrame = new JFrame(gc);
+  //   static GraphicsConfiguration gc;
+  //   static JFrame MainFrame = new JFrame(gc);
     private JPanel mainpanel;
     private JPanel HRPanel;
     private JLabel HRTitle; // main title
@@ -58,8 +58,9 @@ public class ECGPage implements ActionListener{
     private int [] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int [] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
-    public JPanel ECGGraph;
     public JPanel newECGGraph;
+    private CardLayout card;
+    private JPanel cardPanel;
     public DefaultCategoryDataset globalDataset;
 
 
@@ -155,7 +156,7 @@ public class ECGPage implements ActionListener{
         HRPanel.add(TimeSelectBox);
 
         // timer for HRUpdated
-        Timer timer = new Timer(2000, new ActionListener() {
+        Timer timer = new Timer(1000, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -163,13 +164,19 @@ public class ECGPage implements ActionListener{
                 HRdataPoint = (HRdataPoint+1)%HRList.length;
                 HRupdated.setText(String.valueOf(HRList[HRdataPoint]));
                 HRupdated.setHorizontalTextPosition(CENTER);
-                // removes and then creates new chart every time
-                // HRPanel.remove(ECGGraph);
+                // card layout to update graph and control layers
+                cardPanel = new JPanel();
+                cardPanel.setBounds((int) (WIDTH *0.135),(int) (HEIGHT *0.67),900,220);
                 newECGGraph = createChartPanel();
+                card = new CardLayout();
+                cardPanel.setLayout(card);
                 newECGGraph.setOpaque(true);
                 newECGGraph.setVisible(true);
-                newECGGraph.setBounds((int) (WIDTH *0.6*ECGdataPoint/5.0),(int) (HEIGHT *0.67),900,230);
-                HRPanel.add(newECGGraph);
+                newECGGraph.setBounds((int) (WIDTH *0.135),(int) (HEIGHT *0.67),900,220);
+                cardPanel.add(newECGGraph);
+                cardPanel.setVisible(true);
+                card.next(cardPanel);
+                HRPanel.add(cardPanel);
             }
         });
         timer.setRepeats(true);
@@ -180,16 +187,16 @@ public class ECGPage implements ActionListener{
 
         // ECG box set-up
         ECGTitle= new JLabel("Live Electrocardiogram:");
-        ECGTitle.setForeground(Color.black);
+        ECGTitle.setForeground(Color.white);
         ECGTitle.setBounds((int) (WIDTH *0.15),(int) (HEIGHT *0.47),450,280);
         ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         ECGTitle.setVisible(true);
         HRPanel.add(ECGTitle);
-       /* ECGBox = new JLabel(" ");
+        ECGBox = new JLabel(" ");
         ECGBox.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.6),970,300);
         ECGBox.setBackground(BLUE);
         ECGBox.setOpaque(true);
-        HRPanel.add(ECGBox); */
+        HRPanel.add(ECGBox);
 
 
         // patient info set-up
@@ -206,12 +213,6 @@ public class ECGPage implements ActionListener{
         PatientInfo2.setVisible(true);
         HRPanel.add(PatientInfo2);
 
-
-
-        // ECG graph set up
-        /*ECGGraph = createChartPanel();
-        ECGGraph.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.6),950,300);
-        HRPanel.add(ECGGraph);*/
 
     }
     public void actionPerformed(ActionEvent evt) {
