@@ -26,10 +26,11 @@ public class AlertsPage implements Launchable {
         mainpanel.add(sidebar);
 
         centerpanel = new JPanel(new GridBagLayout());
-        centerpanel.setPreferredSize(new Dimension(1000,800));
+        centerpanel.setPreferredSize(new Dimension(800,800));
 
         displayAlertTable();
 
+        mainpanel.add(centerpanel);
     }
 
     private void displayAlertTable() {
@@ -42,11 +43,10 @@ public class AlertsPage implements Launchable {
         alerttable = new JTable(rec, header);
         JScrollPane pane = new JScrollPane(alerttable);
         centerpanel.add(pane);
-        mainpanel.add(centerpanel);
     }
 
     @Override
     public JPanel getmainpanel() {
-        return null;
+        return mainpanel;
     }
 }
