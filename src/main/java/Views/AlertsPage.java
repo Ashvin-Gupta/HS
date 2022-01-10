@@ -23,14 +23,15 @@ public class AlertsPage implements Launchable {
         mainpanel.setLayout(new BorderLayout());
 
         Sidebar sidebar = new Sidebar();
-        mainpanel.add(sidebar);
 
         centerpanel = new JPanel(new GridBagLayout());
         centerpanel.setPreferredSize(new Dimension(800,800));
 
         displayAlertTable();
 
-        mainpanel.add(centerpanel);
+        mainpanel.add(centerpanel,BorderLayout.CENTER);
+        mainpanel.add(sidebar,BorderLayout.LINE_START);
+
     }
 
     private void displayAlertTable() {
