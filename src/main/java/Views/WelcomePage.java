@@ -18,9 +18,11 @@ public class WelcomePage implements Launchable {
 
     private JLabel title;
     private JPanel mainpanel;
-    private JPanel centerpanel;
-    private JPanel tablepanel;
-    private JTable table;
+    private JPanel patientpanel;
+    private JPanel alertpanel;
+    private JTable patienttable;
+    private JTable alerttable;
+    protected final Color BLUE  = new Color(37,78,112);
     public int WIDTH = 1200;
     public int HEIGHT = 800;
 
@@ -32,28 +34,58 @@ public class WelcomePage implements Launchable {
         Sidebar sidebar = new Sidebar();
         mainpanel.add(sidebar);
 
-        centerpanel = new JPanel(new GridBagLayout());
-        centerpanel.setPreferredSize(new Dimension(600,800));
+        patientpanel = new JPanel(new GridBagLayout());
+        patientpanel.setPreferredSize(new Dimension(400,800));
 
+        alertpanel = new JPanel(new GridBagLayout());
+        alertpanel.setPreferredSize(new Dimension(400,800));
+
+//        displayComponents();
+        displayPatientTable();
+        displayAlertTable();
+
+        mainpanel.setLayout(new BoxLayout(this.mainpanel, BoxLayout.X_AXIS));
+    }
+
+    public void displayPatientTable() {
         String[][] rec = {
                 { "1", "Aidan", "Lees" },
                 { "2", "Sam", "Wini" },
         };
         String[] header = { "ID", "First Name", "Last Name" };
 
-        JTable table = new JTable(rec, header);
-        JScrollPane pane = new JScrollPane(table);
-        centerpanel.add(pane);
-        mainpanel.add(centerpanel);
-        mainpanel.setLayout(new BoxLayout(this.mainpanel, BoxLayout.X_AXIS));
+        JTable patienttable = new JTable(rec, header);
+        JScrollPane pane = new JScrollPane(patienttable);
+        patientpanel.add(pane);
+        mainpanel.add(patientpanel);
+    }
+
+    public void displayAlertTable() {
+        String[][] rec = {
+                { "10:02:01", "Lees", "Low HR" },
+                { "10:17:24", "Gupta", "ECG Irr" },
+        };
+        String[] header = { "Time", "Last Name","Alert Type" };
+
+        alerttable = new JTable(rec, header);
+        JScrollPane pane = new JScrollPane(alerttable);
+        alertpanel.add(pane);
+        mainpanel.add(alertpanel);
     }
 
     public void displayComponents() {
         title = new JLabel("Welcome");
-        title.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.1),900,60);
-        title.setFont(new Font("Times New Roman",Font.BOLD, 60));
-        title.setForeground(Color.blue);
+        title.setBounds(12,0,180,90);
+        title.setFont(new Font("Roboto",Font.BOLD, 60));
+        title.setForeground(BLUE);
         mainpanel.add(title);
+
+    }
+
+    public void patientSelect() {
+        int row = patienttable.getSelectedRow();
+        int col = patienttable.getSelectedColumn();
+        System.out.println("row: " + row + "col: " + col);
     }
 
     public JPanel getmainpanel(){
