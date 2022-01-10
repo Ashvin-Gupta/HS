@@ -34,7 +34,7 @@ public class PatientDashboard extends JPanel {
 
     public void displayComponents() throws SQLException {
 
-        String sqlStr = "select * from patients where id = 2;";
+        String sqlStr = "select * from patients where id = 1;";
         PreparedStatement prpStm = conn.prepareStatement(sqlStr);
         ResultSet rs = prpStm.executeQuery();
         prpStm.close();
