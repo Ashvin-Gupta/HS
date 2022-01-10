@@ -32,16 +32,20 @@ public class WelcomePage implements Launchable {
         Sidebar sidebar = new Sidebar();
         mainpanel.add(sidebar);
 
-        centerpanel = new JPanel();
+        centerpanel = new JPanel(new GridBagLayout());
+        centerpanel.setPreferredSize(new Dimension(600,800));
 
         String[][] rec = {
                 { "1", "Aidan", "Lees" },
                 { "2", "Sam", "Wini" },
         };
         String[] header = { "ID", "First Name", "Last Name" };
+
         JTable table = new JTable(rec, header);
-        centerpanel.add(table);
+        JScrollPane pane = new JScrollPane(table);
+        centerpanel.add(pane);
         mainpanel.add(centerpanel);
+        mainpanel.setLayout(new BoxLayout(this.mainpanel, BoxLayout.X_AXIS));
     }
 
     public void displayComponents() {
