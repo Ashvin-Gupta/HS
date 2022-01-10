@@ -4,6 +4,7 @@ import Data.PatientTableModel;
 import Database.DatabaseConnection;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,9 +17,10 @@ public class WelcomePage implements Launchable {
     Connection conn = dbConn.getConnection();
 
     private JLabel title;
-    private JTable patienttable;
     private JPanel mainpanel;
     private JPanel centerpanel;
+    private JPanel tablepanel;
+    private JTable table;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
 
@@ -26,22 +28,20 @@ public class WelcomePage implements Launchable {
 //        Create main panel to add Sidebar panel and center panel to
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
-//        Create centerpanel
-//        Main components of screen will go on this panel
+
+        Sidebar sidebar = new Sidebar();
+        mainpanel.add(sidebar);
+
         centerpanel = new JPanel();
-        centerpanel.setLayout(null);
-        centerpanel.setPreferredSize(new Dimension(1000,800));
-//        Create a new sidebar panel
-        JPanel sidebar = new Sidebar();
 
-        displayComponents();
-        displayPatientTable();
-
-//        Add both panels to main panel
-        mainpanel.add(centerpanel,BorderLayout.CENTER);
-        mainpanel.add(sidebar,BorderLayout.LINE_START);
-
-
+        String[][] rec = {
+                { "1", "Aidan", "Lees" },
+                { "2", "Sam", "Wini" },
+        };
+        String[] header = { "ID", "First Name", "Last Name" };
+        JTable table = new JTable(rec, header);
+        centerpanel.add(table);
+        mainpanel.add(centerpanel);
     }
 
     public void displayComponents() {
@@ -49,31 +49,7 @@ public class WelcomePage implements Launchable {
         title.setBounds((int) (WIDTH *0.37),(int) (HEIGHT *0.1),900,60);
         title.setFont(new Font("Times New Roman",Font.BOLD, 60));
         title.setForeground(Color.blue);
-        centerpanel.add(title);
-
-
-    }
-
-    public void displayPatientTable() {
-
-
-        patienttable = new JTable(new PatientTableModel());
-        System.out.println("Table created");
-        patienttable.setPreferredScrollableViewportSize(new Dimension(800,800));
-//        JScrollPane scrollPane = new JScrollPane(patienttable);
-        patienttable.setFillsViewportHeight(true);
-//        add(patienttable);
-
-        JScrollPane sp = new JScrollPane(patienttable);
-        patienttable.setVisible(true);
-        patienttable.setFillsViewportHeight(true);
-        sp.setVisible(true);
-//        add(patienttable);
-        centerpanel.add(sp);
-
-
-
-
+        mainpanel.add(title);
     }
 
     public JPanel getmainpanel(){
