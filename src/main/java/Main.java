@@ -1,4 +1,5 @@
 import Controller.UIController;
+import Views.AlertsPage;
 
 import java.sql.SQLException;
 

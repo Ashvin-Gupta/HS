@@ -79,7 +79,6 @@ public class WelcomePage implements Launchable {
         title.setFont(new Font("Roboto",Font.BOLD, 60));
         title.setForeground(BLUE);
         mainpanel.add(title);
-
     }
 
     public void patientSelect() {
