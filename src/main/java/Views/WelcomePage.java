@@ -1,5 +1,6 @@
 package Views;
 
+import Data.AlertTableModel;
 import Data.PatientTableModel;
 import Database.DatabaseConnection;
 
@@ -48,26 +49,16 @@ public class WelcomePage implements Launchable {
     }
 
     public void displayPatientTable() {
-        String[][] rec = {
-                { "1", "Aidan", "Lees" },
-                { "2", "Sam", "Wini" },
-        };
-        String[] header = { "ID", "First Name", "Last Name" };
 
-        JTable patienttable = new JTable(rec, header);
+        JTable patienttable = new JTable(new PatientTableModel());
         JScrollPane pane = new JScrollPane(patienttable);
         patientpanel.add(pane);
         mainpanel.add(patientpanel);
     }
 
     public void displayAlertTable() {
-        String[][] rec = {
-                { "10:02:01", "Lees", "Low HR" },
-                { "10:17:24", "Gupta", "ECG Irr" },
-        };
-        String[] header = { "Time", "Last Name","Alert Type" };
 
-        alerttable = new JTable(rec, header);
+        alerttable = new JTable(new AlertTableModel());
         JScrollPane pane = new JScrollPane(alerttable);
         alertpanel.add(pane);
         mainpanel.add(alertpanel);
