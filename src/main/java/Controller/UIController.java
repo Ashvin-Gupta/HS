@@ -2,6 +2,7 @@ package Controller;
 
 import Views.ECGPage;
 import Views.LoginPage;
+import Views.RespRatePage;
 import Views.WelcomePage;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class UIController {
 
     public UIController() throws SQLException {
 //        frame.getContentPane().add(new LoginPage());
-        frame.getContentPane().add(new ECGPage().getmainpanel());
+        frame.getContentPane().add(new RespRatePage().getmainpanel());   // TO BE ADAPTED TO THE DIFF PAGES
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
