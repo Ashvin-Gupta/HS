@@ -2,6 +2,7 @@ package Views;
 
 import Controller.UIController;
 import Database.DatabaseConnection;
+import Database.myDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.sql.*;
 
 public class LoginPage extends JPanel {
 
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
     protected final Color RED = new Color(195,60,86);

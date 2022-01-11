@@ -2,6 +2,7 @@ package Views;
 
 import Data.PatientTableModel;
 import Database.DatabaseConnection;
+import Database.myDB;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,7 +14,7 @@ import java.sql.*;
 
 public class WelcomePage implements Launchable {
 
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
     private JLabel title;
