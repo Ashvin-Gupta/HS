@@ -13,5 +13,7 @@ public class Main {
         db.createPatientsTable();
         db.createDoctorTable();
 
+        new UIController();
+
     }
 }

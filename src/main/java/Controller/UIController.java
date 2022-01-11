@@ -17,7 +17,7 @@ public class UIController {
     public int HEIGHT = 800;
 
     public UIController() throws SQLException {
-        frame.getContentPane().add(new PatientDashboard());
+        frame.getContentPane().add(new PatientDashboard().getmainpanel());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
