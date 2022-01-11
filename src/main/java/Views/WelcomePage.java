@@ -1,5 +1,6 @@
 package Views;
 
+import Data.AlertTableModel;
 import Data.PatientTableModel;
 
 import Database.myDB;
@@ -11,6 +12,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class WelcomePage implements Launchable {
 
@@ -23,6 +30,7 @@ public class WelcomePage implements Launchable {
     private JPanel alertpanel;
     private JTable patienttable;
     private JTable alerttable;
+    private PatientTableModel patienttablemodel;
     protected final Color BLUE  = new Color(37,78,112);
     public int WIDTH = 1200;
     public int HEIGHT = 800;
@@ -49,29 +57,37 @@ public class WelcomePage implements Launchable {
     }
 
     public void displayPatientTable() {
-        String[][] rec = {
-                { "1", "Aidan", "Lees" },
-                { "2", "Sam", "Wini" },
-        };
-        String[] header = { "ID", "First Name", "Last Name" };
 
-        JTable patienttable = new JTable(rec, header);
+        // Creating Table to display
+        patienttablemodel = new PatientTableModel();
+        JTable patienttable = new JTable(patienttablemodel);
+        patienttable.setShowHorizontalLines(true);
+        patienttable.setRowSelectionAllowed(true);
+
+        // Adding table to a container
         JScrollPane pane = new JScrollPane(patienttable);
         patientpanel.add(pane);
+
+        patienttable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (patienttable.getSelectedRow() > -1) {
+                    System.out.println("ID of selected patient" + patienttable.getValueAt(patienttable.getSelectedRow(),0).toString());
+                }
+            }
+        });
+
+        //Adding table to main panel
         mainpanel.add(patientpanel);
     }
 
     public void displayAlertTable() {
-        String[][] rec = {
-                { "10:02:01", "Lees", "Low HR" },
-                { "10:17:24", "Gupta", "ECG Irr" },
-        };
-        String[] header = { "Time", "Last Name","Alert Type" };
 
-        alerttable = new JTable(rec, header);
+        alerttable = new JTable(new AlertTableModel());
         JScrollPane pane = new JScrollPane(alerttable);
         alertpanel.add(pane);
         mainpanel.add(alertpanel);
+
     }
 
     public void displayComponents() {
@@ -80,13 +96,6 @@ public class WelcomePage implements Launchable {
         title.setFont(new Font("Roboto",Font.BOLD, 60));
         title.setForeground(BLUE);
         mainpanel.add(title);
-
-    }
-
-    public void patientSelect() {
-        int row = patienttable.getSelectedRow();
-        int col = patienttable.getSelectedColumn();
-        System.out.println("row: " + row + "col: " + col);
     }
 
     public JPanel getmainpanel(){
