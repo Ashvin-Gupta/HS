@@ -18,7 +18,7 @@ public class UIController {
     public int HEIGHT = 800;
 
     public UIController() throws SQLException {
-        frame.getContentPane().add(new PatientDashboard().getmainpanel());
+        frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -44,6 +44,14 @@ public class UIController {
         frame.getContentPane().add(new WelcomePage().getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
+    }
+
+    public static void launchPatientDashboard() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new PatientDashboard().getmainpanel());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+
     }
 
 

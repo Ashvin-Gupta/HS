@@ -1,7 +1,7 @@
 package Views;
 
 import Data.PatientTableModel;
-import Database.DatabaseConnection;
+
 import Database.myDB;
 
 import javax.swing.*;

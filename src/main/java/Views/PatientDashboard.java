@@ -1,7 +1,6 @@
 package Views;
 
 import Controller.UIController;
-import Database.DatabaseConnection;
 import Database.myDB;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PatientDashboard {
+public class PatientDashboard implements Launchable{
 
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();

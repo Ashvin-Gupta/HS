@@ -35,14 +35,14 @@ public class myDB {
 
     public void createDoctorTable() throws SQLException {
         String sqlStr = "create table doctors ( id SERIAL PRIMARY KEY, username varchar(20) NOT NULL, password varchar(20) NOT NULL);";
-        String sqlStr1 = "insert into doctors  values (1, 'rick12', '123');";
-        String sqlStr2 = "insert into doctors  values (2, 'am4nda', '1234');";
-        String sqlStr3 = "insert into doctors  values (3, 'docforrest', '12345');";
+//        String sqlStr1 = "insert into doctors  values (1, 'rick12', '123');";
+//        String sqlStr2 = "insert into doctors  values (2, 'am4nda', '1234');";
+//        String sqlStr3 = "insert into doctors  values (3, 'docforrest', '12345');";
         Statement s = conn.createStatement();
         s.execute(sqlStr);
-        s.execute(sqlStr1);
-        s.execute(sqlStr2);
-        s.execute(sqlStr3);
+//        s.execute(sqlStr1);
+//        s.execute(sqlStr2);
+//        s.execute(sqlStr3);
         s.close();
     }
 

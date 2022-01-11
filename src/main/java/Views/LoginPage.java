@@ -1,7 +1,6 @@
 package Views;
 
 import Controller.UIController;
-import Database.DatabaseConnection;
 import Database.myDB;
 
 import javax.swing.*;

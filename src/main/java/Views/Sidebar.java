@@ -66,6 +66,11 @@ public class Sidebar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                Navigate to Patient Dashboard
+                try {
+                    UIController.launchPatientDashboard();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
 
             }
         });
