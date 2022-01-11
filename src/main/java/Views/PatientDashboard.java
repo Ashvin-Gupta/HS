@@ -2,6 +2,7 @@ package Views;
 
 import Controller.UIController;
 import Database.DatabaseConnection;
+import Database.myDB;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,17 +16,18 @@ import java.sql.SQLException;
 
 public class PatientDashboard {
 
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
-    private JLabel title, name, sex, age, blood,sBP, dBP, alert, RR, HR, temp, HRVal, tempVal;
-    private String sbpVal,dbpVal, RRVal;
+    private JLabel title, name, sex, age, blood,sBP, dBP, alert, RR, HR, temp;
+    private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
     private JPanel mainpanel;
     private JPanel centerpanel;
     private JPanel info;
     private JPanel backpanel;
+    private JPanel bottompanel;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -38,8 +40,8 @@ public class PatientDashboard {
         Sidebar sidebar = new Sidebar();
 
         centerpanel = new JPanel();
-        centerpanel.setLayout(new GridLayout(3,3,50,50));
-        centerpanel.setPreferredSize(new Dimension(1000,700));
+        centerpanel.setLayout(new GridLayout(2,3,50,50));
+        centerpanel.setPreferredSize(new Dimension(1000,500));
         centerpanel.setBorder(new EmptyBorder(50,50,50,50));
 
         info = new JPanel();
@@ -48,8 +50,13 @@ public class PatientDashboard {
 
         backpanel = new JPanel();
         backpanel.setLayout(new BoxLayout(backpanel,BoxLayout.Y_AXIS));
+
+        bottompanel = new JPanel();
+        bottompanel.setPreferredSize(new Dimension(1000,380));
+
         backpanel.add(info);
         backpanel.add(centerpanel);
+        backpanel.add(bottompanel);
 
 
         displayComponents();
@@ -74,25 +81,19 @@ public class PatientDashboard {
             sbpVal = new String(rs.getString("sbp") + " mmHg");
             dbpVal = new String(rs.getString("dbp") + " mmHg");
             RRVal = new String(rs.getString("rr") + " rpm");
-            HRVal = new JLabel(rs.getString("hr") + " bpm");
-            tempVal = new JLabel(rs.getString("temp") + " °C");
+            HRVal = new String(rs.getString("hr") + " bpm");
+            tempVal = new String(rs.getString("temp") + " °C");
         }
 
-
-
-
-
-
-        HR = new JLabel("HEART RATE");
-        temp = new JLabel("TEMPERATURE");
-
 //        Info Panel at the top
+//        Dashboard title
         title = new JLabel("Dashboard");
         title.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),400,60);
         title.setFont(new Font("Roboto",Font.BOLD, 60));
         title.setForeground(BLUE);
         info.add(title);
 
+//        Patient Name
         name.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.1),400,60);
         name.setFont(new Font("Roboto",Font.BOLD, 40));
         name.setForeground(RED);
@@ -114,6 +115,7 @@ public class PatientDashboard {
         info.add(blood);
 
 //        Centerpanel
+//        Systolic Blood Pressure
         sBP = new JLabel("<html>Systolic BP<br/><br/>" + sbpVal+"</html>");
         sBP.setFont(new Font("Roboto",Font.BOLD, 28));
         sBP.setAlignmentX(JLabel.CENTER);
@@ -123,6 +125,7 @@ public class PatientDashboard {
         sBP.setBorder(new EmptyBorder(10,10,10,10));
         centerpanel.add(sBP);
 
+//        Diastolic Blood Pressure
         dBP = new JLabel("<html>Diastolic BP<br/><br/>"+ dbpVal+"</html>");
         dBP.setFont(new Font("Roboto",Font.BOLD, 28));
         dBP.setForeground(BLUE);
@@ -131,13 +134,14 @@ public class PatientDashboard {
         dBP.setBorder(new EmptyBorder(10,10,10,10));
         centerpanel.add(dBP);
 
+//        Alerts
         alert = new JLabel("Alerts");
         alert.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.2),900,60);
         alert.setFont(new Font("Roboto",Font.BOLD, 24));
         alert.setForeground(RED);
         centerpanel.add(alert);
 
-
+//        Respiration Rate
         RR = new JLabel("<html>Respiration rate<br/><br/>"+RRVal+"</html>");
         RR.setFont(new Font("Roboto",Font.BOLD, 28));
         RR.setForeground(BLUE);
@@ -146,27 +150,23 @@ public class PatientDashboard {
         RR.setBorder(new EmptyBorder(10,10,10,10));
         centerpanel.add(RR);
 
-
-        HR.setBounds((int) (WIDTH *0.35),(int) (HEIGHT *0.35),900,60);
-        HR.setFont(new Font("Roboto",Font.BOLD, 24));
-        HR.setForeground(Color.black);
+//        Heart Rate
+        HR = new JLabel("<html>Heart Rate<br/><br/>"+HRVal+"</html>");
+        HR.setFont(new Font("Roboto",Font.BOLD, 28));
+        HR.setForeground(BLUE);
+        HR.setBackground(Color.white);
+        HR.setOpaque(true);
+        HR.setBorder(new EmptyBorder(10,10,10,10));
         centerpanel.add(HR);
 
-        HRVal.setBounds((int) (WIDTH *0.43),(int) (HEIGHT *0.4),900,60);
-        HRVal.setFont(new Font("Roboto",Font.BOLD, 35));
-        HRVal.setForeground(Color.black);
-        centerpanel.add(HRVal);
-
-        temp.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.35),900,60);
-        temp.setFont(new Font("Roboto",Font.BOLD, 24));
-        temp.setForeground(Color.black);
+//        Temperature
+        temp = new JLabel("<html>Temperature<br/><br/>"+tempVal+"</html>");
+        temp.setFont(new Font("Roboto",Font.BOLD, 28));
+        temp.setForeground(BLUE);
+        temp.setBackground(Color.white);
+        temp.setOpaque(true);
+        temp.setBorder(new EmptyBorder(10,10,10,10));
         centerpanel.add(temp);
-
-        tempVal.setBounds((int) (WIDTH *0.75),(int) (HEIGHT *0.4),900,60);
-        tempVal.setFont(new Font("Roboto",Font.BOLD, 35));
-        tempVal.setForeground(Color.black);
-        centerpanel.add(tempVal);
-
     }
 
     public JPanel getmainpanel(){

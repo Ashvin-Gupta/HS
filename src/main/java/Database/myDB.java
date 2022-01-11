@@ -46,5 +46,9 @@ public class myDB {
         s.close();
     }
 
+    public Connection getConnection() {
+        return conn;
+    }
+
 
 }

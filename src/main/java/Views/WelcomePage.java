@@ -2,6 +2,7 @@ package Views;
 
 import Data.PatientTableModel;
 import Database.DatabaseConnection;
+import Database.myDB;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -12,7 +13,7 @@ import java.sql.*;
 
 public class WelcomePage {
 
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
     private JLabel title;
