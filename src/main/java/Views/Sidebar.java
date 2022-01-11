@@ -87,12 +87,12 @@ public class Sidebar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                Navigate to Alerts Page
-//                try {
-//                    System.out.println("Alerts page launched");
-////                    UIController.launchAlertsPage();
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
+                System.out.println("Alerts page launched");
+                try {
+                    UIController.launchAlertsPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
 
             }
         });

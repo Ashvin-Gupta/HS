@@ -1,9 +1,6 @@
 package Controller;
 
-import Views.CreateAccount;
-import Views.LoginPage;
-import Views.PatientDashboard;
-import Views.WelcomePage;
+import Views.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +46,13 @@ public class UIController {
     public static void launchPatientDashboard() throws SQLException{
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new PatientDashboard().getmainpanel());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+    }
+
+    public static void launchAlertsPage() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new AlertsPage().getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
 
