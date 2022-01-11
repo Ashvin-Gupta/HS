@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         myDB db = new myDB();
-        db.createPatientsTable();
-        db.createDoctorTable();
+//        db.createPatientsTable();
+//        db.createDoctorTable();
 
         new UIController();
 
