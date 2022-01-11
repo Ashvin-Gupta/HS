@@ -1,6 +1,6 @@
 package Views;
 
-import Database.DatabaseConnection;
+import Database.myDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class AlertsPage implements Launchable {
 
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
     private JLabel title;
