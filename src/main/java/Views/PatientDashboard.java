@@ -40,11 +40,13 @@ public class PatientDashboard {
         centerpanel.setPreferredSize(new Dimension(1000,HEIGHT));
 
         info = new JPanel();
-        backpanel = new JPanel();
+        info.setLayout(null);
+        info.setPreferredSize(new Dimension(1000,200));
 
+        backpanel = new JPanel();
+        backpanel.setLayout(new BoxLayout(backpanel,BoxLayout.Y_AXIS));
         backpanel.add(info);
         backpanel.add(centerpanel);
-
 
 
         displayComponents();
@@ -73,7 +75,7 @@ public class PatientDashboard {
             tempVal = new JLabel(rs.getString("temp") + " °C");
         }
 
-        title = new JLabel("PATIENT DASHBOARD");
+
         sBP = new JLabel("SYSTOLIC BLOOD PRESSURE");
         dBP = new JLabel("DIASTOLIC BLOOD PRESSURE");
         alert = new JLabel("ALERTS");
@@ -81,74 +83,75 @@ public class PatientDashboard {
         HR = new JLabel("HEART RATE");
         temp = new JLabel("TEMPERATURE");
 
-        title.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.01),900,60);
-        title.setFont(new Font("Times New Roman",Font.BOLD, 30));
-        title.setForeground(Color.blue);
+        title = new JLabel("Patient Dashboard");
+        title.setBounds((int) (WIDTH *0.05),(int) (HEIGHT *0.01),400,60);
+        title.setFont(new Font("Roboto",Font.BOLD, 60));
+        title.setForeground(BLUE);
         info.add(title);
 
-        name.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.05),900,60);
-        name.setFont(new Font("Times New Roman",Font.BOLD, 28));
+        name.setBounds((int) (WIDTH *0.05),(int) (HEIGHT *0.11),400,60);
+        name.setFont(new Font("Roboto",Font.BOLD, 40));
         name.setForeground(Color.red);
         info.add(name);
 
         sex.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.01),900,60);
-        sex.setFont(new Font("Times New Roman",Font.BOLD, 20));
+        sex.setFont(new Font("Roboto",Font.BOLD, 22));
         sex.setForeground(Color.black);
         info.add(sex);
 
         age.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.04),900,60);
-        age.setFont(new Font("Times New Roman",Font.BOLD, 20));
+        age.setFont(new Font("Roboto",Font.BOLD, 20));
         age.setForeground(Color.black);
         info.add(age);
 
         blood.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.07),900,60);
-        blood.setFont(new Font("Times New Roman",Font.BOLD, 20));
+        blood.setFont(new Font("Roboto",Font.BOLD, 20));
         blood.setForeground(Color.black);
         info.add(blood);
 
         sBP.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.2),900,60);
-        sBP.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        sBP.setFont(new Font("Roboto",Font.BOLD, 24));
         sBP.setForeground(Color.black);
         centerpanel.add(sBP);
 
         dBP.setBounds((int) (WIDTH *0.35),(int) (HEIGHT *0.2),900,60);
-        dBP.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        dBP.setFont(new Font("Roboto",Font.BOLD, 24));
         dBP.setForeground(Color.black);
         centerpanel.add(dBP);
         alert.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.2),900,60);
-        alert.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        alert.setFont(new Font("Roboto",Font.BOLD, 24));
         alert.setForeground(Color.red);
         centerpanel.add(alert);
         sbpVal.setBounds((int) (WIDTH *0.08),(int) (HEIGHT *0.25),900,60);
-        sbpVal.setFont(new Font("Times New Roman",Font.BOLD, 35));
+        sbpVal.setFont(new Font("Roboto",Font.BOLD, 35));
         sbpVal.setForeground(Color.black);
         centerpanel.add(sbpVal);
         dbpVal.setBounds((int) (WIDTH *0.43),(int) (HEIGHT *0.25),900,60);
-        dbpVal.setFont(new Font("Times New Roman",Font.BOLD, 35));
+        dbpVal.setFont(new Font("Roboto",Font.BOLD, 35));
         dbpVal.setForeground(Color.black);
         centerpanel.add(dbpVal);
         RR.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.35),900,60);
-        RR.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        RR.setFont(new Font("Roboto",Font.BOLD, 24));
         RR.setForeground(Color.black);
         centerpanel.add(RR);
         RRVal.setBounds((int) (WIDTH *0.08),(int) (HEIGHT *0.4),900,60);
-        RRVal.setFont(new Font("Times New Roman",Font.BOLD, 35));
+        RRVal.setFont(new Font("Roboto",Font.BOLD, 35));
         RRVal.setForeground(Color.black);
         centerpanel.add(RRVal);
         HR.setBounds((int) (WIDTH *0.35),(int) (HEIGHT *0.35),900,60);
-        HR.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        HR.setFont(new Font("Roboto",Font.BOLD, 24));
         HR.setForeground(Color.black);
         centerpanel.add(HR);
         HRVal.setBounds((int) (WIDTH *0.43),(int) (HEIGHT *0.4),900,60);
-        HRVal.setFont(new Font("Times New Roman",Font.BOLD, 35));
+        HRVal.setFont(new Font("Roboto",Font.BOLD, 35));
         HRVal.setForeground(Color.black);
         centerpanel.add(HRVal);
         temp.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.35),900,60);
-        temp.setFont(new Font("Times New Roman",Font.BOLD, 24));
+        temp.setFont(new Font("Roboto",Font.BOLD, 24));
         temp.setForeground(Color.black);
         centerpanel.add(temp);
         tempVal.setBounds((int) (WIDTH *0.75),(int) (HEIGHT *0.4),900,60);
-        tempVal.setFont(new Font("Times New Roman",Font.BOLD, 35));
+        tempVal.setFont(new Font("Roboto",Font.BOLD, 35));
         tempVal.setForeground(Color.black);
         centerpanel.add(tempVal);
 
