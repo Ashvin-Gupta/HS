@@ -4,10 +4,11 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import Database.myDB;
 import Views.ECGPage;
 
 import Controller.UIController;
-import Database.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import static javax.swing.SwingConstants.CENTER;
 
 public class RespRatePage implements ActionListener{
-    DatabaseConnection dbConn = new DatabaseConnection();
+    myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
     int WIDTH = 1000;
