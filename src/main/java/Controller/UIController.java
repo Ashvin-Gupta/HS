@@ -1,9 +1,6 @@
 package Controller;
 
-import Views.ECGPage;
-import Views.LoginPage;
-import Views.RespRatePage;
-import Views.WelcomePage;
+import Views.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +15,7 @@ public class UIController {
     public int HEIGHT = 800;
 
     public UIController() throws SQLException {
-//        frame.getContentPane().add(new LoginPage());
-        frame.getContentPane().add(new RespRatePage().getmainpanel());   // TO BE ADAPTED TO THE DIFF PAGES
+        frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
