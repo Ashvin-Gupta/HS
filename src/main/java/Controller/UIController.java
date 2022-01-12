@@ -62,7 +62,13 @@ public class UIController {
         frame.getContentPane().add(new ECGPage().getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
+    }
 
+    public static void launchRespPage() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new RespRatePage().getmainpanel());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
     }
 
 

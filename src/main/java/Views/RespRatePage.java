@@ -29,7 +29,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class RespRatePage implements ActionListener{
+public class RespRatePage implements ActionListener, Launchable{
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 

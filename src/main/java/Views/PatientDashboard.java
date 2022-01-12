@@ -18,9 +18,9 @@ public class PatientDashboard implements Launchable{
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
-    private JLabel title, name, sex, age, blood,sBP, dBP, alert, RR, temp;
+    private JLabel title, name, sex, age, blood,sBP, dBP, alert, temp;
     private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
-    private JButton HR;
+    private JButton HR, RR;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
     private JPanel mainpanel;
@@ -142,12 +142,22 @@ public class PatientDashboard implements Launchable{
         centerpanel.add(alert);
 
 //        Respiration Rate
-        RR = new JLabel("<html>Respiration rate<br/><br/>"+RRVal+"</html>");
+        RR = new JButton("<html>Respiration rate<br/><br/>"+RRVal+"</html>");
         RR.setFont(new Font("Roboto",Font.BOLD, 28));
         RR.setForeground(BLUE);
         RR.setBackground(Color.white);
         RR.setOpaque(true);
         RR.setBorder(new EmptyBorder(10,10,10,10));
+        RR.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchRespPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         centerpanel.add(RR);
 
 //        Heart Rate
