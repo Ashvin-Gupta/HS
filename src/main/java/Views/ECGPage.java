@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import Controller.UIController;
-import Database.myDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-// imports for graphs
+// imports for ECG graphs
+import Database.myDB;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -28,7 +28,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class ECGPage implements ActionListener {
+public class ECGPage implements ActionListener,Launchable {
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
