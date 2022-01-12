@@ -28,7 +28,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class ECGPage implements ActionListener,Launchable {
+public class ECGPage implements ActionListener,Launchable{
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
