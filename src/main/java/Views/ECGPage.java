@@ -18,7 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-// imports for ECG graphs
+
+// imports for ECG graph
+
 import Database.myDB;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

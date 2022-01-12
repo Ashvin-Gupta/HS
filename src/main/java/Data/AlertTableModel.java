@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.AbstractTableModel;
 
-public class PatientTableModel extends AbstractTableModel {
-    private String[] columnNames = {"ID","First Name","Last Name","Sex"};
+public class AlertTableModel extends AbstractTableModel {
+    private String[] columnNames = {"ID","Last Name","Alert Type"};
     private Object[][] data = {
-            {1, "Aidan", "Lees","M"},
-            {2, "Sam", "Wini","M"},
+            {1,"Lees","Low HR"},
+            {2, "Gupta", "ECG Irr"},
     };
 
-    public PatientTableModel(){
+    public AlertTableModel(){
         int rows, cols, rowCounter, colCounter;
 
         rows = getRowCount();
