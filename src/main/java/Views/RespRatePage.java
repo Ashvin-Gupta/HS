@@ -92,17 +92,17 @@ public class RespRatePage implements ActionListener, Launchable{
     private void displayStandardComponents2() {
 // patient name format
         PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.12), 900, 60);
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.1), 900, 60);
         PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
         PatientName.setForeground(RED);
         RRPanel.add(PatientName);
 
         // patient hospital number
-        PatientHospNo = new JLabel("Hospital No.:");
-        PatientHospNo.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.17), 900, 60);
-        PatientHospNo.setFont(new Font("Roboto", Font.BOLD, 20));
-        PatientHospNo.setForeground(GREY);
-        RRPanel.add(PatientHospNo);
+//        PatientHospNo = new JLabel("Hospital No.:");
+//        PatientHospNo.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.17), 900, 60);
+//        PatientHospNo.setFont(new Font("Roboto", Font.BOLD, 20));
+//        PatientHospNo.setForeground(GREY);
+//        RRPanel.add(PatientHospNo);
 
         // updating RR and inner white box
         RRupdated = new JLabel(" ");
@@ -218,7 +218,7 @@ public class RespRatePage implements ActionListener, Launchable{
 
         // main title format
         RRTitle = new JLabel("Respiratory Rate");
-        RRTitle.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.03),900,80);
+        RRTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),900,80);
         RRTitle.setFont(new Font("Roboto",Font.BOLD, 60));
         RRTitle.setForeground(BLUE);
         RRPanel.add(RRTitle);
