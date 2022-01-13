@@ -136,10 +136,22 @@ public class PatientDashboard implements Launchable {
         centerpanel.add(dBP);
 
 //        Alerts
-        alert = new JLabel("Alerts");
+        JButton alert = new JButton("Alerts");
         alert.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.2),900,60);
         alert.setFont(new Font("Roboto",Font.BOLD, 24));
         alert.setForeground(RED);
+        alert.setBorder(new EmptyBorder(10,10,10,10));
+        System.out.println("Patient ID is" + patientid);
+        alert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchAlertsPage(patientid);
+                } catch (SQLException ex) {
+                    System.out.println("Alerts could not be found...");
+                }
+            }
+        });
         centerpanel.add(alert);
 
 //        Respiration Rate
