@@ -25,7 +25,7 @@ public class AlertsPage implements Launchable {
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color LBLUE = new Color(26,101,158);
 
-    public AlertsPage() throws SQLException {
+    public AlertsPage(int patientID) throws SQLException {
 
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
@@ -39,7 +39,7 @@ public class AlertsPage implements Launchable {
         info.setLayout(null);
         info.setPreferredSize(new Dimension(1000,200));
 
-        displayAlertTable();
+        displayAlertTable(patientID);
         displaytitle();
 
         backpanel = new JPanel();
@@ -61,9 +61,9 @@ public class AlertsPage implements Launchable {
         info.add(title);
     }
 
-    private void displayAlertTable() throws SQLException {
+    private void displayAlertTable(int patientID) throws SQLException {
 
-        AlertTableModel alertTableModel = new AlertTableModel();
+        AlertTableModel alertTableModel = new AlertTableModel(patientID);
         alerttable = new JTable(alertTableModel);
         JScrollPane pane = new JScrollPane(alerttable);
         alerttable.setForeground(LBLUE);

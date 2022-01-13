@@ -16,11 +16,12 @@ public class AlertTableModel extends AbstractTableModel {
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
     private String[] columnNames = {"Alert ID","Patient ID","Last Name","Time","Alert Type"};
-    private final int columnNum = 5;
+    private final int columnNum = 4;
     private int rowNum;
     private Object[][] data;
+    private ResultSet rs;
 
-    public AlertTableModel() throws SQLException {
+    public AlertTableModel(int patientID) throws SQLException {
 
         String sqlStrRowNum = "select count(*) from alerts;";
         PreparedStatement prpStmR = conn.prepareStatement(sqlStrRowNum);
@@ -29,38 +30,47 @@ public class AlertTableModel extends AbstractTableModel {
         rsRow.next();
         rowNum = rsRow.getInt(1);
 
-        String sqlStr = "select alert_id,patient_id,surname,time,alerttype from alerts;";
-        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
-        ResultSet rs = prpStm.executeQuery();
-        prpStm.close();
+        if (patientID == 0) {
+            String sqlStr = "select patient_id,surname,time,alerttype from alerts;";
+            PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+            rs = prpStm.executeQuery();
+            prpStm.close();
+        }
+
+        else {
+            String stringpatientID = String.valueOf(patientID);
+            String sqlStr = "select patient_id,surname,time,alerttype from alerts where patient_id=" + stringpatientID;
+            PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+            rs = prpStm.executeQuery();
+            prpStm.close();
+        }
 
         int alertcounter = 0;
         data = new Object[rowNum][columnNum];
 
         while(rs.next()) {
 
-            int alertid = rs.getInt("alert_id");
             int patientid = rs.getInt("patient_id");
             String surname = rs.getString("surname");
             String time = rs.getString("time");
             String alerttype = rs.getString("alerttype");
 
             Object[] row = new Object[columnNum];
-            row[0] = alertid;
-            row[1] = patientid;
-            row[2] = surname;
-            row[3] = time;
-            row[4] = alerttype;
+            row[0] = patientid;
+            row[1] = surname;
+            row[2] = time;
+            row[3] = alerttype;
 
             data[alertcounter] = row;
             alertcounter++;
         }
 
-
         int rows, cols, rowCounter, colCounter;
 
         rows = getRowCount();
         cols = getColumnCount();
+        System.out.println(rows);
+        System.out.println(cols);
 
         for (rowCounter=0; rowCounter < rows; rowCounter++)
         {
@@ -73,7 +83,7 @@ public class AlertTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return columnNames.length;
+        return (columnNum);
     }
 
     public int getRowCount() {

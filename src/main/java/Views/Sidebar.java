@@ -89,7 +89,7 @@ public class Sidebar extends JPanel {
 //                Navigate to Alerts Page
                 System.out.println("Alerts page launched");
                 try {
-                    UIController.launchAlertsPage();
+                    UIController.launchAlertsPage(0);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
