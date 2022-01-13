@@ -1,5 +1,6 @@
 package Views;
 
+import Data.AlertTableModel;
 import Database.myDB;
 
 import javax.swing.*;
@@ -60,14 +61,10 @@ public class AlertsPage implements Launchable {
         info.add(title);
     }
 
-    private void displayAlertTable() {
-        String[][] rec = {
-                { "10:02:01", "Lees", "Low HR" },
-                { "10:17:24", "Gupta", "ECG Irr" },
-        };
-        String[] header = { "Time", "Last Name","Alert Type" };
+    private void displayAlertTable() throws SQLException {
 
-        alerttable = new JTable(rec, header);
+        AlertTableModel alertTableModel = new AlertTableModel();
+        alerttable = new JTable(alertTableModel);
         JScrollPane pane = new JScrollPane(alerttable);
         alerttable.setForeground(LBLUE);
         alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
