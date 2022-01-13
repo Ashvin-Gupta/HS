@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.UIController;
 import Data.AlertTableModel;
 import Data.PatientTableModel;
 
@@ -72,7 +73,13 @@ public class WelcomePage implements Launchable {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (patienttable.getSelectedRow() > -1) {
-                    System.out.println("ID of selected patient" + patienttable.getValueAt(patienttable.getSelectedRow(),0).toString());
+//                    System.out.println("ID of selected patient" + patienttable.getValueAt(patienttable.getSelectedRow(),0).toString());
+                    int patientid = (int) patienttable.getValueAt(patienttable.getSelectedRow(),0);
+                    try {
+                        UIController.launchPatientDashboard(patientid);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
