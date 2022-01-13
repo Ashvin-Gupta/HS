@@ -46,6 +46,21 @@ public class myDB {
         s.close();
     }
 
+    public void createAlertTable() throws SQLException {
+        String sqlStr = "create table alerts (alert_id SERIAL PRIMARY KEY, patient_id int, surname varchar(20), time varchar(20), alerttype varchar(20));";
+        String sqlStr1 = "insert into alerts  values (1, 1, 'Serra', '10:24:36', 'Low HR');";
+        String sqlStr2 = "insert into alerts  values (2, 1, 'Serra', '11:31:04', 'ECG Irr');";
+        String sqlStr3 = "insert into alerts  values (3, 2, 'Lee', '14:46:12', 'Low Resp Rate');";
+
+        Statement s = conn.createStatement();
+        s.execute(sqlStr);
+        s.execute(sqlStr1);
+        s.execute(sqlStr2);
+        s.execute(sqlStr3);
+
+        s.close();
+    }
+
     public Connection getConnection() {
         return conn;
     }

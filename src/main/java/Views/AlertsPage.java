@@ -1,5 +1,6 @@
 package Views;
 
+import Data.AlertTableModel;
 import Database.myDB;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class AlertsPage implements Launchable {
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color LBLUE = new Color(26,101,158);
 
-    public AlertsPage() throws SQLException {
+    public AlertsPage(int patientID) throws SQLException {
 
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class AlertsPage implements Launchable {
         info.setLayout(null);
         info.setPreferredSize(new Dimension(1000,200));
 
-        displayAlertTable();
+        displayAlertTable(patientID);
         displaytitle();
 
         backpanel = new JPanel();
@@ -60,14 +61,10 @@ public class AlertsPage implements Launchable {
         info.add(title);
     }
 
-    private void displayAlertTable() {
-        String[][] rec = {
-                { "10:02:01", "Lees", "Low HR" },
-                { "10:17:24", "Gupta", "ECG Irr" },
-        };
-        String[] header = { "Time", "Last Name","Alert Type" };
+    private void displayAlertTable(int patientID) throws SQLException {
 
-        alerttable = new JTable(rec, header);
+        AlertTableModel alertTableModel = new AlertTableModel(patientID);
+        alerttable = new JTable(alertTableModel);
         JScrollPane pane = new JScrollPane(alerttable);
         alerttable.setForeground(LBLUE);
         alerttable.setFont(new Font("Roboto",Font.PLAIN,16));

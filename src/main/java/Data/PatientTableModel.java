@@ -42,7 +42,7 @@ public class PatientTableModel extends AbstractTableModel {
             String surname = rs.getString("surname");
             String sex = rs.getString("sex");
 
-            Object[] row = new Object[4];
+            Object[] row = new Object[columnNum];
             row[0] = id;
             row[1] = name;
             row[2] = surname;

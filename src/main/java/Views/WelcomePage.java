@@ -111,12 +111,30 @@ public class WelcomePage implements Launchable {
         centerpanel.add(patientpanel);
     }
 
-    public void displayAlertTable() {
+    public void displayAlertTable() throws SQLException {
 
-        alerttable = new JTable(new AlertTableModel());
+        //Creating table to display
+        alerttable = new JTable(new AlertTableModel(0));
         alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
         alerttable.setForeground(LBLUE);
         JScrollPane pane = new JScrollPane(alerttable);
+        System.out.println("Made table");
+
+        alerttable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (alerttable.getSelectedRow() > -1) {
+                    int patientid = (int) alerttable.getValueAt(alerttable.getSelectedRow(),0);
+                    try {
+                        UIController.launchAlertsPage(patientid);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
         alertpanel.add(pane);
         centerpanel.add(alertpanel);
 

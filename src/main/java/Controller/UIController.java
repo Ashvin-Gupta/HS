@@ -52,9 +52,9 @@ public class UIController {
         frame.setSize(new Dimension(1200,800));
     }
 
-    public static void launchAlertsPage() throws SQLException{
+    public static void launchAlertsPage(int patientID) throws SQLException{
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new AlertsPage().getmainpanel());
+        frame.getContentPane().add(new AlertsPage(patientID).getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
     }

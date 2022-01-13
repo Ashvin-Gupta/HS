@@ -12,6 +12,7 @@ public class Main {
         myDB db = new myDB();
 //        db.createPatientsTable();
 //        db.createDoctorTable();
+//        db.createAlertTable();
 
         new UIController();
 
