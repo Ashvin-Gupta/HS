@@ -1,18 +1,62 @@
 package Data;
+import Database.myDB;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
 public class AlertTableModel extends AbstractTableModel {
-    private String[] columnNames = {"ID","Last Name","Alert Type"};
-    private Object[][] data = {
-            {1,"Lees","Low HR"},
-            {2, "Gupta", "ECG Irr"},
-    };
 
-    public AlertTableModel(){
+    myDB dbConn = new myDB();
+    Connection conn = dbConn.getConnection();
+    private String[] columnNames = {"Alert ID","Patient ID","Last Name","Time","Alert Type"};
+    private final int columnNum = 5;
+    private int rowNum;
+    private Object[][] data;
+
+    public AlertTableModel() throws SQLException {
+
+        String sqlStrRowNum = "select count(*) from alerts;";
+        PreparedStatement prpStmR = conn.prepareStatement(sqlStrRowNum);
+        ResultSet rsRow = prpStmR.executeQuery();
+        prpStmR.close();
+        rsRow.next();
+        rowNum = rsRow.getInt(1);
+
+        String sqlStr = "select alert_id,patient_id,surname,time,alerttype from alerts;";
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+
+        int alertcounter = 0;
+        data = new Object[rowNum][columnNum];
+
+        while(rs.next()) {
+
+            int alertid = rs.getInt("alert_id");
+            int patientid = rs.getInt("patient_id");
+            String surname = rs.getString("surname");
+            String time = rs.getString("time");
+            String alerttype = rs.getString("alerttype");
+
+            Object[] row = new Object[columnNum];
+            row[0] = alertid;
+            row[1] = patientid;
+            row[2] = surname;
+            row[3] = time;
+            row[4] = alerttype;
+
+            data[alertcounter] = row;
+            alertcounter++;
+        }
+
+
         int rows, cols, rowCounter, colCounter;
 
         rows = getRowCount();

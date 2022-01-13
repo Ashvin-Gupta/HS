@@ -111,7 +111,7 @@ public class WelcomePage implements Launchable {
         centerpanel.add(patientpanel);
     }
 
-    public void displayAlertTable() {
+    public void displayAlertTable() throws SQLException {
 
         alerttable = new JTable(new AlertTableModel());
         alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
