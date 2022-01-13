@@ -16,6 +16,13 @@ public class AlertsPage implements Launchable {
     private JPanel mainpanel;
     private JPanel centerpanel;
     private JTable alerttable;
+    private JPanel backpanel;
+    private JPanel info;
+    private int WIDTH = 1000;
+    private int HEIGHT = 800;
+
+    protected final Color BLUE  = new Color(37,78,112);
+    protected final Color LBLUE = new Color(26,101,158);
 
     public AlertsPage() throws SQLException {
 
@@ -27,11 +34,30 @@ public class AlertsPage implements Launchable {
         centerpanel = new JPanel(new GridBagLayout());
         centerpanel.setPreferredSize(new Dimension(800,800));
 
-        displayAlertTable();
+        info = new JPanel();
+        info.setLayout(null);
+        info.setPreferredSize(new Dimension(1000,200));
 
-        mainpanel.add(centerpanel,BorderLayout.CENTER);
+        displayAlertTable();
+        displaytitle();
+
+        backpanel = new JPanel();
+        backpanel.setLayout(new BoxLayout(backpanel,BoxLayout.Y_AXIS));
+
+        backpanel.add(info);
+        backpanel.add(centerpanel);
+
+        mainpanel.add(backpanel,BorderLayout.CENTER);
         mainpanel.add(sidebar,BorderLayout.LINE_START);
 
+    }
+
+    private void displaytitle() {
+        title = new JLabel("Alert History");
+        title.setBounds((int) (WIDTH*0.02), (int) (HEIGHT*0.03),480,90);
+        title.setFont(new Font("Roboto",Font.BOLD, 60));
+        title.setForeground(BLUE);
+        info.add(title);
     }
 
     private void displayAlertTable() {
@@ -43,6 +69,8 @@ public class AlertsPage implements Launchable {
 
         alerttable = new JTable(rec, header);
         JScrollPane pane = new JScrollPane(alerttable);
+        alerttable.setForeground(LBLUE);
+        alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
         centerpanel.add(pane);
     }
 
