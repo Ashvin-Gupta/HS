@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PatientDashboard implements Launchable{
+public class PatientDashboard implements Launchable {
 
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
@@ -33,7 +33,7 @@ public class PatientDashboard implements Launchable{
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color GREY = new Color(159,159,159);
 
-    public PatientDashboard() throws SQLException {
+    public PatientDashboard(int patientid) throws SQLException {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -59,15 +59,16 @@ public class PatientDashboard implements Launchable{
         backpanel.add(bottompanel);
 
 
-        displayComponents();
+        displayComponents(patientid);
 
         mainpanel.add(backpanel, BorderLayout.CENTER);
         mainpanel.add(sidebar,BorderLayout.LINE_START);
     }
 
-    public void displayComponents() throws SQLException {
+    public void displayComponents(int patientid) throws SQLException {
 
-        String sqlStr = "select * from patients where id = 1;";
+        String stringpatientID = String.valueOf(patientid);
+        String sqlStr = "select * from patients where id = " + stringpatientID;
         PreparedStatement prpStm = conn.prepareStatement(sqlStr);
         ResultSet rs = prpStm.executeQuery();
         prpStm.close();
