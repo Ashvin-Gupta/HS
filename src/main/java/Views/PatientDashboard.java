@@ -42,7 +42,7 @@ public class PatientDashboard implements Launchable{
         centerpanel = new JPanel();
         centerpanel.setLayout(new GridLayout(2,3,50,50));
         centerpanel.setPreferredSize(new Dimension(1000,500));
-        centerpanel.setBorder(new EmptyBorder(50,50,50,50));
+        centerpanel.setBorder(new EmptyBorder(0,50,50,50));
 
         info = new JPanel();
         info.setLayout(null);

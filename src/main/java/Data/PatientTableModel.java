@@ -15,6 +15,7 @@ public class PatientTableModel extends AbstractTableModel {
     public PatientTableModel(){
         int rows, cols, rowCounter, colCounter;
 
+
         rows = getRowCount();
         cols = getColumnCount();
 

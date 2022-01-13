@@ -31,8 +31,14 @@ public class WelcomePage implements Launchable {
     private JTable patienttable;
     private JTable alerttable;
     private PatientTableModel patienttablemodel;
+    private JPanel centerpanel;
+    private JPanel backpanel;
+    private JPanel info;
+    private JLabel patienttitle;
+    private JLabel alerttitle;
     protected final Color BLUE  = new Color(37,78,112);
-    public int WIDTH = 1200;
+    protected final Color LBLUE = new Color(26,101,158);
+    public int WIDTH = 1000;
     public int HEIGHT = 800;
 
     public WelcomePage() throws SQLException {
@@ -49,11 +55,26 @@ public class WelcomePage implements Launchable {
         alertpanel = new JPanel(new GridBagLayout());
         alertpanel.setPreferredSize(new Dimension(400,800));
 
-//        displayComponents();
+        backpanel = new JPanel();
+        backpanel.setLayout(new BoxLayout(backpanel,BoxLayout.Y_AXIS));
+
+        info = new JPanel();
+        info.setLayout(null);
+        info.setPreferredSize(new Dimension(1000,180));
+
+        centerpanel = new JPanel();
+        centerpanel.setPreferredSize(new Dimension(1000,500));
+        centerpanel.setLayout(new BoxLayout(this.centerpanel, BoxLayout.X_AXIS));
+
+        displayComponents();
         displayPatientTable();
         displayAlertTable();
 
-        mainpanel.setLayout(new BoxLayout(this.mainpanel, BoxLayout.X_AXIS));
+        backpanel.add(info);
+        backpanel.add(centerpanel);
+
+        mainpanel.add(backpanel,BorderLayout.CENTER);
+        mainpanel.add(sidebar,BorderLayout.LINE_START);
     }
 
     public void displayPatientTable() {
@@ -63,6 +84,8 @@ public class WelcomePage implements Launchable {
         JTable patienttable = new JTable(patienttablemodel);
         patienttable.setShowHorizontalLines(true);
         patienttable.setRowSelectionAllowed(true);
+        patienttable.setForeground(LBLUE);
+        patienttable.setFont(new Font("Roboto",Font.PLAIN,16));
 
         // Adding table to a container
         JScrollPane pane = new JScrollPane(patienttable);
@@ -78,24 +101,41 @@ public class WelcomePage implements Launchable {
         });
 
         //Adding table to main panel
-        mainpanel.add(patientpanel);
+        centerpanel.add(patientpanel);
     }
 
     public void displayAlertTable() {
 
         alerttable = new JTable(new AlertTableModel());
+        alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
+        alerttable.setForeground(LBLUE);
         JScrollPane pane = new JScrollPane(alerttable);
         alertpanel.add(pane);
-        mainpanel.add(alertpanel);
+        centerpanel.add(alertpanel);
 
     }
 
     public void displayComponents() {
         title = new JLabel("Welcome");
-        title.setBounds(12,0,180,90);
+        title.setBounds((int) (WIDTH*0.02), (int) (HEIGHT*0.03),480,90);
         title.setFont(new Font("Roboto",Font.BOLD, 60));
         title.setForeground(BLUE);
-        mainpanel.add(title);
+        info.add(title);
+
+        patienttitle = new JLabel("Patient List");
+        patienttitle.setBounds((int)(WIDTH*0.13),(int)(HEIGHT*0.15),300,90);
+        patienttitle.setFont(new Font("Roboto",Font.BOLD,32));
+        patienttitle.setForeground(LBLUE);
+        info.add(patienttitle);
+
+        alerttitle = new JLabel("Alerts");
+        alerttitle.setBounds((int)(WIDTH*0.67),(int)(HEIGHT*0.15),300,90);
+        alerttitle.setFont(new Font("Roboto",Font.BOLD,32));
+        alerttitle.setForeground(LBLUE);
+        info.add(alerttitle);
+
+
+
     }
 
     public JPanel getmainpanel(){
