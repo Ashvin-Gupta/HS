@@ -1,20 +1,59 @@
 package Data;
+import Database.myDB;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class PatientTableModel extends AbstractTableModel {
+
+    myDB dbConn = new myDB();
+    Connection conn = dbConn.getConnection();
     private String[] columnNames = {"ID","First Name","Last Name","Sex"};
-    private Object[][] data = {
-            {1, "Aidan", "Lees","M"},
-            {2, "Sam", "Wini","M"},
-    };
+    private final int columnNum = 4;
+    private int rowNum;
+    private Object[][] data;
 
-    public PatientTableModel(){
+    public PatientTableModel() throws SQLException {
+
+        String sqlStrRowNum = "select count(*) from patients;";
+        PreparedStatement prpStmR = conn.prepareStatement(sqlStrRowNum);
+        ResultSet rsRow = prpStmR.executeQuery();
+        prpStmR.close();
+        rsRow.next();
+        rowNum = rsRow.getInt(1);
+
+        String sqlStr = "select id,name,surname,sex from patients;";
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+
+        int patientcounter = 0;
+        data = new Object[rowNum][columnNum];
+
+        while(rs.next()) {
+
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String surname = rs.getString("surname");
+            String sex = rs.getString("sex");
+
+            Object[] row = new Object[4];
+            row[0] = id;
+            row[1] = name;
+            row[2] = surname;
+            row[3] = sex;
+
+            data[patientcounter] = row;
+            patientcounter++;
+        }
+
+        //Setting up table from data array
         int rows, cols, rowCounter, colCounter;
-
 
         rows = getRowCount();
         cols = getColumnCount();
@@ -49,3 +88,4 @@ public class PatientTableModel extends AbstractTableModel {
         return getValueAt(0, c).getClass();
     }
 }
+

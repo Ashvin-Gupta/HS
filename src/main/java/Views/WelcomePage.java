@@ -78,7 +78,7 @@ public class WelcomePage implements Launchable {
         mainpanel.add(sidebar,BorderLayout.LINE_START);
     }
 
-    public void displayPatientTable() {
+    public void displayPatientTable() throws SQLException {
 
         // Creating Table to display
         patienttablemodel = new PatientTableModel();
