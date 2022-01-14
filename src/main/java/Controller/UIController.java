@@ -73,6 +73,13 @@ public class UIController {
         frame.setSize(new Dimension(1200,800));
     }
 
+    public static void launchBloodPresPage() throws SQLException{
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new BloodPresPage().getmainpanel());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+    }
+
 
 
 }
