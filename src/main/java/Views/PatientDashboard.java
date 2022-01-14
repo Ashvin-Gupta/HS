@@ -89,6 +89,7 @@ public class PatientDashboard implements Launchable {
         }
 
         tempInt = StringToInt(tempVal);
+        System.out.println(tempInt);
 
         System.out.println(tempInt[0]);
 
@@ -257,7 +258,7 @@ public class PatientDashboard implements Launchable {
         String[] string = number.split(",");
         float[] arr = new float[string.length];
         for (int i = 0; i < string.length; i++) {
-            arr[i] = Integer.valueOf(string[i]);
+            arr[i] = Float.valueOf(string[i]);
         }
         return arr;
     }

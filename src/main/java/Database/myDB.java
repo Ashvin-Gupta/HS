@@ -40,7 +40,7 @@ public class myDB {
         String RRString2 = readIn("RespRate_2.txt");
         String RRString3 = readIn("RespRate_3.txt");
 
-        String sqlStr = "create table patients ( id SERIAL PRIMARY KEY, name varchar(20) NOT NULL, surname varchar(20) NOT NULL, sex varchar(20), age int, blood varchar (4), sbp varchar(8000), dbp varchar(8000), rr varchar(8000), hr int, temp varchar(8000), ecg varchar(8000));";
+        String sqlStr = "create table patients ( id SERIAL PRIMARY KEY, name varchar(20) NOT NULL, surname varchar(20) NOT NULL, sex varchar(20), age int, blood varchar (4), sbp varchar(8000), dbp varchar(8000), rr varchar(8000), hr text, temp varchar(8000), ecg varchar(8000));";
         String sqlStr1 = "insert into patients  values (1, 'Antonio', 'Serra', 'Male', 21, 'B+',"+quotes+SPString1+quotes+","+quotes+DPString1+quotes+","+quotes+RRString1+quotes+",'37,36,38,37',"+quotes+TString1+quotes+");";
         String sqlStr2 = "insert into patients  values (2, 'Tom', 'Lee', 'Male', 34, 'A',"+quotes+SPString2+quotes+","+quotes+DPString2+quotes+","+quotes+RRString2+quotes+",'37,36,38,37',"+quotes+TString2+quotes+");";
         String sqlStr3 = "insert into patients  values (3, 'Lana', 'Simpson', 'Female', 40, '0',"+quotes+SPString3+quotes+","+quotes+DPString3+quotes+","+quotes+RRString3+quotes+",'37,36,38,37',"+quotes+TString3+quotes+");";

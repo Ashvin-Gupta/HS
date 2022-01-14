@@ -294,7 +294,7 @@ public class ECGPage implements ActionListener,Launchable{
         String[] string = number.split(",");
         float[] arr = new float[string.length];
         for (int i = 0; i < string.length; i++) {
-            arr[i] = Integer.valueOf(string[i]);
+            arr[i] = Float.valueOf(string[i]);
         }
         return arr;
     }
