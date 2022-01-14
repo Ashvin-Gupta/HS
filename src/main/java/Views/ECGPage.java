@@ -3,8 +3,7 @@ package Views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 import Controller.UIController;
 
@@ -12,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -81,13 +79,52 @@ public class ECGPage implements ActionListener,Launchable{
         JPanel sidebar = new Sidebar(patientid);
 
         displayECGComponents();
-        displayStandardComponents1();    // add display components to HR panel
+        displayStandardComponents1(); // add display components to HR panel
+        getPatientInfo(patientid);
 
         mainpanel.add(HRPanel, BorderLayout.CENTER);
         mainpanel.add(sidebar, BorderLayout.LINE_START);
     }
 
-    public void displayStandardComponents1() {
+    private void getPatientInfo(int patientid) throws SQLException {
+        // patient name format
+        String getpatientname = "select name,surname,sex,age,blood from patients where id="+patientid;
+        PreparedStatement prpStm = conn.prepareStatement(getpatientname);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        rs.next();
+
+        String patientname = rs.getString("name") + rs.getString("surname");
+        PatientName = new JLabel(patientname);
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
+        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
+        PatientName.setForeground(RED);
+        HRPanel.add(PatientName);
+
+        String sexstring = rs.getString("sex");
+        JLabel sex = new JLabel("Sex: "+sexstring);
+        sex.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.03),900,60);
+        sex.setFont(new Font("Roboto",Font.BOLD, 22));
+        sex.setForeground(Color.black);
+        HRPanel.add(sex);
+
+        String agestring = rs.getString("age");
+        JLabel age = new JLabel("Age: "+agestring);
+        age.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.065),900,60);
+        age.setFont(new Font("Roboto",Font.BOLD, 22));
+        age.setForeground(Color.black);
+        HRPanel.add(age);
+
+        String bloodstring = rs.getString("blood");
+        JLabel blood = new JLabel("Blood: "+bloodstring);
+        blood.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.1),900,60);
+        blood.setFont(new Font("Roboto",Font.BOLD, 22));
+        blood.setForeground(Color.black);
+        HRPanel.add(blood);
+
+    }
+
+    public void displayStandardComponents1() throws SQLException {
 
       // main title format
         HRTitle = new JLabel("Heart Rate");
@@ -95,13 +132,6 @@ public class ECGPage implements ActionListener,Launchable{
         HRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
         HRTitle.setForeground(BLUE);
         HRPanel.add(HRTitle);
-
-        // patient name format
-        PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
-        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
-        PatientName.setForeground(RED);
-        HRPanel.add(PatientName);
 
 //        // patient hospital number
 //        PatientHospNo = new JLabel("Hospital No.:");
@@ -199,22 +229,20 @@ public class ECGPage implements ActionListener,Launchable{
         HRPanel.add(ECGBox);
 
         // patient info set-up
-        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-        PatientInfo1.setForeground(GREY);
-        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo1.setVisible(true);
-        HRPanel.add(PatientInfo1);
-        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-        PatientInfo2.setForeground(GREY);
-        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo2.setVisible(true);
-        HRPanel.add(PatientInfo2);
-
+//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
+//        PatientInfo1.setForeground(GREY);
+//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
+//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+//        PatientInfo1.setVisible(true);
+//        HRPanel.add(PatientInfo1);
+//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
+//        PatientInfo2.setForeground(GREY);
+//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
+//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+//        PatientInfo2.setVisible(true);
+//        HRPanel.add(PatientInfo2);
 
     }
-
 
     public void displayECGComponents(){
 

@@ -2,8 +2,7 @@ package Views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 import Database.myDB;
 import Views.ECGPage;
@@ -14,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,6 +44,7 @@ public class BloodPresPage implements Launchable {
     private JLabel TimeSelectTitle;
     private JLabel TimeSelectBox;
     private JLabel TimeInnerSelectBox;
+    private JLabel PatientName;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -63,6 +62,7 @@ public class BloodPresPage implements Launchable {
         JPanel sidebar = new Sidebar(patientid);
 
         displayBloodPresComponents();
+        getPatientInfo(patientid);
 
         mainpanel.add(BPPanel, BorderLayout.CENTER);
         mainpanel.add(sidebar, BorderLayout.LINE_START);
@@ -74,8 +74,6 @@ public class BloodPresPage implements Launchable {
         BPTitle.setFont(new Font("Roboto",Font.BOLD, 60));
         BPTitle.setForeground(BLUE);
         BPPanel.add(BPTitle);
-
-
 
         // Systolic pressure text and box
 
@@ -125,6 +123,43 @@ public class BloodPresPage implements Launchable {
 
     }
 
+    private void getPatientInfo(int patientid) throws SQLException {
+        // patient name format
+        String getpatientname = "select name,surname,sex,age,blood from patients where id="+patientid;
+        PreparedStatement prpStm = conn.prepareStatement(getpatientname);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        rs.next();
+
+        String patientname = rs.getString("name") + rs.getString("surname");
+        PatientName = new JLabel(patientname);
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
+        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
+        PatientName.setForeground(RED);
+        BPPanel.add(PatientName);
+
+        String sexstring = rs.getString("sex");
+        JLabel sex = new JLabel("Sex: "+sexstring);
+        sex.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.03),900,60);
+        sex.setFont(new Font("Roboto",Font.BOLD, 22));
+        sex.setForeground(Color.black);
+        BPPanel.add(sex);
+
+        String agestring = rs.getString("age");
+        JLabel age = new JLabel("Age: "+agestring);
+        age.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.065),900,60);
+        age.setFont(new Font("Roboto",Font.BOLD, 22));
+        age.setForeground(Color.black);
+        BPPanel.add(age);
+
+        String bloodstring = rs.getString("blood");
+        JLabel blood = new JLabel("Blood: "+bloodstring);
+        blood.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.1),900,60);
+        blood.setFont(new Font("Roboto",Font.BOLD, 22));
+        blood.setForeground(Color.black);
+        BPPanel.add(blood);
+
+    }
 
     public JPanel getmainpanel() {
         return mainpanel;
