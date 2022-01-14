@@ -56,7 +56,7 @@ public class ECGPage implements ActionListener,Launchable{
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
     private int dataPointmod = 0;
-    private int[] HRList;
+    private float[] HRList;
     private String HRString;
 //    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
@@ -136,7 +136,6 @@ public class ECGPage implements ActionListener,Launchable{
 
         while(rs.next()){
             HRString = rs.getString("ecg");
-
         }
         HRList = StringToInt(HRString);
 
@@ -291,9 +290,9 @@ public class ECGPage implements ActionListener,Launchable{
         }
     }
 
-    public int[] StringToInt(String number){
+    private static float[] StringToInt(String number){
         String[] string = number.split(",");
-        int[] arr = new int[string.length];
+        float[] arr = new float[string.length];
         for (int i = 0; i < string.length; i++) {
             arr[i] = Integer.valueOf(string[i]);
         }
