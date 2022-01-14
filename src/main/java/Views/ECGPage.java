@@ -136,7 +136,6 @@ public class ECGPage implements ActionListener,Launchable{
 
         while(rs.next()){
             HRString = rs.getString("ecg");
-
         }
         HRList = StringToInt(HRString);
 

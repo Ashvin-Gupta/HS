@@ -21,8 +21,8 @@ public class myDB {
     }
 
     public void createPatientsTable() throws SQLException {
-        String sqlStr = "create table patients ( id SERIAL PRIMARY KEY, name varchar(20) NOT NULL, surname varchar(20) NOT NULL, sex varchar(20), age int, blood varchar (4), sbp int, dbp int, rr float, hr int, temp float, ecg text );";
-        String sqlStr1 = "insert into patients  values (1, 'Antonio', 'Serra', 'Male', 21, 'B+', 120, 80, 25, 62, 37.2,'1,2,3,4,5,6,7,1,2,3,4,5');";
+        String sqlStr = "create table patients ( id SERIAL PRIMARY KEY, name varchar(20) NOT NULL, surname varchar(20) NOT NULL, sex varchar(20), age int, blood varchar (4), sbp int, dbp int, rr float, hr int, temp text, ecg text );";
+        String sqlStr1 = "insert into patients  values (1, 'Antonio', 'Serra', 'Male', 21, 'B+', 120, 80, 25, 62, '37,36,38,37','1,2,3,4,5,6,7,1,2,3,4,5');";
         String sqlStr2 = "insert into patients  values (2, 'Tom', 'Lee', 'Male', 34, 'A', 111, 77, 25, 60, 36.1);";
         String sqlStr3 = "insert into patients  values (3, 'Lana', 'Simpson', 'Female', 40, '0', 130, 87, 20, 55, 36.6);";
         Statement s = conn.createStatement();
