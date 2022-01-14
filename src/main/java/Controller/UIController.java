@@ -79,6 +79,12 @@ public class UIController {
         frame.setSize(new Dimension(1200,800));
     }
 
+    public static void launchBodyTempPage(int patientid) throws SQLException {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new BodyTempPage(patientid).getmainpanel());
+        frame.setVisible(true);
+        frame.setSize(new Dimension(1200,800));
+    }
 
 
 }

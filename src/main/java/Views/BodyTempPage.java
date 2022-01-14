@@ -3,8 +3,7 @@ package Views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 import Controller.UIController;
 
@@ -12,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,7 +68,7 @@ public class BodyTempPage implements ActionListener,Launchable {
     protected final Color BLUE = new Color(37, 78, 112);
     protected final Color GREY = new Color(159, 159, 159);
 
-    public BodyTempPage() throws SQLException {
+    public BodyTempPage(int patientid) throws SQLException {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -78,13 +76,52 @@ public class BodyTempPage implements ActionListener,Launchable {
         BTPanel.setLayout(null);
         BTPanel.setPreferredSize(new Dimension(1000, 800));
 
-        JPanel sidebar = new Sidebar();
+        JPanel sidebar = new Sidebar(patientid);
 
         displayECGComponents();
         displayStandardComponents1();    // add display components to HR panel
+        getPatientInfo(patientid);
 
         mainpanel.add(BTPanel, BorderLayout.CENTER);
         mainpanel.add(sidebar, BorderLayout.LINE_START);
+    }
+
+    private void getPatientInfo(int patientid) throws SQLException {
+        // patient name format
+        String getpatientname = "select name,surname,sex,age,blood from patients where id="+patientid;
+        PreparedStatement prpStm = conn.prepareStatement(getpatientname);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        rs.next();
+
+        String patientname = rs.getString("name") + rs.getString("surname");
+        PatientName = new JLabel(patientname);
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
+        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
+        PatientName.setForeground(RED);
+        BTPanel.add(PatientName);
+
+        String sexstring = rs.getString("sex");
+        JLabel sex = new JLabel("Sex: "+sexstring);
+        sex.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.03),900,60);
+        sex.setFont(new Font("Roboto",Font.BOLD, 22));
+        sex.setForeground(Color.black);
+        BTPanel.add(sex);
+
+        String agestring = rs.getString("age");
+        JLabel age = new JLabel("Age: "+agestring);
+        age.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.065),900,60);
+        age.setFont(new Font("Roboto",Font.BOLD, 22));
+        age.setForeground(Color.black);
+        BTPanel.add(age);
+
+        String bloodstring = rs.getString("blood");
+        JLabel blood = new JLabel("Blood: "+bloodstring);
+        blood.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.1),900,60);
+        blood.setFont(new Font("Roboto",Font.BOLD, 22));
+        blood.setForeground(Color.black);
+        BTPanel.add(blood);
+
     }
 
     public void displayStandardComponents1() {
@@ -97,11 +134,11 @@ public class BodyTempPage implements ActionListener,Launchable {
         BTPanel.add(BTTitle);
 
         // patient name format
-        PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
-        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
-        PatientName.setForeground(RED);
-        BTPanel.add(PatientName);
+//        PatientName = new JLabel("Ana Lopez");
+//        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
+//        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
+//        PatientName.setForeground(RED);
+//        BTPanel.add(PatientName);
 
 //        // patient hospital number
 //        PatientHospNo = new JLabel("Hospital No.:");
@@ -199,18 +236,18 @@ public class BodyTempPage implements ActionListener,Launchable {
         BTPanel.add(graphBox);
 
         // patient info set-up
-        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-        PatientInfo1.setForeground(GREY);
-        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo1.setVisible(true);
-        BTPanel.add(PatientInfo1);
-        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-        PatientInfo2.setForeground(GREY);
-        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo2.setVisible(true);
-        BTPanel.add(PatientInfo2);
+//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
+//        PatientInfo1.setForeground(GREY);
+//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
+//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+//        PatientInfo1.setVisible(true);
+//        BTPanel.add(PatientInfo1);
+//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
+//        PatientInfo2.setForeground(GREY);
+//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
+//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+//        PatientInfo2.setVisible(true);
+//        BTPanel.add(PatientInfo2);
 
     }
 
