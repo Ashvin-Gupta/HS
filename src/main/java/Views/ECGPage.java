@@ -56,7 +56,7 @@ public class ECGPage implements ActionListener,Launchable{
     private JLabel PatientInfo2;
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
-    private int dataPointmod = 0;
+    //private int dataPointmod = 0;
     private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;

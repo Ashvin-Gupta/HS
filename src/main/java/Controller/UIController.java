@@ -18,7 +18,7 @@ public class UIController {
 
     public UIController() throws SQLException {
 
-        frame.getContentPane().add(new BodyTempPage().getmainpanel());
+        frame.getContentPane().add(new BloodPresPage().getmainpanel());
         //frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
