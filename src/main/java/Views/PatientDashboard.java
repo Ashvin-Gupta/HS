@@ -20,7 +20,7 @@ public class PatientDashboard implements Launchable {
 
     private JLabel title, name, sex, age, blood,sBP, dBP, alert;
     private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
-    private int[] tempInt;
+    private float[] tempInt;
     private JButton HR, RR, temp;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
@@ -30,7 +30,7 @@ public class PatientDashboard implements Launchable {
     private JPanel backpanel;
     private JPanel bottompanel;
     private int tempDatapoint = 0;
-    private int Temp = 0;
+    private float Temp = 0;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -253,9 +253,9 @@ public class PatientDashboard implements Launchable {
         timer.start();
     }
 
-    public int[] StringToInt(String number){
+    private static float[] StringToInt(String number){
         String[] string = number.split(",");
-        int[] arr = new int[string.length];
+        float[] arr = new float[string.length];
         for (int i = 0; i < string.length; i++) {
             arr[i] = Integer.valueOf(string[i]);
         }
