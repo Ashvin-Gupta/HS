@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,7 +56,9 @@ public class ECGPage implements ActionListener,Launchable{
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
     private int dataPointmod = 0;
-    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
+    private int[] HRList;
+    private String HRString;
+//    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
     public JPanel newECGGraph;
@@ -78,8 +81,8 @@ public class ECGPage implements ActionListener,Launchable{
 
         JPanel sidebar = new Sidebar(patientid);
 
-        displayECGComponents();
-        displayStandardComponents1(); // add display components to HR panel
+
+        displayStandardComponents1(patientid); // add display components to HR panel
         getPatientInfo(patientid);
 
         mainpanel.add(HRPanel, BorderLayout.CENTER);
@@ -124,7 +127,18 @@ public class ECGPage implements ActionListener,Launchable{
 
     }
 
-    public void displayStandardComponents1() throws SQLException {
+    public void displayStandardComponents1(int patientid) throws SQLException {
+        String stringpatientID = String.valueOf(patientid);
+        String sqlStr = "select * from patients where id = " + stringpatientID;
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+
+        while(rs.next()){
+            HRString = rs.getString("ecg");
+
+        }
+        HRList = StringToInt(HRString);
 
       // main title format
         HRTitle = new JLabel("Heart Rate");
@@ -132,13 +146,6 @@ public class ECGPage implements ActionListener,Launchable{
         HRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
         HRTitle.setForeground(BLUE);
         HRPanel.add(HRTitle);
-
-//        // patient hospital number
-//        PatientHospNo = new JLabel("Hospital No.:");
-//        PatientHospNo.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.17), 900, 60);
-//        PatientHospNo.setFont(new Font("Roboto", Font.BOLD, 20));
-//        PatientHospNo.setForeground(GREY);
-//        HRPanel.add(PatientHospNo);
 
         // updating HR and inner white box
         HRupdated = new JLabel(" ");
@@ -151,13 +158,6 @@ public class ECGPage implements ActionListener,Launchable{
         HRupdated.setVisible(true);
         HRPanel.add(HRupdated);
 
-        /* // Live display title set-up
-        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
-        LiveHRTitle.setForeground(Color.WHITE);
-        LiveHRTitle.setBounds((int) (WIDTH *0.12),(int) (HEIGHT *0.12),450,280);
-        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        LiveHRTitle.setVisible(true);
-        HRPanel.add(LiveHRTitle); */
 
         // Live display box set-up
         LiveHRBox = new JLabel(" ");
@@ -191,6 +191,23 @@ public class ECGPage implements ActionListener,Launchable{
         TimeSelectBox.setBackground(BLUE);
         TimeSelectBox.setOpaque(true);
         HRPanel.add(TimeSelectBox);
+
+        // Live display title set-up
+        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
+        LiveHRTitle.setForeground(Color.WHITE);
+        LiveHRTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.08),450,280);
+        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        LiveHRTitle.setVisible(true);
+        HRPanel.add(LiveHRTitle);
+
+        // ECG box set-up
+        ECGTitle= new JLabel("Live Electrocardiogram:");
+        ECGTitle.setForeground(Color.white);
+        ECGTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.43),450,280);
+        ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        ECGTitle.setVisible(true);
+        HRPanel.add(ECGTitle);
+
 
         // timer for HRUpdated
         Timer timer = new Timer(1000, new ActionListener() {
@@ -228,49 +245,9 @@ public class ECGPage implements ActionListener,Launchable{
         ECGBox.setOpaque(true);
         HRPanel.add(ECGBox);
 
-        // patient info set-up
-//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-//        PatientInfo1.setForeground(GREY);
-//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo1.setVisible(true);
-//        HRPanel.add(PatientInfo1);
-//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-//        PatientInfo2.setForeground(GREY);
-//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo2.setVisible(true);
-//        HRPanel.add(PatientInfo2);
-
     }
 
-    public void displayECGComponents(){
 
-//        // main title format
-//        HRTitle = new JLabel("Heart Rate");
-//        HRTitle.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.03),900,800);
-//        HRTitle.setFont(new Font("Roboto",Font.BOLD, 60));
-//        HRTitle.setForeground(BLUE);
-//        HRPanel.add(HRTitle);
-
-        // Live display title set-up
-        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
-        LiveHRTitle.setForeground(Color.WHITE);
-        LiveHRTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.08),450,280);
-        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        LiveHRTitle.setVisible(true);
-        HRPanel.add(LiveHRTitle);
-
-        // ECG box set-up
-        ECGTitle= new JLabel("Live Electrocardiogram:");
-        ECGTitle.setForeground(Color.white);
-        ECGTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.43),450,280);
-        ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        ECGTitle.setVisible(true);
-        HRPanel.add(ECGTitle);
-
-
-    }
 
     public void actionPerformed(ActionEvent evt) {
         String inputTimeSelect = TimeSelect.getText();
@@ -314,9 +291,18 @@ public class ECGPage implements ActionListener,Launchable{
         }
     }
 
+    public int[] StringToInt(String number){
+        String[] string = number.split(",");
+        int[] arr = new int[string.length];
+        for (int i = 0; i < string.length; i++) {
+            arr[i] = Integer.valueOf(string[i]);
+        }
+        return arr;
+    }
+
+
     public JPanel getmainpanel() {
         return mainpanel;
     }
-
 
 }
