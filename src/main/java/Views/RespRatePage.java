@@ -72,7 +72,7 @@ public class RespRatePage implements ActionListener, Launchable{
     protected final Color GREY = new Color(159,159,159);
 
 
-    public RespRatePage() throws SQLException{
+    public RespRatePage(int patientid) throws SQLException{
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -80,7 +80,7 @@ public class RespRatePage implements ActionListener, Launchable{
         RRPanel.setLayout(null);
         RRPanel.setPreferredSize(new Dimension(1000, 800));
 
-        JPanel sidebar = new Sidebar();
+        JPanel sidebar = new Sidebar(patientid);
 
         displayRespRateComponents();
         displayStandardComponents2();

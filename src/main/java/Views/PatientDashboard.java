@@ -37,7 +37,7 @@ public class PatientDashboard implements Launchable {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
-        Sidebar sidebar = new Sidebar();
+        Sidebar sidebar = new Sidebar(patientid);
 
         centerpanel = new JPanel();
         centerpanel.setLayout(new GridLayout(2,3,50,50));
@@ -136,7 +136,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchBloodPresPage();
+                    UIController.launchBloodPresPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -156,7 +156,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchBloodPresPage();
+                    UIController.launchBloodPresPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -194,7 +194,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchRespPage();
+                    UIController.launchRespPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -213,7 +213,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchECGPage();
+                    UIController.launchECGPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

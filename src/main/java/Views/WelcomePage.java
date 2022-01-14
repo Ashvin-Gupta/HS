@@ -124,9 +124,8 @@ public class WelcomePage implements Launchable {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (alerttable.getSelectedRow() > -1) {
-                    int patientid = (int) alerttable.getValueAt(alerttable.getSelectedRow(),0);
                     try {
-                        UIController.launchAlertsPage(patientid);
+                        UIController.launchAlertsPage(0);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }

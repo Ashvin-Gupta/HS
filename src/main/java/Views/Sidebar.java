@@ -24,11 +24,17 @@ public class Sidebar extends JPanel {
         setLayout(null);
         setPreferredSize(new Dimension(200,800));
         setBorder(BorderFactory.createLineBorder(GREY));
-        displayComponents();
-
+        displayComponents(0);
     }
 
-    private void displayComponents() {
+    public Sidebar(int patientid) {
+        setLayout(null);
+        setPreferredSize(new Dimension(200,800));
+        setBorder(BorderFactory.createLineBorder(GREY));
+        displayComponents(patientid);
+    }
+
+    private void displayComponents(int patientid) {
         title = new JLabel("HealthSentinel");
         title.setBounds(12,10,180,90);
         title.setFont(new Font("Roboto",Font.BOLD, 23));
@@ -67,7 +73,12 @@ public class Sidebar extends JPanel {
             public void actionPerformed(ActionEvent e) {
 //                Navigate to Patient Dashboard
                 try {
-                    UIController.launchPatientDashboard(1);
+                    if (patientid == 0) {
+                        System.out.println("There is no patient selected for navigation...");
+                    }
+                    else {
+                        UIController.launchPatientDashboard(patientid);
+                    }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

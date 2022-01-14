@@ -14,8 +14,6 @@ public class UIController {
     public int WIDTH = 1200;
     public int HEIGHT = 800;
 
-    private int patientID;
-
     public UIController() throws SQLException {
         frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
@@ -59,23 +57,23 @@ public class UIController {
         frame.setSize(new Dimension(1200,800));
     }
 
-    public static void launchECGPage() throws SQLException{
+    public static void launchECGPage(int patientid) throws SQLException{
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new ECGPage().getmainpanel());
+        frame.getContentPane().add(new ECGPage(patientid).getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
     }
 
-    public static void launchRespPage() throws SQLException{
+    public static void launchRespPage(int patientid) throws SQLException{
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new RespRatePage().getmainpanel());
+        frame.getContentPane().add(new RespRatePage(patientid).getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
     }
 
-    public static void launchBloodPresPage() throws SQLException{
+    public static void launchBloodPresPage(int patientid) throws SQLException{
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new BloodPresPage().getmainpanel());
+        frame.getContentPane().add(new BloodPresPage(patientid).getmainpanel());
         frame.setVisible(true);
         frame.setSize(new Dimension(1200,800));
     }

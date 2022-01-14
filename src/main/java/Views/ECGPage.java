@@ -70,7 +70,7 @@ public class ECGPage implements ActionListener,Launchable{
     protected final Color BLUE = new Color(37, 78, 112);
     protected final Color GREY = new Color(159, 159, 159);
 
-    public ECGPage() throws SQLException {
+    public ECGPage(int patientid) throws SQLException {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -78,7 +78,7 @@ public class ECGPage implements ActionListener,Launchable{
         HRPanel.setLayout(null);
         HRPanel.setPreferredSize(new Dimension(1000, 800));
 
-        JPanel sidebar = new Sidebar();
+        JPanel sidebar = new Sidebar(patientid);
 
         displayECGComponents();
         displayStandardComponents1();    // add display components to HR panel

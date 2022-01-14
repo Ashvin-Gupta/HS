@@ -1,9 +1,12 @@
 package Views;
 
+import Controller.UIController;
 import Data.AlertTableModel;
 import Database.myDB;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,7 +33,7 @@ public class AlertsPage implements Launchable {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
-        Sidebar sidebar = new Sidebar();
+        Sidebar sidebar = new Sidebar(patientID);
 
         centerpanel = new JPanel(new GridBagLayout());
         centerpanel.setPreferredSize(new Dimension(800,800));
@@ -68,6 +71,20 @@ public class AlertsPage implements Launchable {
         JScrollPane pane = new JScrollPane(alerttable);
         alerttable.setForeground(LBLUE);
         alerttable.setFont(new Font("Roboto",Font.PLAIN,16));
+        alerttable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (alerttable.getSelectedRow() > -1) {
+//                    System.out.println("ID of selected patient" + patienttable.getValueAt(patienttable.getSelectedRow(),0).toString());
+                    int patientid = (int) alerttable.getValueAt(alerttable.getSelectedRow(),0);
+                    try {
+                        UIController.launchAlertsPage(patientid);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
         centerpanel.add(pane);
     }
 
