@@ -52,7 +52,7 @@ public class BloodPresPage implements Launchable {
     protected final Color GREY = new Color(159,159,159);
 
 
-    public BloodPresPage() throws SQLException{
+    public BloodPresPage(int patientid) throws SQLException{
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -60,7 +60,7 @@ public class BloodPresPage implements Launchable {
         BPPanel.setLayout(null);
         BPPanel.setPreferredSize(new Dimension(1000, 800));
 
-        JPanel sidebar = new Sidebar();
+        JPanel sidebar = new Sidebar(patientid);
 
         displayBloodPresComponents();
 

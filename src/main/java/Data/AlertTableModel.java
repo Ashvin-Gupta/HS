@@ -15,7 +15,7 @@ public class AlertTableModel extends AbstractTableModel {
 
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
-    private String[] columnNames = {"Alert ID","Patient ID","Last Name","Time","Alert Type"};
+    private String[] columnNames = {"Patient ID","Last Name","Time","Alert Type"};
     private final int columnNum = 4;
     private int rowNum;
     private Object[][] data;
