@@ -131,7 +131,7 @@ public class BloodPresPage implements Launchable {
         prpStm.close();
         rs.next();
 
-        String patientname = rs.getString("name") + rs.getString("surname");
+        String patientname = rs.getString("name") + " " + rs.getString("surname");
         PatientName = new JLabel(patientname);
         PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
         PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
