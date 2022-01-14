@@ -2,6 +2,10 @@ package Views;
 
 import Controller.UIController;
 import Database.myDB;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static javax.swing.SwingConstants.CENTER;
 
 public class PatientDashboard implements Launchable {
 
@@ -28,6 +34,12 @@ public class PatientDashboard implements Launchable {
     private JPanel info;
     private JPanel backpanel;
     private JPanel bottompanel;
+    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private int graphWidth = 10;
+    public JPanel newECGGraph, cardPanel;
+    private CardLayout card;
+    public DefaultCategoryDataset globalDataset;
+    private int ECGdataPoint = 0;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -239,9 +251,79 @@ public class PatientDashboard implements Launchable {
             }
         });
         centerpanel.add(temp);
+
+//          ECG Graph - sample data found in ECGList
+
+        // timer required to feed in data every ... milliseconds
+        Timer timer = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+
+                // card layout to update graph and control layers
+                cardPanel = new JPanel();
+                cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
+                newECGGraph = createChartPanel();
+                card = new CardLayout();
+                cardPanel.setLayout(card);
+                newECGGraph.setOpaque(true);
+                newECGGraph.setVisible(true);
+                newECGGraph.setBounds((int) (WIDTH * 0.135), (int) (HEIGHT * 0.67), 900, 220);
+                cardPanel.add(newECGGraph);
+                cardPanel.setVisible(true);
+                card.next(cardPanel);
+                bottompanel.add(cardPanel);
+            }
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.setInitialDelay(0);
+        timer.start();
+
+    }
+
+
+    // creates graph for ECG
+    public JPanel createChartPanel() {
+        String chartTitle = "ECG Values for Patient:";
+        String categoryAxisLabel = "Time";
+        String valueAxisLabel = "mV";
+
+        globalDataset = createDataset(new DefaultCategoryDataset());
+
+        JFreeChart chart = ChartFactory.createLineChart(chartTitle,
+                categoryAxisLabel, valueAxisLabel, globalDataset);
+
+        return new ChartPanel(chart);
+    }
+
+    // creates dataset for ECG
+    public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+
+        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
+        {
+            inputDataset.setValue(getECGValue(i), "patient data", String.valueOf(i));
+        }
+
+        return inputDataset;
+    }
+
+    // method to cycle through ECG List values
+    public int getECGValue(int i){
+        int new_i = i%ECGList.length;
+        if (i<0){
+            return ECGList[ECGList.length-1 + new_i];
+        }
+        else {
+            return ECGList[new_i];
+        }
     }
 
     public JPanel getmainpanel(){
         return mainpanel;
     }
+
 }

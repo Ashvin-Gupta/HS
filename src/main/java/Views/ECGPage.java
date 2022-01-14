@@ -272,7 +272,6 @@ public class ECGPage implements ActionListener,Launchable{
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
         //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {
             inputDataset.setValue(getHR(i), "patient data", String.valueOf(i));
