@@ -17,7 +17,9 @@ public class UIController {
     private int patientID;
 
     public UIController() throws SQLException {
-        frame.getContentPane().add(new LoginPage());
+
+        frame.getContentPane().add(new BodyTempPage().getmainpanel());
+        //frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
