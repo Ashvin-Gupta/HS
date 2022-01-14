@@ -33,7 +33,7 @@ public class RespRatePage implements ActionListener, Launchable{
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
-    int WIDTH = 1000;
+    int WIDTH = 1200;
     int HEIGHT = 800;
 
     private JPanel mainpanel;

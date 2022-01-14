@@ -58,7 +58,6 @@ public class PatientDashboard implements Launchable {
         backpanel.add(centerpanel);
         backpanel.add(bottompanel);
 
-
         displayComponents(patientid);
 
         mainpanel.add(backpanel, BorderLayout.CENTER);
@@ -117,22 +116,52 @@ public class PatientDashboard implements Launchable {
 
 //        Centerpanel
 //        Systolic Blood Pressure
-        sBP = new JLabel("<html>Systolic BP<br/><br/>" + sbpVal+"</html>");
+//        sBP = new JLabel("<html>Systolic BP<br/><br/>" + sbpVal+"</html>");
+//        sBP.setFont(new Font("Roboto",Font.BOLD, 28));
+//        sBP.setAlignmentX(JLabel.CENTER);
+//        sBP.setForeground(BLUE);
+//        sBP.setBackground(Color.white);
+//        sBP.setOpaque(true);
+//        sBP.setBorder(new EmptyBorder(10,10,10,10));
+//        centerpanel.add(sBP);
+
+        JButton sBP = new JButton("<html>Systolic BP<br/><br/>"+sbpVal+"</html>");
         sBP.setFont(new Font("Roboto",Font.BOLD, 28));
-        sBP.setAlignmentX(JLabel.CENTER);
+        sBP.setAlignmentX(JButton.CENTER);
         sBP.setForeground(BLUE);
         sBP.setBackground(Color.white);
         sBP.setOpaque(true);
         sBP.setBorder(new EmptyBorder(10,10,10,10));
+        sBP.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchBloodPresPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         centerpanel.add(sBP);
 
 //        Diastolic Blood Pressure
-        dBP = new JLabel("<html>Diastolic BP<br/><br/>"+ dbpVal+"</html>");
+        JButton dBP = new JButton("<html>Diastolic BP<br/><br/>"+ dbpVal+"</html>");
         dBP.setFont(new Font("Roboto",Font.BOLD, 28));
+        dBP.setAlignmentX(JButton.CENTER);
         dBP.setForeground(BLUE);
         dBP.setBackground(Color.white);
         dBP.setOpaque(true);
         dBP.setBorder(new EmptyBorder(10,10,10,10));
+        dBP.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchBloodPresPage();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         centerpanel.add(dBP);
 
 //        Alerts
