@@ -2,6 +2,10 @@ package Views;
 
 import Controller.UIController;
 import Database.myDB;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +35,12 @@ public class PatientDashboard implements Launchable {
     private JPanel bottompanel;
     private int tempDatapoint = 0;
     private float Temp = 0;
+    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private int graphWidth = 10;
+    public JPanel newECGGraph, cardPanel;
+    private CardLayout card;
+    public DefaultCategoryDataset globalDataset;
+    private int ECGdataPoint = 0;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -56,6 +66,8 @@ public class PatientDashboard implements Launchable {
 
         bottompanel = new JPanel();
         bottompanel.setPreferredSize(new Dimension(1000,380));
+        bottompanel.setLayout(null);
+        bottompanel.setBorder(new EmptyBorder(0,0,10,0));
 
         backpanel.add(info);
         backpanel.add(centerpanel);
@@ -89,10 +101,6 @@ public class PatientDashboard implements Launchable {
         }
 
         tempInt = StringToInt(tempVal);
-        System.out.println(tempInt);
-
-        System.out.println(tempInt[0]);
-
 
 //        Info Panel at the top
 //        Dashboard title
@@ -246,6 +254,22 @@ public class PatientDashboard implements Launchable {
                 Temp = tempInt[tempDatapoint];
                 temp.setText("<html>Temperature<br/><br/>"+ String.valueOf(Temp)+" °C </html>");
 
+                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+
+                // card layout to update graph and control layers
+                cardPanel = new JPanel();
+                cardPanel.setBounds((int) (WIDTH * 0.04), 2, 900, 220);
+                newECGGraph = createChartPanel();
+                card = new CardLayout();
+                cardPanel.setLayout(card);
+                newECGGraph.setOpaque(true);
+                newECGGraph.setVisible(true);
+                newECGGraph.setBounds((int) (WIDTH * 0.135), 2, 900, 220);
+                cardPanel.add(newECGGraph);
+                cardPanel.setVisible(true);
+                card.next(cardPanel);
+                bottompanel.add(cardPanel);
+
             }
         });
         timer.setRepeats(true);
@@ -261,6 +285,42 @@ public class PatientDashboard implements Launchable {
             arr[i] = Float.valueOf(string[i]);
         }
         return arr;
+    }
+
+    public JPanel createChartPanel() {
+        String chartTitle = "ECG Values for Patient:";
+        String categoryAxisLabel = "Time";
+        String valueAxisLabel = "mV";
+
+        globalDataset = createDataset(new DefaultCategoryDataset());
+
+        JFreeChart chart = ChartFactory.createLineChart(chartTitle,
+                categoryAxisLabel, valueAxisLabel, globalDataset);
+
+        return new ChartPanel(chart);
+    }
+
+    // creates dataset for ECG
+    public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+
+        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
+        {
+            inputDataset.setValue(getECGValue(i), "patient data", String.valueOf(i));
+        }
+
+        return inputDataset;
+    }
+
+    // method to cycle through ECG List values
+    public int getECGValue(int i) {
+        int new_i = i % ECGList.length;
+        if (i < 0) {
+            return ECGList[ECGList.length - 1 + new_i];
+        } else {
+            return ECGList[new_i];
+        }
     }
 
     public JPanel getmainpanel(){
