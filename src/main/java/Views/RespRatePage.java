@@ -92,7 +92,7 @@ public class RespRatePage implements ActionListener, Launchable{
     private void displayStandardComponents2() {
 // patient name format
         PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.1), 900, 60);
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 900, 60);
         PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
         PatientName.setForeground(RED);
         RRPanel.add(PatientName);
@@ -108,7 +108,7 @@ public class RespRatePage implements ActionListener, Launchable{
         RRupdated = new JLabel(" ");
         RRupdated.setFont(new Font("Roboto", Font.BOLD, 40));
         RRupdated.setHorizontalTextPosition(CENTER);
-        RRupdated.setBounds((int) (WIDTH * 0.12), (int) (HEIGHT * 0.34), 260, 150);
+        RRupdated.setBounds((int) (WIDTH * 0.034), (int) (HEIGHT * 0.31), 260, 150);
         RRupdated.setForeground(Color.black);
         RRupdated.setOpaque(true);
         RRupdated.setBackground(Color.WHITE);
@@ -118,14 +118,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // Live display box set-up
         LiveRRBox = new JLabel(" ");
         LiveRRBox.setForeground(BLUE);
-        LiveRRBox.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.24), 300, 270);
+        LiveRRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.2), 300, 270);
         LiveRRBox.setBackground(BLUE);
         LiveRRBox.setOpaque(true);
         RRPanel.add(LiveRRBox);
 
         // time selection and inner white box
         TimeSelect = new JTextField("", 20);
-        TimeSelect.setBounds((int) (WIDTH * 0.79), (int) (HEIGHT * 0.34), 260, 150);
+        TimeSelect.setBounds((int) (WIDTH * 0.567), (int) (HEIGHT * 0.31), 260, 150);
         TimeSelect.setForeground(BLUE);
         TimeSelect.setOpaque(true);
         TimeSelect.setBackground(Color.WHITE);
@@ -136,14 +136,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // Time Selection title set-up
         TimeSelectTitle = new JLabel("<html> Select to view last ___ <br> mins:<html>");
         TimeSelectTitle.setForeground(Color.WHITE);
-        TimeSelectTitle.setBounds((int) (WIDTH * 0.79), (int) (HEIGHT * 0.12), 450, 280);
+        TimeSelectTitle.setBounds((int) (WIDTH * 0.57), (int) (HEIGHT * 0.09), 450, 280);
         TimeSelectTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         TimeSelectTitle.setVisible(true);
         RRPanel.add(TimeSelectTitle);
 
         // Time Selection box set-up
         TimeSelectBox = new JLabel(" ");
-        TimeSelectBox.setBounds((int) (WIDTH * 0.77), (int) (HEIGHT * 0.24), 300, 270);
+        TimeSelectBox.setBounds((int) (WIDTH * 0.55), (int) (HEIGHT * 0.2), 300, 270);
         TimeSelectBox.setBackground(BLUE);
         TimeSelectBox.setOpaque(true);
         RRPanel.add(TimeSelectBox);
@@ -163,7 +163,7 @@ public class RespRatePage implements ActionListener, Launchable{
 
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
-                cardPanel.setBounds((int) (WIDTH * 0.135), (int) (HEIGHT * 0.67), 900, 220);
+                cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
                 newRRGraph = createChartPanel();
                 card = new CardLayout();
                 cardPanel.setLayout(card);
@@ -192,7 +192,7 @@ public class RespRatePage implements ActionListener, Launchable{
 
         // Live graph box set-up
         GraphBox = new JLabel(" ");
-        GraphBox.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.6), 970, 300);
+        GraphBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
         GraphBox.setBackground(BLUE);
         GraphBox.setOpaque(true);
         RRPanel.add(GraphBox);
@@ -200,14 +200,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // patient info set-up
         PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
         PatientInfo1.setForeground(GREY);
-        PatientInfo1.setBounds((int) (WIDTH * 0.65), (int) (HEIGHT * 0.01), 450, 180);
-        PatientInfo1.setFont(new Font("Roboto", Font.BOLD, 20));
+        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
+        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
         PatientInfo1.setVisible(true);
         RRPanel.add(PatientInfo1);
         PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
         PatientInfo2.setForeground(GREY);
-        PatientInfo2.setBounds((int) (WIDTH * 0.8), (int) (HEIGHT * 0.01), 450, 180);
-        PatientInfo2.setFont(new Font("Roboto", Font.BOLD, 20));
+        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
+        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
         PatientInfo2.setVisible(true);
         RRPanel.add(PatientInfo2);
 
@@ -219,22 +219,22 @@ public class RespRatePage implements ActionListener, Launchable{
         // main title format
         RRTitle = new JLabel("Respiratory Rate");
         RRTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),900,80);
-        RRTitle.setFont(new Font("Roboto",Font.BOLD, 60));
+        RRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
         RRTitle.setForeground(BLUE);
         RRPanel.add(RRTitle);
 
         // Live display title set-up
         LiveRRTitle = new JLabel("<html> Live Respiratory Rate: <br> (breaths/minute) <html>");
         LiveRRTitle.setForeground(Color.WHITE);
-        LiveRRTitle.setBounds((int) (WIDTH *0.12),(int) (HEIGHT *0.12),450,280);
+        LiveRRTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.09),450,280);
         LiveRRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         LiveRRTitle.setVisible(true);
         RRPanel.add(LiveRRTitle);
 
         // Graph title set-up
-        GraphTitle= new JLabel("Live Respiratory Rate (last ___ minutes):");
+        GraphTitle= new JLabel("Breathing rate over the last ___ minutes:");
         GraphTitle.setForeground(Color.white);
-        GraphTitle.setBounds((int) (WIDTH *0.15),(int) (HEIGHT *0.47),450,280);
+        GraphTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.43),450,280);
         GraphTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         GraphTitle.setVisible(true);
         RRPanel.add(GraphTitle);
@@ -242,14 +242,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // 02 saturation title:
         O2SatTitle = new JLabel("<html> Oxygen Saturation:<br> (SpO2%) <html>");
         O2SatTitle.setForeground(Color.WHITE);
-        O2SatTitle.setBounds((int) (WIDTH *0.45),(int) (HEIGHT *0.12),450,280);
+        O2SatTitle.setBounds((int) (WIDTH *0.3),(int) (HEIGHT *0.09),450,280);
         O2SatTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         O2SatTitle.setVisible(true);
         RRPanel.add(O2SatTitle);
 
         // 02 saturation box:
         O2SatBox = new JLabel(" ");
-        O2SatBox.setBounds((int) (WIDTH * 0.435), (int) (HEIGHT * 0.24), 300, 270);
+        O2SatBox.setBounds((int) (WIDTH * 0.285), (int) (HEIGHT * 0.2), 300, 270);
         O2SatBox.setBackground(BLUE);
         O2SatBox.setOpaque(true);
         RRPanel.add(O2SatBox);
@@ -258,7 +258,7 @@ public class RespRatePage implements ActionListener, Launchable{
         O2Updated = new JLabel(" ");
         O2Updated.setFont(new Font("Roboto", Font.BOLD, 40));
         O2Updated.setHorizontalTextPosition(CENTER);
-        O2Updated.setBounds((int) (WIDTH * 0.455), (int) (HEIGHT * 0.34), 260, 150);
+        O2Updated.setBounds((int) (WIDTH * 0.3), (int) (HEIGHT * 0.31), 260, 150);
         O2Updated.setForeground(Color.black);
         O2Updated.setOpaque(true);
         O2Updated.setBackground(Color.WHITE);
@@ -276,9 +276,9 @@ public class RespRatePage implements ActionListener, Launchable{
 
     // function for graph
     public JPanel createChartPanel() {
-        String chartTitle = "ECG Values for Patient:";
+        String chartTitle = "Breathing Rate Values for Patient:";
         String categoryAxisLabel = "Time";
-        String valueAxisLabel = "mV";
+        String valueAxisLabel = "Breaths per minute";
 
         globalDataset = createDataset(new DefaultCategoryDataset());
 

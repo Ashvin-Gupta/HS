@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 
-// imports for ECG graph
+// imports for graph
 
 import Database.myDB;
 import org.jfree.chart.ChartFactory;
@@ -30,7 +30,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class ECGPage implements ActionListener,Launchable{
+public class BodyTempPage implements ActionListener,Launchable {
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
@@ -40,25 +40,25 @@ public class ECGPage implements ActionListener,Launchable{
     //   static GraphicsConfiguration gc;
     //   static JFrame MainFrame = new JFrame(gc);
     private JPanel mainpanel;
-    private JPanel HRPanel;
-    private JLabel HRTitle; // main title
-    private JLabel LiveHRBox;
-    private JLabel LiveHRTitle;
-    private JLabel ECGBox;
-    private JLabel ECGTitle;
+    private JPanel BTPanel;
+    private JLabel BTTitle; // main title
+    private JLabel LiveBTBox;
+    private JLabel LiveBTTitle;
+    private JLabel graphBox;
+    private JLabel graphTitle;
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
     private JLabel PatientHospNo;
-    private JLabel HRupdated;
+    private JLabel BTupdated;
     private JTextField TimeSelect;
     private JLabel PatientInfo1;
     private JLabel PatientInfo2;
-    private int HRdataPoint = 0;
-    private int ECGdataPoint = 0;
+    private int BTdataPoint = 0;
+    //private int ECGdataPoint = 0;
     private int dataPointmod = 0;
-    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
-    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private int[] BTList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
+    //private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
     public JPanel newECGGraph;
     private CardLayout card;
@@ -70,38 +70,38 @@ public class ECGPage implements ActionListener,Launchable{
     protected final Color BLUE = new Color(37, 78, 112);
     protected final Color GREY = new Color(159, 159, 159);
 
-    public ECGPage() throws SQLException {
+    public BodyTempPage() throws SQLException {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
-        HRPanel = new JPanel();
-        HRPanel.setLayout(null);
-        HRPanel.setPreferredSize(new Dimension(1000, 800));
+        BTPanel = new JPanel();
+        BTPanel.setLayout(null);
+        BTPanel.setPreferredSize(new Dimension(1000, 800));
 
         JPanel sidebar = new Sidebar();
 
         displayECGComponents();
         displayStandardComponents1();    // add display components to HR panel
 
-        mainpanel.add(HRPanel, BorderLayout.CENTER);
+        mainpanel.add(BTPanel, BorderLayout.CENTER);
         mainpanel.add(sidebar, BorderLayout.LINE_START);
     }
 
     public void displayStandardComponents1() {
 
-      // main title format
-        HRTitle = new JLabel("Heart Rate");
-        HRTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),400,60);
-        HRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
-        HRTitle.setForeground(BLUE);
-        HRPanel.add(HRTitle);
+        // main title format
+        BTTitle = new JLabel("Body Temperature");
+        BTTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),500,60);
+        BTTitle.setFont(new Font("Roboto",Font.BOLD, 50));
+        BTTitle.setForeground(BLUE);
+        BTPanel.add(BTTitle);
 
         // patient name format
         PatientName = new JLabel("Ana Lopez");
         PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
         PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
         PatientName.setForeground(RED);
-        HRPanel.add(PatientName);
+        BTPanel.add(PatientName);
 
 //        // patient hospital number
 //        PatientHospNo = new JLabel("Hospital No.:");
@@ -111,15 +111,15 @@ public class ECGPage implements ActionListener,Launchable{
 //        HRPanel.add(PatientHospNo);
 
         // updating HR and inner white box
-        HRupdated = new JLabel(" ");
-        HRupdated.setFont(new Font("Roboto", Font.BOLD, 40));
-        HRupdated.setHorizontalTextPosition(CENTER);
-        HRupdated.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.29), 410, 150);
-        HRupdated.setForeground(Color.black);
-        HRupdated.setOpaque(true);
-        HRupdated.setBackground(Color.WHITE);
-        HRupdated.setVisible(true);
-        HRPanel.add(HRupdated);
+        BTupdated = new JLabel(" ");
+        BTupdated.setFont(new Font("Roboto", Font.BOLD, 40));
+        BTupdated.setHorizontalTextPosition(CENTER);
+        BTupdated.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.29), 410, 150);
+        BTupdated.setForeground(Color.black);
+        BTupdated.setOpaque(true);
+        BTupdated.setBackground(Color.WHITE);
+        BTupdated.setVisible(true);
+        BTPanel.add(BTupdated);
 
         /* // Live display title set-up
         LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
@@ -130,12 +130,12 @@ public class ECGPage implements ActionListener,Launchable{
         HRPanel.add(LiveHRTitle); */
 
         // Live display box set-up
-        LiveHRBox = new JLabel(" ");
-        LiveHRBox.setForeground(BLUE);
-        LiveHRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.20), 450, 270);
-        LiveHRBox.setBackground(BLUE);
-        LiveHRBox.setOpaque(true);
-        HRPanel.add(LiveHRBox);
+        LiveBTBox = new JLabel(" ");
+        LiveBTBox.setForeground(BLUE);
+        LiveBTBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.20), 450, 270);
+        LiveBTBox.setBackground(BLUE);
+        LiveBTBox.setOpaque(true);
+        BTPanel.add(LiveBTBox);
 
         // time selection and inner white box
         TimeSelect = new JTextField("", 20);
@@ -145,7 +145,7 @@ public class ECGPage implements ActionListener,Launchable{
         TimeSelect.setBackground(Color.WHITE);
         TimeSelect.setVisible(true);
         TimeSelect.addActionListener((ActionListener) this);
-        HRPanel.add(TimeSelect);
+        BTPanel.add(TimeSelect);
 
         // Time Selection title set-up
         TimeSelectTitle = new JLabel("Select to view past _ seconds:");
@@ -153,24 +153,24 @@ public class ECGPage implements ActionListener,Launchable{
         TimeSelectTitle.setBounds((int) (WIDTH * 0.46), (int) (HEIGHT * 0.08), 450, 280);
         TimeSelectTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         TimeSelectTitle.setVisible(true);
-        HRPanel.add(TimeSelectTitle);
+        BTPanel.add(TimeSelectTitle);
 
         // Time Selection box set-up
         TimeSelectBox = new JLabel(" ");
         TimeSelectBox.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.2), 450, 270);
         TimeSelectBox.setBackground(BLUE);
         TimeSelectBox.setOpaque(true);
-        HRPanel.add(TimeSelectBox);
+        BTPanel.add(TimeSelectBox);
 
         // timer for HRUpdated
         Timer timer = new Timer(1000, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
-                HRdataPoint = (HRdataPoint + 1) % HRList.length;
-                HRupdated.setText(String.valueOf(HRList[HRdataPoint]));
-                HRupdated.setHorizontalTextPosition(CENTER);
+                BTdataPoint = (BTdataPoint + 1) % BTList.length;
+                //HRdataPoint = (HRdataPoint + 1) % HRList.length;
+                BTupdated.setText(String.valueOf(BTList[BTdataPoint]));
+                BTupdated.setHorizontalTextPosition(CENTER);
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
@@ -183,7 +183,7 @@ public class ECGPage implements ActionListener,Launchable{
                 cardPanel.add(newECGGraph);
                 cardPanel.setVisible(true);
                 card.next(cardPanel);
-                HRPanel.add(cardPanel);
+                BTPanel.add(cardPanel);
             }
         });
         timer.setRepeats(true);
@@ -191,12 +191,12 @@ public class ECGPage implements ActionListener,Launchable{
         timer.setInitialDelay(0);
         timer.start();
 
-        // ECG box set-up
-        ECGBox = new JLabel(" ");
-        ECGBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
-        ECGBox.setBackground(BLUE);
-        ECGBox.setOpaque(true);
-        HRPanel.add(ECGBox);
+        // graph box set-up
+        graphBox = new JLabel(" ");
+        graphBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
+        graphBox.setBackground(BLUE);
+        graphBox.setOpaque(true);
+        BTPanel.add(graphBox);
 
         // patient info set-up
         PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
@@ -204,17 +204,15 @@ public class ECGPage implements ActionListener,Launchable{
         PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
         PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
         PatientInfo1.setVisible(true);
-        HRPanel.add(PatientInfo1);
+        BTPanel.add(PatientInfo1);
         PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
         PatientInfo2.setForeground(GREY);
         PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
         PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
         PatientInfo2.setVisible(true);
-        HRPanel.add(PatientInfo2);
-
+        BTPanel.add(PatientInfo2);
 
     }
-
 
     public void displayECGComponents(){
 
@@ -226,33 +224,55 @@ public class ECGPage implements ActionListener,Launchable{
 //        HRPanel.add(HRTitle);
 
         // Live display title set-up
-        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
-        LiveHRTitle.setForeground(Color.WHITE);
-        LiveHRTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.08),450,280);
-        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        LiveHRTitle.setVisible(true);
-        HRPanel.add(LiveHRTitle);
+        LiveBTTitle = new JLabel("Live Body Temperature (Celsius):");
+        LiveBTTitle.setForeground(Color.WHITE);
+        LiveBTTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.08),450,280);
+        LiveBTTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        LiveBTTitle.setVisible(true);
+        BTPanel.add(LiveBTTitle);
 
-        // ECG box set-up
-        ECGTitle= new JLabel("Live Electrocardiogram:");
-        ECGTitle.setForeground(Color.white);
-        ECGTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.43),450,280);
-        ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        ECGTitle.setVisible(true);
-        HRPanel.add(ECGTitle);
+        // graph box title
+        BTTitle= new JLabel("Live body temperature over the last ___ seconds:");
+        BTTitle.setForeground(Color.white);
+        BTTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.43),550,280);
+        BTTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        BTTitle.setVisible(true);
+        BTPanel.add(BTTitle);
 
 
     }
 
     public void actionPerformed(ActionEvent evt) {
         String inputTimeSelect = TimeSelect.getText();
-        System.out.println(inputTimeSelect);
-        graphWidth = Integer.valueOf(inputTimeSelect);
+        JLabel timeSelectHint = new JLabel("Please enter a value less than 20.");
+        if (Integer.valueOf(inputTimeSelect)> 20)
+        {
+            // ignore new input
+            graphWidth = 0;
+
+            // display hint below
+            timeSelectHint.setForeground(Color.BLACK);
+            timeSelectHint.setBackground(Color.WHITE);
+            timeSelectHint.setBounds((int)(WIDTH *0.02),(int)(HEIGHT *0.57),950,300);
+            timeSelectHint.setFont(new Font("Roboto",Font.BOLD, 30));
+            timeSelectHint.setVisible(true);
+            timeSelectHint.setOpaque(true);
+            cardPanel.add(timeSelectHint);
+            card.next(cardPanel);
+
+            System.out.println("Please enter a value less than 20 seconds.");
+        }
+        else {
+            cardPanel.add(timeSelectHint);
+            card.next(cardPanel);
+            System.out.println(inputTimeSelect);
+            graphWidth = Integer.valueOf(inputTimeSelect);
+        }
     }
 
     // function for ECG graph
     public JPanel createChartPanel() {
-        String chartTitle = "ECG Values for Patient:";
+        String chartTitle = "Temperature Values for Patient:";
         String categoryAxisLabel = "Time";
         String valueAxisLabel = "mV";
 
@@ -268,21 +288,21 @@ public class ECGPage implements ActionListener,Launchable{
         //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 
-        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
+        for (int i=BTdataPoint-graphWidth;i<BTdataPoint;i=i+1)
         {
-            inputDataset.setValue(getHR(i), "patient data", String.valueOf(i));
+            inputDataset.setValue(getHR(i), "Patient", String.valueOf(i));
         }
 
         return inputDataset;
     }
 
     public int getHR(int i){
-        int new_i = i%ECGList.length;
+        int new_i = i%BTList.length;
         if (i<0){
-            return ECGList[ECGList.length-1 + new_i];
+            return BTList[BTList.length-1 + new_i];
         }
         else {
-            return ECGList[new_i];
+            return BTList[new_i];
         }
     }
 
