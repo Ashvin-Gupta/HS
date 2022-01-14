@@ -12,7 +12,7 @@ public class myDB {
             Class.forName("org.postgresql.Driver");
         } catch (Exception e) {
         }
-        conn = DriverManager.getConnection(dbUrl, "postgres", "prog3");
+        conn = DriverManager.getConnection(dbUrl, "aidanpadraig", "aidanpadraig");
     }
 
     //closes the java-database connection

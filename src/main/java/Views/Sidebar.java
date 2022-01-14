@@ -119,7 +119,7 @@ public class Sidebar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.laucnhLoginPage();
+                    UIController.launchLoginPage();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

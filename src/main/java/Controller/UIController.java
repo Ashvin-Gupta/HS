@@ -16,14 +16,13 @@ public class UIController {
 
     public UIController() throws SQLException {
 
-        frame.getContentPane().add(new BodyTempPage().getmainpanel());
-        //frame.getContentPane().add(new LoginPage());
+        frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public static void laucnhLoginPage() throws SQLException{
+    public static void launchLoginPage() throws SQLException{
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new LoginPage());
         frame.setVisible(true);
