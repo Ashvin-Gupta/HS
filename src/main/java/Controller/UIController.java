@@ -19,6 +19,7 @@ public class UIController {
         frame.getContentPane().add(new LoginPage());
         frame.setSize(new Dimension(WIDTH,HEIGHT));
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
@@ -26,6 +27,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new LoginPage());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -33,6 +35,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new CreateAccount());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
 
     }
@@ -41,6 +44,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new WelcomePage().getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -48,6 +52,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new PatientDashboard(patientID).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -55,6 +60,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new AlertsPage(patientID).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -62,6 +68,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new ECGPage(patientid).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -69,6 +76,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new RespRatePage(patientid).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -76,6 +84,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new BloodPresPage(patientid).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
@@ -83,6 +92,7 @@ public class UIController {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new BodyTempPage(patientid).getmainpanel());
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
     }
 
