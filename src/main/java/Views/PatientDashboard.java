@@ -97,7 +97,6 @@ public class PatientDashboard implements Launchable {
             RRVal = (rs.getString("rr") + " rpm");
             HRVal = (rs.getString("hr") + " bpm");
             tempVal = rs.getString("temp");
-            System.out.println(tempVal);
         }
 
         tempInt = StringToInt(tempVal);
