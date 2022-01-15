@@ -330,7 +330,6 @@ public class RespRatePage implements ActionListener, Launchable{
             return RRFloats[new_i];
 
         }
-        return arr;
     }
 
     public JPanel getmainpanel() {
