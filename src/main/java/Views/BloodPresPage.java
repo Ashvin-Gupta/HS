@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.text.DefaultTextUI;
 
 // imports for graphs
 import org.jfree.chart.ChartFactory;
@@ -27,7 +28,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class BloodPresPage implements Launchable {
+public class BloodPresPage implements ActionListener, Launchable {
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
@@ -39,12 +40,37 @@ public class BloodPresPage implements Launchable {
     private JLabel BPTitle;
     private JLabel LiveSBPTitle;
     private JLabel SystolicBox;
+    private JLabel BPSUpdated;
     private JLabel LiveDBPTitle;
     private JLabel DiastolicBox;
+    private JLabel BPDUpdated;
     private JLabel TimeSelectTitle;
     private JLabel TimeSelectBox;
+
+    private JLabel SystolicGraphBox;
+    private JLabel SysGraphBoxTitle;
+    private JLabel DiastolicGraphBox;
+    private JLabel DiasGraphBoxTitle;
+    private int BPSdataPoint = 0;
+    private int BPDdataPoint = 0;
+    private int [] BPSList= {120, 121, 120, 123, 124, 122, 120, 128, 129, 118};
+    private int [] BPDList= {90, 92, 93, 94, 92, 90, 91, 94};
+    public JPanel newBPSGraph;
+    public JPanel newBPDGraph;
+    private CardLayout cardBPS;
+    private CardLayout cardBPD;
+    private JPanel cardPanelBPS;
+    private JPanel cardPanelBPD;
+    public DefaultCategoryDataset BPSDataset;
+    public DefaultCategoryDataset BPDDataset;
+    private int graphWidth = 10;
+    private JTextField TimeSelect;
+    private JLabel PatientName, PatientInfo1, PatientInfo2;
+
+
     private JLabel TimeInnerSelectBox;
     private JLabel PatientName;
+
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -62,6 +88,9 @@ public class BloodPresPage implements Launchable {
         JPanel sidebar = new Sidebar(patientid);
 
         displayBloodPresComponents();
+
+        displayStandardComponents();
+
         getPatientInfo(patientid);
 
         mainpanel.add(BPPanel, BorderLayout.CENTER);
@@ -69,58 +98,294 @@ public class BloodPresPage implements Launchable {
     }
 
     private void displayBloodPresComponents() {
+
+        // main title
+
         BPTitle = new JLabel("Blood Pressure");
-        BPTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),900,80);
-        BPTitle.setFont(new Font("Roboto",Font.BOLD, 60));
+        BPTitle.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.03), 900, 80);
+        BPTitle.setFont(new Font("Roboto", Font.BOLD, 60));
         BPTitle.setForeground(BLUE);
         BPPanel.add(BPTitle);
 
+
+
+        // Systolic pressure display text and box
+
+        LiveSBPTitle = new JLabel("<html> Live Systolic Blood <br> Pressure: (mmHg) <html>");
         // Systolic pressure text and box
 
-        LiveSBPTitle = new JLabel("<html> Live Systolic Blood Pressure: <br> (mmHg) <html>");
+
         LiveSBPTitle.setForeground(Color.WHITE);
-        LiveSBPTitle.setBounds((int) (50),(int) (HEIGHT *0.12),225,280);
+        LiveSBPTitle.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.09), 450, 280);
         LiveSBPTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         LiveSBPTitle.setVisible(true);
         BPPanel.add(LiveSBPTitle);
 
         SystolicBox = new JLabel(" ");
-        SystolicBox.setBounds((int) (25), (int) (HEIGHT * 0.24), 250, 270);
+        SystolicBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.2), 300, 270);
         SystolicBox.setBackground(BLUE);
         SystolicBox.setOpaque(true);
         BPPanel.add(SystolicBox);
 
+        BPSUpdated = new JLabel(" ");
+        BPSUpdated.setFont(new Font("Roboto", Font.BOLD, 40));
+        BPSUpdated.setHorizontalTextPosition(CENTER);
+        BPSUpdated.setBounds((int) (WIDTH * 0.034), (int) (HEIGHT * 0.31), 260, 150);
+        BPSUpdated.setForeground(Color.black);
+        BPSUpdated.setOpaque(true);
+        BPSUpdated.setBackground(Color.WHITE);
+        BPSUpdated.setVisible(true);
+        BPPanel.add( BPSUpdated);
 
-        // Diastolic pressure text and book
+        // Diastolic pressure display text and book
 
-        LiveDBPTitle = new JLabel("<html> Live Diastolic Blood Presure: <br> (mmHg) <html>");
+        LiveDBPTitle = new JLabel("<html> Live Diastolic Blood <br> Pressure: (mmHg) <html>");
         LiveDBPTitle.setForeground(Color.WHITE);
-        LiveDBPTitle.setBounds((int) (350),(int) (HEIGHT *0.12),225,280);
+        LiveDBPTitle.setBounds((int) (WIDTH * 0.3), (int) (HEIGHT * 0.09), 450, 280);
         LiveDBPTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         LiveDBPTitle.setVisible(true);
         BPPanel.add(LiveDBPTitle);
 
+        BPDUpdated = new JLabel(" ");
+        BPDUpdated.setFont(new Font("Roboto", Font.BOLD, 40));
+        BPDUpdated.setHorizontalTextPosition(CENTER);
+        BPDUpdated.setBounds((int) (WIDTH * 0.3), (int) (HEIGHT * 0.31), 260, 150);
+        BPDUpdated.setForeground(Color.black);
+        BPDUpdated.setOpaque(true);
+        BPDUpdated.setBackground(Color.WHITE);
+        BPDUpdated.setVisible(true);
+        BPPanel.add(BPDUpdated);
+
         DiastolicBox = new JLabel(" ");
-        DiastolicBox.setBounds((int) (325), (int) (HEIGHT * 0.24), 250, 270);
+        DiastolicBox.setBounds((int) (WIDTH * 0.285), (int) (HEIGHT * 0.2), 300, 270);
         DiastolicBox.setBackground(BLUE);
         DiastolicBox.setOpaque(true);
         BPPanel.add(DiastolicBox);
 
+
         // Time selection box and text
 
-        TimeSelectTitle = new JLabel("<html> Select to view last ___ <br> mins:<html>");
+        TimeSelectTitle = new JLabel("<html> Select to view last ___ <br> seconds:<html>");
         TimeSelectTitle.setForeground(Color.WHITE);
-        TimeSelectTitle.setBounds((int) (650), (int) (HEIGHT * 0.12), 225, 280);
+        TimeSelectTitle.setBounds((int) (WIDTH * 0.57), (int) (HEIGHT * 0.09), 450, 280);
         TimeSelectTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         TimeSelectTitle.setVisible(true);
         BPPanel.add(TimeSelectTitle);
 
         TimeSelectBox = new JLabel(" ");
-        TimeSelectBox.setBounds((int) (625), (int) (HEIGHT * 0.24), 250, 270);
+        TimeSelectBox.setBounds((int) (WIDTH * 0.55), (int) (HEIGHT * 0.2), 300, 270);
         TimeSelectBox.setBackground(BLUE);
         TimeSelectBox.setOpaque(true);
         BPPanel.add(TimeSelectBox);
 
+        // Systolic pressure graph box and title
+
+        SysGraphBoxTitle = new JLabel("Live systolic pressure over time:");
+        SysGraphBoxTitle.setForeground(Color.WHITE);
+        SysGraphBoxTitle.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.43), 450, 280);
+        SysGraphBoxTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        SysGraphBoxTitle.setVisible(true);
+        BPPanel.add(SysGraphBoxTitle);
+
+        SystolicGraphBox = new JLabel();
+        SystolicGraphBox.setForeground(Color.WHITE);
+        SystolicGraphBox.setFont(new Font("Roboto", Font.BOLD, 20));
+        SystolicGraphBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 450, 300);
+        SystolicGraphBox.setBackground(BLUE);
+        SystolicGraphBox.setOpaque(true);
+        BPPanel.add(SystolicGraphBox);
+
+        // Diastolic pressure graph box and title
+
+        DiasGraphBoxTitle = new JLabel("Live Diastolic pressure over time:");
+        DiasGraphBoxTitle.setForeground(Color.WHITE);
+        DiasGraphBoxTitle.setBounds((int) (WIDTH * 0.45), (int) (HEIGHT * 0.43), 450, 280);
+        DiasGraphBoxTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        DiasGraphBoxTitle.setVisible(true);
+        BPPanel.add(DiasGraphBoxTitle);
+
+        DiastolicGraphBox = new JLabel();
+        DiastolicGraphBox.setForeground(Color.WHITE);
+        DiastolicGraphBox.setFont(new Font("Roboto", Font.BOLD, 20));
+        DiastolicGraphBox.setBounds((int) (WIDTH * 0.425), (int) (HEIGHT * 0.57), 450, 300);
+        DiastolicGraphBox.setBackground(BLUE);
+        DiastolicGraphBox.setOpaque(true);
+        BPPanel.add(DiastolicGraphBox);
+
+        // time selection window set up
+        TimeSelect = new JTextField("", 20);
+        TimeSelect.setBounds((int) (WIDTH * 0.567), (int) (HEIGHT * 0.31), 260, 150);
+        TimeSelect.setForeground(BLUE);
+        TimeSelect.setOpaque(true);
+        TimeSelect.setBackground(Color.WHITE);
+        TimeSelect.setVisible(true);
+        TimeSelect.addActionListener((ActionListener) this);
+        BPPanel.add(TimeSelect);
+
+        // graphs set up using timer
+
+        Timer timer = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                // live number displays:
+                BPSdataPoint = (BPSdataPoint + 1) % BPSList.length;
+                BPSUpdated.setText(String.valueOf(BPSList[BPSdataPoint]));
+                BPSUpdated.setHorizontalTextPosition(CENTER);
+
+                BPDdataPoint = (BPDdataPoint + 1) % BPDList.length;
+                BPDUpdated.setText(String.valueOf(BPDList[BPDdataPoint]));
+                BPDUpdated.setHorizontalTextPosition(CENTER);
+
+                // systolic graph
+                cardPanelBPS = new JPanel();
+                cardPanelBPS.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 400, 220);
+                newBPSGraph = createChartPanel1();
+                cardBPS = new CardLayout();
+                cardPanelBPS.setLayout(cardBPS);
+                newBPSGraph.setOpaque(true);
+                newBPSGraph.setVisible(true);
+                newBPSGraph.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 400, 220);
+                cardPanelBPS.add(newBPSGraph);
+                cardPanelBPS.setVisible(true);
+                cardBPS.next(cardPanelBPS);
+                BPPanel.add(cardPanelBPS);
+
+               // diastolic graph
+                cardPanelBPD = new JPanel();
+                cardPanelBPD.setBounds((int) (WIDTH * 0.445), (int) (HEIGHT * 0.64), 400, 220);
+                newBPDGraph = createChartPanel2();
+                cardBPD = new CardLayout();
+                cardPanelBPD.setLayout(cardBPD);
+                newBPDGraph.setOpaque(true);
+                newBPDGraph.setVisible(true);
+                newBPDGraph.setBounds((int) (WIDTH * 0.445), (int) (HEIGHT * 0.64), 400, 220);
+                cardPanelBPD.add(newBPDGraph);
+                cardPanelBPD.setVisible(true);
+                cardBPD.next(cardPanelBPD);
+                BPPanel.add(cardPanelBPD);
+
+            }
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.setInitialDelay(0);
+        timer.start();
+
+    }
+
+    public void displayStandardComponents() {
+
+        // patient name format
+        PatientName = new JLabel("Ana Lopez");
+        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
+        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
+        PatientName.setForeground(RED);
+        BPPanel.add(PatientName);
+
+        // patient info set-up
+        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
+        PatientInfo1.setForeground(GREY);
+        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
+        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+        PatientInfo1.setVisible(true);
+        BPPanel.add(PatientInfo1);
+        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
+        PatientInfo2.setForeground(GREY);
+        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
+        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
+        PatientInfo2.setVisible(true);
+        BPPanel.add(PatientInfo2);
+
+    }
+
+
+    // retrieving value from time selection window
+    public void actionPerformed(ActionEvent evt) {
+        String inputTimeSelect = TimeSelect.getText();
+        System.out.println(inputTimeSelect);
+        graphWidth = Integer.valueOf(inputTimeSelect);
+    }
+
+
+    // creates panel for graph 1
+
+    public JPanel createChartPanel1() {
+        String chartTitle = "Systolic pressure";
+        String categoryAxisLabel = "Time";
+        String valueAxisLabel = "mmHg";
+
+        BPSDataset = createDataset1(new DefaultCategoryDataset());
+        //BPDDataset = createDataset2(new DefaultCategoryDataset());
+
+        JFreeChart chart1 = ChartFactory.createLineChart(chartTitle,
+                categoryAxisLabel, valueAxisLabel, BPSDataset);
+
+
+        return new ChartPanel(chart1);
+    }
+
+    // creates panel for graph 2
+
+    public JPanel createChartPanel2() {
+        String chartTitle = "Diastolic Pressure";
+        String categoryAxisLabel = "Time";
+        String valueAxisLabel = "mmHg";
+
+        BPDDataset = createDataset2(new DefaultCategoryDataset());
+
+        JFreeChart chart2 = ChartFactory.createLineChart(chartTitle,
+                categoryAxisLabel, valueAxisLabel, BPDDataset);
+
+        return new ChartPanel(chart2);
+    }
+
+    // creates dataset for graph 1
+
+    public DefaultCategoryDataset createDataset1(DefaultCategoryDataset inputDataset1) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (int i=BPSdataPoint-graphWidth;i<BPSdataPoint;i=i+1)
+        {
+            inputDataset1.setValue(getBPS(i), "patient data", String.valueOf(i));
+            //inputDataset.setValue(getBPD(i), "patient data", String.valueOf(i));
+        }
+
+        return inputDataset1;
+    }
+
+    // creates dataset for graph 2
+    public DefaultCategoryDataset createDataset2(DefaultCategoryDataset inputDataset2) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (int i=BPSdataPoint-graphWidth;i<BPSdataPoint;i=i+1)
+        {
+            inputDataset2.setValue(getBPD(i), "patient data", String.valueOf(i));
+        }
+
+        return inputDataset2;
+    }
+
+
+    public int getBPS(int i){
+        int new_i = i%BPSList.length;
+        if (i<0){
+            return BPSList[BPSList.length-1 + new_i];
+        }
+        else {
+            return BPSList[new_i];
+        }
+    }
+
+   public int getBPD(int i){
+        int new_i = i%BPDList.length;
+        if (i<0){
+            return BPDList[BPDList.length-1 + new_i];
+        }
+        else {
+            return BPDList[new_i];
+        }
     }
 
     private void getPatientInfo(int patientid) throws SQLException {
