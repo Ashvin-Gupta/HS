@@ -300,10 +300,8 @@ public class PatientDashboard implements Launchable {
         return new ChartPanel(chart);
     }
 
-    // creates dataset for ECG
+    // creates dataset for ECG graph
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
 
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {

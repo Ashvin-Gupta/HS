@@ -46,16 +46,12 @@ public class RespRatePage implements ActionListener, Launchable{
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-    private JLabel PatientHospNo;
     private JLabel RRupdated;
     private JLabel O2Updated;
     private JTextField TimeSelect;
-    private JLabel PatientInfo1;
-    private JLabel PatientInfo2;
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
     private int O2dataPoint = 0;
-    private int dataPointmod = 0;
     private int [] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int [] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
@@ -63,8 +59,8 @@ public class RespRatePage implements ActionListener, Launchable{
     private CardLayout card;
     private JPanel cardPanel;
     public DefaultCategoryDataset globalDataset;
-   // public ECGPage ecgtype;   // to be able to use method displayStandardComponents from ECGPage class
 
+    // colours
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color GREY = new Color(159,159,159);
@@ -89,7 +85,9 @@ public class RespRatePage implements ActionListener, Launchable{
     }
 
     private void getPatientInfo(int patientid) throws SQLException {
-        // patient name format
+
+        // patient information layout
+
         String getpatientname = "select name,surname,sex,age,blood from patients where id="+patientid;
         PreparedStatement prpStm = conn.prepareStatement(getpatientname);
         ResultSet rs = prpStm.executeQuery();
@@ -127,19 +125,6 @@ public class RespRatePage implements ActionListener, Launchable{
     }
 
     private void displayStandardComponents2() {
-// patient name format
-//        PatientName = new JLabel("Ana Lopez");
-//        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 900, 60);
-//        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
-//        PatientName.setForeground(RED);
-//        RRPanel.add(PatientName);
-
-        // patient hospital number
-//        PatientHospNo = new JLabel("Hospital No.:");
-//        PatientHospNo.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.17), 900, 60);
-//        PatientHospNo.setFont(new Font("Roboto", Font.BOLD, 20));
-//        PatientHospNo.setForeground(GREY);
-//        RRPanel.add(PatientHospNo);
 
         // updating RR and inner white box
         RRupdated = new JLabel(" ");
@@ -218,36 +203,12 @@ public class RespRatePage implements ActionListener, Launchable{
         timer.setInitialDelay(0);
         timer.start();
 
-
-        /* // ECG box title set-up
-        ECGTitle= new JLabel("Live Electrocardiogram:");
-        ECGTitle.setForeground(Color.white);
-        ECGTitle.setBounds((int) (WIDTH *0.15),(int) (HEIGHT *0.47),450,280);
-        ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        ECGTitle.setVisible(true);
-        HRPanel.add(ECGTitle);  */
-
         // Live graph box set-up
         GraphBox = new JLabel(" ");
         GraphBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
         GraphBox.setBackground(BLUE);
         GraphBox.setOpaque(true);
         RRPanel.add(GraphBox);
-
-        // patient info set-up
-//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-//        PatientInfo1.setForeground(GREY);
-//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo1.setVisible(true);
-//        RRPanel.add(PatientInfo1);
-//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-//        PatientInfo2.setForeground(GREY);
-//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo2.setVisible(true);
-//        RRPanel.add(PatientInfo2);
-
 
     }
 
@@ -302,13 +263,10 @@ public class RespRatePage implements ActionListener, Launchable{
         O2Updated.setVisible(true);
         RRPanel.add(O2Updated);
 
-
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
     }
 
     // function for graph
@@ -327,8 +285,6 @@ public class RespRatePage implements ActionListener, Launchable{
 
     // creating the dataset for the graph
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
 
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {

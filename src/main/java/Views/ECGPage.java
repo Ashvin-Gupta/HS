@@ -36,8 +36,6 @@ public class ECGPage implements ActionListener,Launchable{
     int WIDTH = 1200;
     int HEIGHT = 800;
 
-    //   static GraphicsConfiguration gc;
-    //   static JFrame MainFrame = new JFrame(gc);
     private JPanel mainpanel;
     private JPanel HRPanel;
     private JLabel HRTitle; // main title
@@ -48,17 +46,13 @@ public class ECGPage implements ActionListener,Launchable{
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-    private JLabel PatientHospNo;
     private JLabel HRupdated;
     private JTextField TimeSelect;
-    private JLabel PatientInfo1;
-    private JLabel PatientInfo2;
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
     private int dataPointmod = 0;
     private float[] HRList;
     private String HRString;
-//    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
     private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
     public JPanel newECGGraph;
@@ -217,6 +211,7 @@ public class ECGPage implements ActionListener,Launchable{
                 HRdataPoint = (HRdataPoint + 1) % HRList.length;
                 HRupdated.setText(String.valueOf(HRList[HRdataPoint]));
                 HRupdated.setHorizontalTextPosition(CENTER);
+
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
@@ -233,7 +228,7 @@ public class ECGPage implements ActionListener,Launchable{
             }
         });
         timer.setRepeats(true);
-        timer.setCoalesce(true);
+        timer.setCoalesce(true); // allows for more than one graph
         timer.setInitialDelay(0);
         timer.start();
 
@@ -247,14 +242,13 @@ public class ECGPage implements ActionListener,Launchable{
     }
 
 
-
     public void actionPerformed(ActionEvent evt) {
         String inputTimeSelect = TimeSelect.getText();
         System.out.println(inputTimeSelect);
         graphWidth = Integer.valueOf(inputTimeSelect);
     }
 
-    // function for ECG graph
+    // method to create panel for ECG graph
     public JPanel createChartPanel() {
         String chartTitle = "ECG Values for Patient:";
         String categoryAxisLabel = "Time";
@@ -268,9 +262,8 @@ public class ECGPage implements ActionListener,Launchable{
         return new ChartPanel(chart);
     }
 
+    // method to create dataset for ECG graph
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
 
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {
