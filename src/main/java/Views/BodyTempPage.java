@@ -188,7 +188,6 @@ public class BodyTempPage implements ActionListener,Launchable {
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
-//                newECGGraph = createChartPanel();
                 card = new CardLayout();
                 cardPanel.setLayout(card);
                 newTempGraph = createChartPanel();
