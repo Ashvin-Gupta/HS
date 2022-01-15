@@ -42,11 +42,14 @@ public class myDB {
         String ECGString1 = readIn("ecg1.txt");
         String ECGString2 = readIn("ecg2.txt");
         String ECGString3 = readIn("ecg3.txt");
+        String HRString1 = readIn("HeartRate_1.txt");
+        String HRString2 = readIn("HeartRate_2.txt");
+        String HRString3 = readIn("HeartRate_3.txt");
 
         String sqlStr = "create table patients ( id SERIAL PRIMARY KEY, name varchar(20) NOT NULL, surname varchar(20) NOT NULL, sex varchar(20), age int, blood varchar (4), sbp varchar(8000), dbp varchar(8000), rr varchar(8000), hr varchar(8000), temp varchar(8000), ecg varchar(8000));";
-        String sqlStr1 = "insert into patients  values (1, 'Antonio', 'Serra', 'Male', 21, 'B+',"+quotes+SPString1+quotes+","+quotes+DPString1+quotes+","+quotes+RRString1+quotes+",'37,36,38,37',"+quotes+TString1+quotes+","+quotes+ECGString1+quotes+");";
-        String sqlStr2 = "insert into patients  values (2, 'Tom', 'Lee', 'Male', 34, 'A',"+quotes+SPString2+quotes+","+quotes+DPString2+quotes+","+quotes+RRString2+quotes+",'37,36,38,37',"+quotes+TString2+quotes+","+quotes+ECGString2+quotes+");";
-        String sqlStr3 = "insert into patients  values (3, 'Lana', 'Simpson', 'Female', 40, '0',"+quotes+SPString3+quotes+","+quotes+DPString3+quotes+","+quotes+RRString3+quotes+",'37,36,38,37',"+quotes+TString3+quotes+","+quotes+ECGString3+quotes+");";
+        String sqlStr1 = "insert into patients  values (1, 'Antonio', 'Serra', 'Male', 21, 'B+',"+quotes+SPString1+quotes+","+quotes+DPString1+quotes+","+quotes+RRString1+quotes+","+quotes+HRString1+quotes+","+quotes+TString1+quotes+","+quotes+ECGString1+quotes+");";
+        String sqlStr2 = "insert into patients  values (2, 'Tom', 'Lee', 'Male', 34, 'A',"+quotes+SPString2+quotes+","+quotes+DPString2+quotes+","+quotes+RRString2+quotes+","+quotes+HRString2+quotes+","+quotes+TString2+quotes+","+quotes+ECGString2+quotes+");";
+        String sqlStr3 = "insert into patients  values (3, 'Lana', 'Simpson', 'Female', 40, '0',"+quotes+SPString3+quotes+","+quotes+DPString3+quotes+","+quotes+RRString3+quotes+","+quotes+HRString3+quotes+","+quotes+TString3+quotes+","+quotes+ECGString3+quotes+");";
 
         Statement s = conn.createStatement();
         s.execute(sqlStr);
@@ -113,9 +116,5 @@ public class myDB {
         return conn;
     }
 
-
-
-
- 
 }
 
