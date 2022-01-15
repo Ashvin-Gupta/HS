@@ -53,8 +53,13 @@ public class BloodPresPage implements ActionListener, Launchable {
     private JLabel DiasGraphBoxTitle;
     private int BPSdataPoint = 0;
     private int BPDdataPoint = 0;
-    private int [] BPSList= {120, 121, 120, 123, 124, 122, 120, 128, 129, 118};
-    private int [] BPDList= {90, 92, 93, 94, 92, 90, 91, 94};
+//    private int [] BPSList= {120, 121, 120, 123, 124, 122, 120, 128, 129, 118};
+//    private int [] BPDList= {90, 92, 93, 94, 92, 90, 91, 94};
+    private float[] SFloats;
+    private String SString;
+    private float[] DFloats;
+    private String DString;
+
     public JPanel newBPSGraph;
     public JPanel newBPDGraph;
     private CardLayout cardBPS;
@@ -86,9 +91,7 @@ public class BloodPresPage implements ActionListener, Launchable {
 
         JPanel sidebar = new Sidebar(patientid);
 
-        displayBloodPresComponents();
-
-        displayStandardComponents();
+        displayBloodPresComponents(patientid);
 
         getPatientInfo(patientid);
 
@@ -96,7 +99,19 @@ public class BloodPresPage implements ActionListener, Launchable {
         mainpanel.add(sidebar, BorderLayout.LINE_START);
     }
 
-    private void displayBloodPresComponents() {
+    private void displayBloodPresComponents(int patientid) throws SQLException {
+        String stringpatientID = String.valueOf(patientid);
+        String sqlStr = "select * from patients where id = " + stringpatientID;
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        while (rs.next()){
+            SString = rs.getString("sbp");
+            DString = rs.getString("dbp");
+        }
+
+        SFloats = StringToInt(SString);
+        DFloats = StringToInt(DString);
 
         // main title
 
@@ -106,13 +121,10 @@ public class BloodPresPage implements ActionListener, Launchable {
         BPTitle.setForeground(BLUE);
         BPPanel.add(BPTitle);
 
-
-
         // Systolic pressure display text and box
 
         LiveSBPTitle = new JLabel("<html> Live Systolic Blood <br> Pressure: (mmHg) <html>");
         // Systolic pressure text and box
-
 
         LiveSBPTitle.setForeground(Color.WHITE);
         LiveSBPTitle.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.09), 450, 280);
@@ -229,12 +241,12 @@ public class BloodPresPage implements ActionListener, Launchable {
             public void actionPerformed(ActionEvent ae) {
 
                 // live number displays:
-                BPSdataPoint = (BPSdataPoint + 1) % BPSList.length;
-                BPSUpdated.setText(String.valueOf(BPSList[BPSdataPoint]));
+                BPSdataPoint = (BPSdataPoint + 1) % SFloats.length;
+                BPSUpdated.setText(String.valueOf(SFloats[BPSdataPoint]));
                 BPSUpdated.setHorizontalTextPosition(CENTER);
 
-                BPDdataPoint = (BPDdataPoint + 1) % BPDList.length;
-                BPDUpdated.setText(String.valueOf(BPDList[BPDdataPoint]));
+                BPDdataPoint = (BPDdataPoint + 1) % DFloats.length;
+                BPDUpdated.setText(String.valueOf(DFloats[BPDdataPoint]));
                 BPDUpdated.setHorizontalTextPosition(CENTER);
 
                 // systolic graph
@@ -274,30 +286,7 @@ public class BloodPresPage implements ActionListener, Launchable {
 
     }
 
-    public void displayStandardComponents() {
 
-        // patient name format
-        PatientName = new JLabel("Ana Lopez");
-        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
-        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
-        PatientName.setForeground(RED);
-        BPPanel.add(PatientName);
-
-        // patient info set-up
-        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-        PatientInfo1.setForeground(GREY);
-        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo1.setVisible(true);
-        BPPanel.add(PatientInfo1);
-        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-        PatientInfo2.setForeground(GREY);
-        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-        PatientInfo2.setVisible(true);
-        BPPanel.add(PatientInfo2);
-
-    }
 
 
     // retrieving value from time selection window
@@ -368,22 +357,22 @@ public class BloodPresPage implements ActionListener, Launchable {
 
 
     public int getBPS(int i){
-        int new_i = i%BPSList.length;
+        int new_i = i%SFloats.length;
         if (i<0){
-            return BPSList[BPSList.length-1 + new_i];
+            return (int) SFloats[SFloats.length-1 + new_i];
         }
         else {
-            return BPSList[new_i];
+            return (int) SFloats[new_i];
         }
     }
 
    public int getBPD(int i){
-        int new_i = i%BPDList.length;
+        int new_i = i%DFloats.length;
         if (i<0){
-            return BPDList[BPDList.length-1 + new_i];
+            return (int) DFloats[DFloats.length-1 + new_i];
         }
         else {
-            return BPDList[new_i];
+            return (int) DFloats[new_i];
         }
     }
 
@@ -427,6 +416,15 @@ public class BloodPresPage implements ActionListener, Launchable {
 
     public JPanel getmainpanel() {
         return mainpanel;
+    }
+
+    private static float[] StringToInt(String number){
+        String[] string = number.split(",");
+        float[] arr = new float[string.length];
+        for (int i = 0; i < string.length; i++) {
+            arr[i] = Float.valueOf(string[i]);
+        }
+        return arr;
     }
 
 }
