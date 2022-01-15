@@ -269,8 +269,6 @@ public class PatientDashboard implements Launchable {
         });
         centerpanel.add(temp);
 
-        final int[] timerstopper = {0};
-
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -291,7 +289,7 @@ public class PatientDashboard implements Launchable {
                 HR.setText("<html>Heart Rate<br/><br/>"+ String.valueOf(HeartRate)+ " bpm </html>");
                 if (HeartRate < 50 || HeartRate > 110) {
                     try {
-                        newAlert(HR,"Low HR",patientid);
+                        newAlert(HR,"LOW HR",patientid);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -322,8 +320,6 @@ public class PatientDashboard implements Launchable {
         timer.setCoalesce(true);
         timer.setInitialDelay(0);
         timer.start();
-
-        if (timerstopper[0] != 0) timer.stop();
 
 
     }
@@ -385,31 +381,26 @@ public class PatientDashboard implements Launchable {
 
         String quote = "'";
 
-        boolean uploadedAlert = false;
+        String sqlStr = "select surname from patients where id="+patientid+";";
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        rs.next();
+        String surname = rs.getString("surname");
 
-        if (!uploadedAlert) {
-            uploadedAlert = true;
-            System.out.println("BEFORE SQL SELECT QUERY");
-            String sqlStr = "select surname from patients where id="+patientid+";";
-            PreparedStatement prpStm = conn.prepareStatement(sqlStr);
-            ResultSet rs = prpStm.executeQuery();
-            rs.next();
-            String surname = rs.getString("surname");
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        time.format(formatter);
+        String timestring = time.toString();
 
-            LocalTime time = LocalTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            time.format(formatter);
-            String timestring = time.toString();
-
-            System.out.println("JUST BEFORE SQL QUERY INSERT");
-            String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values ("+quote+patientid+quote+","+quote+surname+quote+","+quote+timestring+quote+","+quote+msg+quote+");";
-            Statement s = conn.createStatement();
-            s.execute(sqlStr1);
-            s.close();
-        }
-
+        System.out.println("JUST BEFORE SQL QUERY INSERT");
+        String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values ("+quote+patientid+quote+","+quote+surname+quote+","+quote+timestring+quote+","+quote+msg+quote+");";
+        Statement s = conn.createStatement();
+        s.execute(sqlStr1);
+        s.close();
 
     }
+
+
 }
 
 

@@ -18,7 +18,7 @@ public class myDB {
             Class.forName("org.postgresql.Driver");
         } catch (Exception e) {
         }
-        conn = DriverManager.getConnection(dbUrl, "aidanpadraig", "aidanpadraig");
+        conn = DriverManager.getConnection(dbUrl, "postgres", "aidanpadraig");
     }
 
     //closes the java-database connection
@@ -104,13 +104,15 @@ public class myDB {
         String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values (1, 'Serra', '10:24:36', 'Low HR');";
         String sqlStr2 = "insert into alerts (patient_id, surname, time, alerttype) values (1, 'Serra', '11:31:04', 'ECG Irr');";
         String sqlStr3 = "insert into alerts (patient_id, surname, time, alerttype) values (2, 'Lee', '14:46:12', 'Low Resp Rate');";
+        String sqlStr4 = "insert into alerts (patient_id, surname, time, alerttype) values (4, 'Lees', '17:46:12', 'Low Resp Rate');";
+
 
         Statement s = conn.createStatement();
         s.execute(sqlStr);
         s.execute(sqlStr1);
         s.execute(sqlStr2);
         s.execute(sqlStr3);
-
+        s.execute(sqlStr4);
         s.close();
     }
 

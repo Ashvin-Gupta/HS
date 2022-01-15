@@ -23,6 +23,7 @@ public class Main {
 
         new UIController();
 
+//        TimeUnit.SECONDS.sleep(5);
 //        db.unhealthyAlert();
     }
 }
