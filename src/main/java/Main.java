@@ -11,15 +11,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, InterruptedException {
         myDB db = new myDB();
 //        db.createPatientsTable();
 //        db.createDoctorTable();
 //        db.createAlertTable();
 
         new UIController();
+
+//        db.unhealthyAlert();
     }
 }

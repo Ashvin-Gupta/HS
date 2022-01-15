@@ -2,9 +2,6 @@ package Views;
 
 import Controller.UIController;
 import Database.myDB;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
@@ -13,12 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Timer.*;
 
-public class PatientDashboard implements Launchable {
+public class PatientDashboardAlert {
 
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
@@ -62,7 +57,7 @@ public class PatientDashboard implements Launchable {
     protected final Color GREY = new Color(159,159,159);
     protected final Color LRED = new Color(213, 91, 126);
 
-    public PatientDashboard(int patientid) throws SQLException {
+    public PatientDashboardAlert(int patientid, String vitalsign, String msg) throws SQLException {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
@@ -90,6 +85,7 @@ public class PatientDashboard implements Launchable {
         backpanel.add(bottompanel);
 
         displayComponents(patientid);
+        newAlert(HR,msg,patientid);
 
         mainpanel.add(backpanel, BorderLayout.CENTER);
         mainpanel.add(sidebar,BorderLayout.LINE_START);
@@ -269,63 +265,10 @@ public class PatientDashboard implements Launchable {
         });
         centerpanel.add(temp);
 
-        final int[] timerstopper = {0};
+    }
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tempDatapoint = (tempDatapoint + 1) % tempInt.length;
-                Temp = tempInt[tempDatapoint];
-                temp.setText("<html>Temperature<br/><br/>"+ String.valueOf(Temp)+" °C </html>");
-
-                diastolicDatapoint = (diastolicDatapoint + 1) % diaInt.length;
-                Diastolic = diaInt[diastolicDatapoint];
-                dBP.setText("<html>Diastolic Blood Pressure<br/><br/>"+ String.valueOf(Diastolic)+ " mmHg </html>");
-
-                systolicDatapoint = (systolicDatapoint + 1) % sysInt.length;
-                Systolic = sysInt[systolicDatapoint];
-                sBP.setText("<html>Systolic Blood Pressure<br/><br/>"+ String.valueOf(Systolic)+ " mmHg </html>");
-
-                HRDatapoint = (HRDatapoint + 1) % HRInt.length;
-                HeartRate = HRInt[HRDatapoint];
-                HR.setText("<html>Heart Rate<br/><br/>"+ String.valueOf(HeartRate)+ " bpm </html>");
-                if (HeartRate < 50 || HeartRate > 110) {
-                    try {
-                        UIController.launchPatientDashboardAlert(patientid,"Heart Rate","Low");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                RespDatapoint = (RespDatapoint + 1) % RespInt.length;
-                RespRate = RespInt[RespDatapoint];
-                RR.setText("<html>Respiratory Rate<br/><br/>"+ String.valueOf(RespRate)+ " BPM </html>");
-
-                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
-                // card layout to update graph and control layers
-                cardPanel = new JPanel();
-                cardPanel.setBounds((int) (WIDTH * 0.04), 2, 900, 220);
-                newECGGraph = createChartPanel();
-                card = new CardLayout();
-                cardPanel.setLayout(card);
-                newECGGraph.setOpaque(true);
-                newECGGraph.setVisible(true);
-                newECGGraph.setBounds((int) (WIDTH * 0.135), 2, 900, 220);
-                cardPanel.add(newECGGraph);
-                cardPanel.setVisible(true);
-                card.next(cardPanel);
-                bottompanel.add(cardPanel);
-
-            }
-        });
-        timer.setRepeats(true);
-        timer.setCoalesce(true);
-        timer.setInitialDelay(0);
-        timer.start();
-
-        if (timerstopper[0] != 0) timer.stop();
-
-
+    public Component getmainpanel() {
+        return mainpanel;
     }
 
     private static float[] StringToInt(String number){
@@ -337,43 +280,30 @@ public class PatientDashboard implements Launchable {
         return arr;
     }
 
-    public JPanel createChartPanel() {
-        String chartTitle = "ECG Values for Patient:";
-        String categoryAxisLabel = "Time";
-        String valueAxisLabel = "mV";
+    public void newAlert(JButton vitalsign, String msg, int patientid) throws SQLException {
+        vitalsign.setBackground(RED);
+        alerts.setText("<html> Alerts <br>NEW ALERT <html>");
+        alerts.setAlignmentX(JButton.CENTER);
 
-        globalDataset = createDataset(new DefaultCategoryDataset());
+        String quote = "'";
 
-        JFreeChart chart = ChartFactory.createLineChart(chartTitle,
-                categoryAxisLabel, valueAxisLabel, globalDataset);
+        System.out.println("BEFORE SQL SELECT QUERY");
+        String sqlStr = "select surname from patients where id="+patientid+";";
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        rs.next();
+        String surname = rs.getString("surname");
 
-        return new ChartPanel(chart);
-    }
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        time.format(formatter);
+        String timestring = time.toString();
 
-    // creates dataset for ECG
-    public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        System.out.println("JUST BEFORE SQL QUERY INSERT");
+        String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values ("+quote+patientid+quote+","+quote+surname+quote+","+quote+timestring+quote+","+quote+msg+quote+");";
+        Statement s = conn.createStatement();
+        s.execute(sqlStr1);
+        s.close();
 
-
-        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
-        {
-            inputDataset.setValue(getECGValue(i), "patient data", String.valueOf(i));
-        }
-
-        return inputDataset;
-    }
-
-    // method to cycle through ECG List values
-    public int getECGValue(int i) {
-        int new_i = i % ECGList.length;
-        if (i < 0) {
-            return ECGList[ECGList.length - 1 + new_i];
-        } else {
-            return ECGList[new_i];
-        }
-    }
-
-    public JPanel getmainpanel(){
-        return mainpanel;
     }
 }

@@ -8,6 +8,8 @@ import Database.myDB;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -103,6 +105,15 @@ public class WelcomePage implements Launchable {
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
+                }
+            }
+        });
+
+        patienttable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+                    System.out.println("Table data changed");
                 }
             }
         });
