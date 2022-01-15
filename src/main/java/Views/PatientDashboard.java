@@ -47,6 +47,7 @@ public class PatientDashboard implements Launchable {
     private float Systolic = 0;
     private float HeartRate = 0;
     private float RespRate = 0;
+    private float ECG = 0;
 
     private float[] ECGList;
     private String ECGString;
@@ -268,6 +269,9 @@ public class PatientDashboard implements Launchable {
         });
         centerpanel.add(temp);
 
+        cardPanel = new JPanel();
+        cardPanel.setBounds((int) (WIDTH * 0.04), 0, 900, 200);
+
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -292,20 +296,19 @@ public class PatientDashboard implements Launchable {
                 RR.setText("<html>Respiratory Rate<br/><br/>"+ String.valueOf(RespRate)+ " BPM </html>");
 
                 ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+                ECG = ECGList[ECGdataPoint];
                 // card layout to update graph and control layers
-                cardPanel = new JPanel();
-                cardPanel.setBounds((int) (WIDTH * 0.04), 2, 900, 220);
+
                 newECGGraph = createChartPanel();
                 card = new CardLayout();
                 cardPanel.setLayout(card);
                 newECGGraph.setOpaque(true);
                 newECGGraph.setVisible(true);
-                newECGGraph.setBounds((int) (WIDTH * 0.135), 2, 900, 220);
+                newECGGraph.setBounds((int) (WIDTH * 0.135), 0, 900, 150);
                 cardPanel.add(newECGGraph);
                 cardPanel.setVisible(true);
                 card.next(cardPanel);
                 bottompanel.add(cardPanel);
-
 
             }
         });
