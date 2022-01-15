@@ -25,6 +25,10 @@ public class PatientDashboard implements Launchable {
     private JLabel title, name, sex, age, blood,sBP, dBP, alert;
     private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
     private float[] tempInt;
+    private float[] sysInt;
+    private float[] diaInt;
+    private float[] HRInt;
+    private float[] RespInt;
     private JButton HR, RR, temp;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
@@ -34,7 +38,16 @@ public class PatientDashboard implements Launchable {
     private JPanel backpanel;
     private JPanel bottompanel;
     private int tempDatapoint = 0;
+    private int diastolicDatapoint = 0;
+    private int systolicDatapoint = 0;
+    private int HRDatapoint = 0;
+    private int RespDatapoint = 0;
     private float Temp = 0;
+    private float Diastolic = 0;
+    private float Systolic = 0;
+    private float HeartRate = 0;
+    private float RespRate = 0;
+
     private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
     private int graphWidth = 10;
     public JPanel newECGGraph, cardPanel;
@@ -85,6 +98,7 @@ public class PatientDashboard implements Launchable {
         PreparedStatement prpStm = conn.prepareStatement(sqlStr);
         ResultSet rs = prpStm.executeQuery();
         prpStm.close();
+        System.out.println("RS ENTERING...");
         while (rs.next()) {
             ///
             //System.out.println("ID: " + rs.getString("id"));
@@ -92,15 +106,20 @@ public class PatientDashboard implements Launchable {
             sex = new JLabel("Sex: " + rs.getString("sex"));
             age = new JLabel("Age: "+ rs.getString("age"));
             blood = new JLabel("Blood: " + rs.getString("blood"));
-            sbpVal = (rs.getString("sbp") + " mmHg");
-            dbpVal = (rs.getString("dbp") + " mmHg");
-            RRVal = (rs.getString("rr") + " rpm");
-            HRVal = (rs.getString("hr") + " bpm");
+            sbpVal = rs.getString("sbp");
+            dbpVal = rs.getString("dbp");
+            RRVal = rs.getString("rr");
+            HRVal = rs.getString("hr");
             tempVal = rs.getString("temp");
             System.out.println(tempVal);
         }
 
         tempInt = StringToInt(tempVal);
+        diaInt = StringToInt(dbpVal);
+        sysInt = StringToInt(sbpVal);
+        RespInt = StringToInt(RRVal);
+        HRInt = StringToInt(HRVal);
+        System.out.println("ALL STRINGS ADDED TO FLOAT ARRAY");
 
 //        Info Panel at the top
 //        Dashboard title
@@ -152,7 +171,7 @@ public class PatientDashboard implements Launchable {
         centerpanel.add(sBP);
 
 //        Diastolic Blood Pressure
-        JButton dBP = new JButton("<html>Diastolic BP<br/><br/>"+ dbpVal+"</html>");
+        JButton dBP = new JButton("<html>Diastolic BP<br/><br/>"+dbpVal+"</html>");
         dBP.setFont(new Font("Roboto",Font.BOLD, 28));
         dBP.setAlignmentX(JButton.CENTER);
         dBP.setForeground(BLUE);
@@ -170,6 +189,7 @@ public class PatientDashboard implements Launchable {
             }
         });
         centerpanel.add(dBP);
+
 
 //        Alerts
         JButton alert = new JButton("Alerts");
@@ -254,8 +274,23 @@ public class PatientDashboard implements Launchable {
                 Temp = tempInt[tempDatapoint];
                 temp.setText("<html>Temperature<br/><br/>"+ String.valueOf(Temp)+" °C </html>");
 
-                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+                diastolicDatapoint = (diastolicDatapoint + 1) % diaInt.length;
+                Diastolic = diaInt[diastolicDatapoint];
+                dBP.setText("<html>Diastolic Blood Pressure<br/><br/>"+ String.valueOf(Diastolic)+ " mmHg </html>");
 
+                systolicDatapoint = (systolicDatapoint + 1) % sysInt.length;
+                Systolic = sysInt[systolicDatapoint];
+                sBP.setText("<html>Systolic Blood Pressure<br/><br/>"+ String.valueOf(Systolic)+ " mmHg </html>");
+
+                HRDatapoint = (HRDatapoint + 1) % HRInt.length;
+                HeartRate = HRInt[HRDatapoint];
+                HR.setText("<html>Heart Rate<br/><br/>"+ String.valueOf(HeartRate)+ " bpm </html>");
+
+                RespDatapoint = (RespDatapoint + 1) % RespInt.length;
+                RespRate = RespInt[RespDatapoint];
+                RR.setText("<html>Respiratory Rate<br/><br/>"+ String.valueOf(RespRate)+ " BPM </html>");
+
+                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), 2, 900, 220);
