@@ -2,12 +2,20 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.sql.*;
 
+import Controller.UIController;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 
 // imports for ECG graph
@@ -16,6 +24,7 @@ import Database.myDB;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -27,9 +36,11 @@ public class ECGPage implements ActionListener,Launchable{
     int WIDTH = 1200;
     int HEIGHT = 800;
 
+    //   static GraphicsConfiguration gc;
+    //   static JFrame MainFrame = new JFrame(gc);
     private JPanel mainpanel;
     private JPanel HRPanel;
-    private JLabel HRTitle;
+    private JLabel HRTitle; // main title
     private JLabel LiveHRBox;
     private JLabel LiveHRTitle;
     private JLabel ECGBox;
@@ -37,18 +48,23 @@ public class ECGPage implements ActionListener,Launchable{
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-
+    private JLabel HRBox;
+    private JLabel PatientHospNo;
     private JLabel HRupdated;
     private JTextField TimeSelect;
+    private JLabel PatientInfo1;
+    private JLabel PatientInfo2;
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
 
     private int dataPointmod = 0;
     private float[] HRList;
-    private String HRString;
-
     private float[] ECGList;
+    private String HRString;
     private String ECGString;
+
+//    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
+//    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
 
     private int graphWidth = 10;
     public JPanel newECGGraph;
@@ -72,7 +88,7 @@ public class ECGPage implements ActionListener,Launchable{
         JPanel sidebar = new Sidebar(patientid);
 
 
-        displayStandardComponents1(patientid); // add display components to HR panel
+        displayHRComponents(patientid); // add display components to HR panel
         getPatientInfo(patientid);
 
         mainpanel.add(HRPanel, BorderLayout.CENTER);
@@ -117,13 +133,12 @@ public class ECGPage implements ActionListener,Launchable{
 
     }
 
-    public void displayStandardComponents1(int patientid) throws SQLException {
+    public void displayHRComponents(int patientid) throws SQLException {
         String stringpatientID = String.valueOf(patientid);
         String sqlStr = "select * from patients where id = " + stringpatientID;
         PreparedStatement prpStm = conn.prepareStatement(sqlStr);
         ResultSet rs = prpStm.executeQuery();
         prpStm.close();
-
         while(rs.next()){
             HRString = rs.getString("hr");
             ECGString = rs.getString("ecg");
@@ -131,12 +146,31 @@ public class ECGPage implements ActionListener,Launchable{
         HRList = StringToInt(HRString);
         ECGList = StringToInt(ECGString);
 
-      // main title format
+        // main title format
         HRTitle = new JLabel("Heart Rate");
         HRTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),400,60);
         HRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
         HRTitle.setForeground(BLUE);
         HRPanel.add(HRTitle);
+
+
+        // HR live updates title
+
+        LiveHRTitle = new JLabel("<html> Live Heart Rate (bpm) <html>");
+
+        LiveHRTitle.setForeground(Color.WHITE);
+        LiveHRTitle.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.08), 450, 280);
+        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+        LiveHRTitle.setVisible(true);
+        HRPanel.add(LiveHRTitle);
+
+        // Live display box set-up
+        LiveHRBox = new JLabel(" ");
+        LiveHRBox.setForeground(BLUE);
+        LiveHRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.20), 450, 270);
+        LiveHRBox.setBackground(BLUE);
+        LiveHRBox.setOpaque(true);
+        HRPanel.add(LiveHRBox);
 
         // updating HR and inner white box
         HRupdated = new JLabel(" ");
@@ -148,15 +182,6 @@ public class ECGPage implements ActionListener,Launchable{
         HRupdated.setBackground(Color.WHITE);
         HRupdated.setVisible(true);
         HRPanel.add(HRupdated);
-
-
-        // Live display box set-up
-        LiveHRBox = new JLabel(" ");
-        LiveHRBox.setForeground(BLUE);
-        LiveHRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.20), 450, 270);
-        LiveHRBox.setBackground(BLUE);
-        LiveHRBox.setOpaque(true);
-        HRPanel.add(LiveHRBox);
 
         // time selection and inner white box
         TimeSelect = new JTextField("", 20);
@@ -183,13 +208,6 @@ public class ECGPage implements ActionListener,Launchable{
         TimeSelectBox.setOpaque(true);
         HRPanel.add(TimeSelectBox);
 
-        // Live display title set-up
-        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
-        LiveHRTitle.setForeground(Color.WHITE);
-        LiveHRTitle.setBounds((int) (WIDTH *0.04),(int) (HEIGHT *0.08),450,280);
-        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        LiveHRTitle.setVisible(true);
-        HRPanel.add(LiveHRTitle);
 
         // ECG box set-up
         ECGTitle= new JLabel("Live Electrocardiogram:");
@@ -216,6 +234,8 @@ public class ECGPage implements ActionListener,Launchable{
                 HRdataPoint = (HRdataPoint + 1) % HRList.length;
                 HRupdated.setText(String.valueOf(HRList[HRdataPoint]));
                 HRupdated.setHorizontalTextPosition(CENTER);
+
+
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
@@ -235,6 +255,8 @@ public class ECGPage implements ActionListener,Launchable{
         timer.setCoalesce(true);
         timer.setInitialDelay(0);
         timer.start();
+
+
     }
 
 
@@ -260,6 +282,8 @@ public class ECGPage implements ActionListener,Launchable{
     }
 
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {
             inputDataset.setValue(getHR(i), "patient data", String.valueOf(i));

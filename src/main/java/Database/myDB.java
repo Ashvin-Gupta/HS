@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class myDB {
-    String dbUrl = "jdbc:postgresql://localhost:5431/postgres";
+    String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
     Connection conn = null;
 
     //connects java program with the SQL database
@@ -17,7 +17,7 @@ public class myDB {
             Class.forName("org.postgresql.Driver");
         } catch (Exception e) {
         }
-        conn = DriverManager.getConnection(dbUrl, "postgres", "postgres");
+        conn = DriverManager.getConnection(dbUrl, "postgres", "aidanpadraig");
     }
 
     //closes the java-database connection
