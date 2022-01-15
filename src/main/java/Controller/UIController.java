@@ -52,18 +52,9 @@ public class UIController {
 
     }
 
-
     public static void launchPatientDashboard(int patientID) throws SQLException{
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new PatientDashboard(patientID).getmainpanel());
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.setSize(new Dimension(1200,800));
-    }
-
-    public static void launchPatientDashboardAlert(int patientID,String vitalsign, String msg) throws SQLException{
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(new PatientDashboardAlert(patientID,vitalsign,msg).getmainpanel());
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));

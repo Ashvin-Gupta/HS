@@ -291,7 +291,7 @@ public class PatientDashboard implements Launchable {
                 HR.setText("<html>Heart Rate<br/><br/>"+ String.valueOf(HeartRate)+ " bpm </html>");
                 if (HeartRate < 50 || HeartRate > 110) {
                     try {
-                        UIController.launchPatientDashboardAlert(patientid,"Heart Rate","Low");
+                        newAlert(HR,"Low HR",patientid);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -376,4 +376,42 @@ public class PatientDashboard implements Launchable {
     public JPanel getmainpanel(){
         return mainpanel;
     }
+
+    public void newAlert(JButton vitalsign, String msg, int patientid) throws SQLException {
+
+        vitalsign.setBackground(RED);
+        alerts.setText("<html> Alerts <br>NEW ALERT <html>");
+        alerts.setAlignmentX(JButton.CENTER);
+
+        String quote = "'";
+
+        boolean uploadedAlert = false;
+
+        if (!uploadedAlert) {
+            uploadedAlert = true;
+            System.out.println("BEFORE SQL SELECT QUERY");
+            String sqlStr = "select surname from patients where id="+patientid+";";
+            PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+            ResultSet rs = prpStm.executeQuery();
+            rs.next();
+            String surname = rs.getString("surname");
+
+            LocalTime time = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            time.format(formatter);
+            String timestring = time.toString();
+
+            System.out.println("JUST BEFORE SQL QUERY INSERT");
+            String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values ("+quote+patientid+quote+","+quote+surname+quote+","+quote+timestring+quote+","+quote+msg+quote+");";
+            Statement s = conn.createStatement();
+            s.execute(sqlStr1);
+            s.close();
+        }
+
+
+    }
 }
+
+
+
+
