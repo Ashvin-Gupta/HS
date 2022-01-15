@@ -132,7 +132,7 @@ public class PatientDashboard implements Launchable {
         info.add(blood);
 
 //      Center Panel
-        JButton sBP = new JButton("<html>Systolic BP<br/><br/>"+tempInt[0]+"</html>");
+        JButton sBP = new JButton("<html>Systolic BP<br/><br/>"+sbpVal+"</html>");
         sBP.setFont(new Font("Roboto",Font.BOLD, 28));
         sBP.setAlignmentX(JButton.CENTER);
         sBP.setForeground(BLUE);
