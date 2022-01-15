@@ -69,7 +69,6 @@ public class BloodPresPage implements ActionListener, Launchable {
 
 
     private JLabel TimeInnerSelectBox;
-    private JLabel PatientName;
 
 
     protected final Color RED = new Color(195,60,86);
