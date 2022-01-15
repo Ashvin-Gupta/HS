@@ -1,28 +1,19 @@
 package Views;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.sql.*;
 
 import Database.myDB;
-import Views.ECGPage;
 
-import Controller.UIController;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 // imports for graphs
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -36,7 +27,7 @@ public class RespRatePage implements ActionListener, Launchable{
 
     private JPanel mainpanel;
     private JPanel RRPanel;
-    private JLabel RRTitle; // main title
+    private JLabel RRTitle;
     private JLabel LiveRRTitle;
     private JLabel LiveRRBox;
     private JLabel O2SatTitle;
@@ -46,7 +37,6 @@ public class RespRatePage implements ActionListener, Launchable{
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-    private JLabel PatientHospNo;
     private JLabel RRupdated;
     private JLabel O2Updated;
     private JTextField TimeSelect;
@@ -66,7 +56,6 @@ public class RespRatePage implements ActionListener, Launchable{
     private CardLayout card;
     private JPanel cardPanel;
     public DefaultCategoryDataset globalDataset;
-   // public ECGPage ecgtype;   // to be able to use method displayStandardComponents from ECGPage class
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -204,7 +193,7 @@ public class RespRatePage implements ActionListener, Launchable{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //what is this doing here?
+  
 //                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
 //
 //                RRdataPoint = (RRdataPoint + 1) % HRList.length;
@@ -238,35 +227,12 @@ public class RespRatePage implements ActionListener, Launchable{
         timer.start();
 
 
-        /* // ECG box title set-up
-        ECGTitle= new JLabel("Live Electrocardiogram:");
-        ECGTitle.setForeground(Color.white);
-        ECGTitle.setBounds((int) (WIDTH *0.15),(int) (HEIGHT *0.47),450,280);
-        ECGTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        ECGTitle.setVisible(true);
-        HRPanel.add(ECGTitle);  */
-
         // Live graph box set-up
         GraphBox = new JLabel(" ");
         GraphBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
         GraphBox.setBackground(BLUE);
         GraphBox.setOpaque(true);
         RRPanel.add(GraphBox);
-
-        // patient info set-up
-//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-//        PatientInfo1.setForeground(GREY);
-//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo1.setVisible(true);
-//        RRPanel.add(PatientInfo1);
-//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-//        PatientInfo2.setForeground(GREY);
-//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo2.setVisible(true);
-//        RRPanel.add(PatientInfo2);
-
 
     }
 
@@ -346,8 +312,6 @@ public class RespRatePage implements ActionListener, Launchable{
 
     // creating the dataset for the graph
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
 
         for (int i=RRdataPoint-graphWidth;i<RRdataPoint;i=i+1)
         {
@@ -364,7 +328,9 @@ public class RespRatePage implements ActionListener, Launchable{
         }
         else {
             return RRFloats[new_i];
+
         }
+        return arr;
     }
 
     public JPanel getmainpanel() {

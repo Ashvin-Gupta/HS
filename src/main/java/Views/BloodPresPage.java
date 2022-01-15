@@ -53,8 +53,6 @@ public class BloodPresPage implements ActionListener, Launchable {
     private JLabel DiasGraphBoxTitle;
     private int BPSdataPoint = 0;
     private int BPDdataPoint = 0;
-//    private int [] BPSList= {120, 121, 120, 123, 124, 122, 120, 128, 129, 118};
-//    private int [] BPDList= {90, 92, 93, 94, 92, 90, 91, 94};
     private float[] SFloats;
     private String SString;
     private float[] DFloats;

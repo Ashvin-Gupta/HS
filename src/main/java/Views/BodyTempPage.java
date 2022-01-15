@@ -2,19 +2,12 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.sql.*;
 
-import Controller.UIController;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 
 // imports for graph
@@ -23,7 +16,6 @@ import Database.myDB;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -43,22 +35,16 @@ public class BodyTempPage implements ActionListener,Launchable {
     private JLabel LiveBTBox;
     private JLabel LiveBTTitle;
     private JLabel graphBox;
-    private JLabel graphTitle;
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-    private JLabel PatientHospNo;
     private JLabel BTupdated;
     private JTextField TimeSelect;
-    private JLabel PatientInfo1;
-    private JLabel PatientInfo2;
     private int BTdataPoint = 0;
-    //private int ECGdataPoint = 0;
-    private int dataPointmod = 0;
-    private int[] BTList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
-    //private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private float[] TList;
+    private String TString;
     private int graphWidth = 10;
-    public JPanel newECGGraph;
+    public JPanel newTempGraph;
     private CardLayout card;
     private JPanel cardPanel;
     public DefaultCategoryDataset globalDataset;
@@ -79,7 +65,7 @@ public class BodyTempPage implements ActionListener,Launchable {
         JPanel sidebar = new Sidebar(patientid);
 
         displayECGComponents();
-        displayStandardComponents1();    // add display components to HR panel
+        displayStandardComponents1(patientid);    // add display components to HR panel
         getPatientInfo(patientid);
 
         mainpanel.add(BTPanel, BorderLayout.CENTER);
@@ -124,7 +110,19 @@ public class BodyTempPage implements ActionListener,Launchable {
 
     }
 
-    public void displayStandardComponents1() {
+    public void displayStandardComponents1(int patientid) throws SQLException {
+
+        String stringpatientID = String.valueOf(patientid);
+        String sqlStr = "select * from patients where id = " + stringpatientID;
+        PreparedStatement prpStm = null;
+        prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        while (rs.next()){
+            TString = rs.getString("temp");
+        }
+        TList = StringToInt(TString);
+
 
         // main title format
         BTTitle = new JLabel("Body Temperature");
@@ -132,20 +130,6 @@ public class BodyTempPage implements ActionListener,Launchable {
         BTTitle.setFont(new Font("Roboto",Font.BOLD, 50));
         BTTitle.setForeground(BLUE);
         BTPanel.add(BTTitle);
-
-        // patient name format
-//        PatientName = new JLabel("Ana Lopez");
-//        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 400, 60);
-//        PatientName.setFont(new Font("Roboto", Font.BOLD, 40));
-//        PatientName.setForeground(RED);
-//        BTPanel.add(PatientName);
-
-//        // patient hospital number
-//        PatientHospNo = new JLabel("Hospital No.:");
-//        PatientHospNo.setBounds((int) (WIDTH * 0.1), (int) (HEIGHT * 0.17), 900, 60);
-//        PatientHospNo.setFont(new Font("Roboto", Font.BOLD, 20));
-//        PatientHospNo.setForeground(GREY);
-//        HRPanel.add(PatientHospNo);
 
         // updating HR and inner white box
         BTupdated = new JLabel(" ");
@@ -158,13 +142,6 @@ public class BodyTempPage implements ActionListener,Launchable {
         BTupdated.setVisible(true);
         BTPanel.add(BTupdated);
 
-        /* // Live display title set-up
-        LiveHRTitle = new JLabel("Live Heart Rate (bpm):");
-        LiveHRTitle.setForeground(Color.WHITE);
-        LiveHRTitle.setBounds((int) (WIDTH *0.12),(int) (HEIGHT *0.12),450,280);
-        LiveHRTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        LiveHRTitle.setVisible(true);
-        HRPanel.add(LiveHRTitle); */
 
         // Live display box set-up
         LiveBTBox = new JLabel(" ");
@@ -204,20 +181,20 @@ public class BodyTempPage implements ActionListener,Launchable {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                BTdataPoint = (BTdataPoint + 1) % BTList.length;
-                //HRdataPoint = (HRdataPoint + 1) % HRList.length;
-                BTupdated.setText(String.valueOf(BTList[BTdataPoint]));
+                BTdataPoint = (BTdataPoint + 1) % TList.length;
+//                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+                BTupdated.setText(String.valueOf(TList[BTdataPoint]));
                 BTupdated.setHorizontalTextPosition(CENTER);
                 // card layout to update graph and control layers
                 cardPanel = new JPanel();
                 cardPanel.setBounds((int) (WIDTH * 0.04), (int) (HEIGHT * 0.64), 900, 220);
-                newECGGraph = createChartPanel();
                 card = new CardLayout();
                 cardPanel.setLayout(card);
-                newECGGraph.setOpaque(true);
-                newECGGraph.setVisible(true);
-                newECGGraph.setBounds((int) (WIDTH * 0.135), (int) (HEIGHT * 0.67), 900, 220);
-                cardPanel.add(newECGGraph);
+                newTempGraph = createChartPanel();
+                newTempGraph.setOpaque(true);
+                newTempGraph.setVisible(true);
+                newTempGraph.setBounds((int) (WIDTH * 0.135), (int) (HEIGHT * 0.67), 900, 220);
+                cardPanel.add(newTempGraph);
                 cardPanel.setVisible(true);
                 card.next(cardPanel);
                 BTPanel.add(cardPanel);
@@ -235,30 +212,9 @@ public class BodyTempPage implements ActionListener,Launchable {
         graphBox.setOpaque(true);
         BTPanel.add(graphBox);
 
-        // patient info set-up
-//        PatientInfo1 = new JLabel("<html> Sex: <br> Age: <br> Blood:<html>");
-//        PatientInfo1.setForeground(GREY);
-//        PatientInfo1.setBounds((int) (WIDTH * 0.44), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo1.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo1.setVisible(true);
-//        BTPanel.add(PatientInfo1);
-//        PatientInfo2 = new JLabel("<html>Check-in: <br> Department: <br> Bed Number:<html>");
-//        PatientInfo2.setForeground(GREY);
-//        PatientInfo2.setBounds((int) (WIDTH * 0.59), (int) (HEIGHT * 0.007), 450, 180);
-//        PatientInfo2.setFont(new Font("Roboto Slab", Font.BOLD, 25));
-//        PatientInfo2.setVisible(true);
-//        BTPanel.add(PatientInfo2);
-
     }
 
     public void displayECGComponents(){
-
-//        // main title format
-//        HRTitle = new JLabel("Heart Rate");
-//        HRTitle.setBounds((int) (WIDTH *0.1),(int) (HEIGHT *0.03),900,800);
-//        HRTitle.setFont(new Font("Roboto",Font.BOLD, 60));
-//        HRTitle.setForeground(BLUE);
-//        HRPanel.add(HRTitle);
 
         // Live display title set-up
         LiveBTTitle = new JLabel("Live Body Temperature (Celsius):");
@@ -322,25 +278,30 @@ public class BodyTempPage implements ActionListener,Launchable {
     }
 
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-
         for (int i=BTdataPoint-graphWidth;i<BTdataPoint;i=i+1)
         {
             inputDataset.setValue(getHR(i), "Patient", String.valueOf(i));
         }
-
         return inputDataset;
     }
 
-    public int getHR(int i){
-        int new_i = i%BTList.length;
+    public float getHR(int i){
+        int new_i = i%TList.length;
         if (i<0){
-            return BTList[BTList.length-1 + new_i];
+            return TList[TList.length-1 + new_i];
         }
         else {
-            return BTList[new_i];
+            return TList[new_i];
         }
+    }
+
+    private static float[] StringToInt(String number){
+        String[] string = number.split(",");
+        float[] arr = new float[string.length];
+        for (int i = 0; i < string.length; i++) {
+            arr[i] = Float.valueOf(string[i]);
+        }
+        return arr;
     }
 
     public JPanel getmainpanel() {

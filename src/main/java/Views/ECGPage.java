@@ -146,7 +146,7 @@ public class ECGPage implements ActionListener,Launchable{
         HRList = StringToInt(HRString);
         ECGList = StringToInt(ECGString);
 
-      // main title format
+        // main title format
         HRTitle = new JLabel("Heart Rate");
         HRTitle.setBounds((int) (WIDTH *0.02),(int) (HEIGHT *0.03),400,60);
         HRTitle.setFont(new Font("Roboto",Font.BOLD, 50));
