@@ -21,6 +21,7 @@ public class PatientTableModel extends AbstractTableModel {
     public PatientTableModel() throws SQLException {
 
         String sqlStrRowNum = "select count(*) from patients;";
+
         PreparedStatement prpStmR = conn.prepareStatement(sqlStrRowNum);
         ResultSet rsRow = prpStmR.executeQuery();
         prpStmR.close();
@@ -52,7 +53,7 @@ public class PatientTableModel extends AbstractTableModel {
             patientcounter++;
         }
 
-        //Setting up table from data array
+                //Setting up table from data array
         int rows, cols, rowCounter, colCounter;
 
         rows = getRowCount();

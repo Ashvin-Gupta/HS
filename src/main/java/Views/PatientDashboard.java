@@ -12,10 +12,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Timer.*;
 
 public class PatientDashboard implements Launchable {
 
@@ -23,6 +24,7 @@ public class PatientDashboard implements Launchable {
     Connection conn = dbConn.getConnection();
 
     private JLabel title, name, sex, age, blood,sBP, dBP, alert;
+    private JButton alerts;
     private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
     private float[] tempInt;
     private float[] sysInt;
@@ -60,6 +62,7 @@ public class PatientDashboard implements Launchable {
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color GREY = new Color(159,159,159);
+    protected final Color LRED = new Color(213, 91, 126);
 
     public PatientDashboard(int patientid) throws SQLException {
         mainpanel = new JPanel();
@@ -194,13 +197,13 @@ public class PatientDashboard implements Launchable {
 
 
 //        Alerts
-        JButton alert = new JButton("Alerts");
-        alert.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.2),900,60);
-        alert.setFont(new Font("Roboto",Font.BOLD, 24));
-        alert.setForeground(RED);
-        alert.setBorder(new EmptyBorder(10,10,10,10));
+        alerts = new JButton("Alerts");
+        alerts.setBounds((int) (WIDTH *0.7),(int) (HEIGHT *0.2),900,60);
+        alerts.setFont(new Font("Roboto",Font.BOLD, 24));
+        alerts.setForeground(RED);
+        alerts.setBorder(new EmptyBorder(10,10,10,10));
         System.out.println("Patient ID is" + patientid);
-        alert.addActionListener(new ActionListener() {
+        alerts.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -210,7 +213,7 @@ public class PatientDashboard implements Launchable {
                 }
             }
         });
-        centerpanel.add(alert);
+        centerpanel.add(alerts);
 
 //        Respiration Rate
         RR = new JButton("<html>Respiration rate<br/><br/>"+RRVal+"</html>");
@@ -290,6 +293,13 @@ public class PatientDashboard implements Launchable {
                 HRDatapoint = (HRDatapoint + 1) % HRInt.length;
                 HeartRate = HRInt[HRDatapoint];
                 HR.setText("<html>Heart Rate<br/><br/>"+ String.valueOf(HeartRate)+ " bpm </html>");
+                if (HeartRate < 50 || HeartRate > 110) {
+                    try {
+                        newAlert(HR,"LOW HR",patientid);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
 
                 RespDatapoint = (RespDatapoint + 1) % RespInt.length;
                 RespRate = RespInt[RespDatapoint];
@@ -316,6 +326,8 @@ public class PatientDashboard implements Launchable {
         timer.setCoalesce(true);
         timer.setInitialDelay(0);
         timer.start();
+
+
     }
 
     private static float[] StringToInt(String number){
@@ -364,4 +376,37 @@ public class PatientDashboard implements Launchable {
     public JPanel getmainpanel(){
         return mainpanel;
     }
+
+    public void newAlert(JButton vitalsign, String msg, int patientid) throws SQLException {
+
+        vitalsign.setBackground(RED);
+        alerts.setText("<html> Alerts <br>NEW ALERT <html>");
+        alerts.setAlignmentX(JButton.CENTER);
+
+        String quote = "'";
+
+        String sqlStr = "select surname from patients where id="+patientid+";";
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        rs.next();
+        String surname = rs.getString("surname");
+
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        time.format(formatter);
+        String timestring = time.toString();
+
+        System.out.println("JUST BEFORE SQL QUERY INSERT");
+        String sqlStr1 = "insert into alerts (patient_id, surname, time, alerttype) values ("+quote+patientid+quote+","+quote+surname+quote+","+quote+timestring+quote+","+quote+msg+quote+");";
+        Statement s = conn.createStatement();
+        s.execute(sqlStr1);
+        s.close();
+
+    }
+
+
 }
+
+
+
+

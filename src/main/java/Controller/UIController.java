@@ -4,6 +4,8 @@ import Views.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class UIController {
@@ -47,6 +49,7 @@ public class UIController {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setSize(new Dimension(1200,800));
+
     }
 
     public static void launchPatientDashboard(int patientID) throws SQLException{

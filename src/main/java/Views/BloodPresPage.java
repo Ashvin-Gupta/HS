@@ -144,7 +144,7 @@ public class BloodPresPage implements ActionListener, Launchable {
         BPSUpdated.setOpaque(true);
         BPSUpdated.setBackground(Color.WHITE);
         BPSUpdated.setVisible(true);
-        BPPanel.add( BPSUpdated);
+        BPPanel.add(BPSUpdated);
 
         // Diastolic pressure display text and book
 
@@ -364,7 +364,7 @@ public class BloodPresPage implements ActionListener, Launchable {
         }
     }
 
-   public int getBPD(int i){
+    public int getBPD(int i){
         int new_i = i%DFloats.length;
         if (i<0){
             return (int) DFloats[DFloats.length-1 + new_i];
