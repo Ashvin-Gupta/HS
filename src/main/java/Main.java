@@ -1,5 +1,6 @@
 import Controller.UIController;
 import Database.myDB;
+import Views.ECGPage;
 
 import java.io.File;
 import java.io.FileNotFoundException;

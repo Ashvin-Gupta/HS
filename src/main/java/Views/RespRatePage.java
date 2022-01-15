@@ -52,12 +52,15 @@ public class RespRatePage implements ActionListener, Launchable{
     private JTextField TimeSelect;
     private JLabel PatientInfo1;
     private JLabel PatientInfo2;
-    private int HRdataPoint = 0;
+    private int RRdataPoint = 0;
     private int ECGdataPoint = 0;
     private int O2dataPoint = 0;
     private int dataPointmod = 0;
-    private int [] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
-    private int [] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+//    private int [] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
+//    private int [] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private float[] RRFloats;
+    private String RRString;
+
     private int graphWidth = 10;
     public JPanel newRRGraph;
     private CardLayout card;
@@ -68,7 +71,6 @@ public class RespRatePage implements ActionListener, Launchable{
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
     protected final Color GREY = new Color(159,159,159);
-
 
     public RespRatePage(int patientid) throws SQLException{
         mainpanel = new JPanel();
@@ -81,7 +83,7 @@ public class RespRatePage implements ActionListener, Launchable{
         JPanel sidebar = new Sidebar(patientid);
 
         displayRespRateComponents();
-        displayStandardComponents2();
+        displayStandardComponents2(patientid);
         getPatientInfo(patientid);
 
         mainpanel.add(RRPanel, BorderLayout.CENTER);
@@ -126,7 +128,19 @@ public class RespRatePage implements ActionListener, Launchable{
 
     }
 
-    private void displayStandardComponents2() {
+    private void displayStandardComponents2(int patientid) throws SQLException {
+
+        String stringpatientID = String.valueOf(patientid);
+        String sqlStr = "select * from patients where id = " + stringpatientID;
+        PreparedStatement prpStm = conn.prepareStatement(sqlStr);
+        ResultSet rs = prpStm.executeQuery();
+        prpStm.close();
+        while (rs.next()){
+            RRString = rs.getString("rr");
+        }
+
+        RRFloats = StringToInt(RRString);
+
 // patient name format
 //        PatientName = new JLabel("Ana Lopez");
 //        PatientName.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.11), 900, 60);
@@ -145,7 +159,7 @@ public class RespRatePage implements ActionListener, Launchable{
         RRupdated = new JLabel(" ");
         RRupdated.setFont(new Font("Roboto", Font.BOLD, 40));
         RRupdated.setHorizontalTextPosition(CENTER);
-        RRupdated.setBounds((int) (WIDTH * 0.034), (int) (HEIGHT * 0.31), 260, 150);
+        RRupdated.setBounds((int) (WIDTH * 0.034), (int) (HEIGHT * 0.31), 450, 150);
         RRupdated.setForeground(Color.black);
         RRupdated.setOpaque(true);
         RRupdated.setBackground(Color.WHITE);
@@ -155,14 +169,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // Live display box set-up
         LiveRRBox = new JLabel(" ");
         LiveRRBox.setForeground(BLUE);
-        LiveRRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.2), 300, 270);
+        LiveRRBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.2), 500, 270);
         LiveRRBox.setBackground(BLUE);
         LiveRRBox.setOpaque(true);
         RRPanel.add(LiveRRBox);
 
         // time selection and inner white box
         TimeSelect = new JTextField("", 20);
-        TimeSelect.setBounds((int) (WIDTH * 0.567), (int) (HEIGHT * 0.31), 260, 150);
+        TimeSelect.setBounds((int) (WIDTH * 0.475), (int) (HEIGHT * 0.31), 350, 150);
         TimeSelect.setForeground(BLUE);
         TimeSelect.setOpaque(true);
         TimeSelect.setBackground(Color.WHITE);
@@ -173,14 +187,14 @@ public class RespRatePage implements ActionListener, Launchable{
         // Time Selection title set-up
         TimeSelectTitle = new JLabel("<html> Select to view last ___ <br> mins:<html>");
         TimeSelectTitle.setForeground(Color.WHITE);
-        TimeSelectTitle.setBounds((int) (WIDTH * 0.57), (int) (HEIGHT * 0.09), 450, 280);
+        TimeSelectTitle.setBounds((int) (WIDTH * 0.5), (int) (HEIGHT * 0.09), 450, 280);
         TimeSelectTitle.setFont(new Font("Roboto", Font.BOLD, 20));
         TimeSelectTitle.setVisible(true);
         RRPanel.add(TimeSelectTitle);
 
         // Time Selection box set-up
         TimeSelectBox = new JLabel(" ");
-        TimeSelectBox.setBounds((int) (WIDTH * 0.55), (int) (HEIGHT * 0.2), 300, 270);
+        TimeSelectBox.setBounds((int) (WIDTH * 0.45), (int) (HEIGHT * 0.2), 400, 270);
         TimeSelectBox.setBackground(BLUE);
         TimeSelectBox.setOpaque(true);
         RRPanel.add(TimeSelectBox);
@@ -190,12 +204,17 @@ public class RespRatePage implements ActionListener, Launchable{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
-                HRdataPoint = (HRdataPoint + 1) % HRList.length;
-                O2dataPoint = (ECGdataPoint + 1) % ECGList.length;
-                RRupdated.setText(String.valueOf(HRList[HRdataPoint]));
-                O2Updated.setText(String.valueOf(ECGList[O2dataPoint]));
+                //what is this doing here?
+//                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+//
+//                RRdataPoint = (RRdataPoint + 1) % HRList.length;
+//                O2dataPoint = (ECGdataPoint + 1) % ECGList.length;
+//
+//                RRupdated.setText(String.valueOf(HRList[RRdataPoint]));
+//                O2Updated.setText(String.valueOf(ECGList[O2dataPoint]));
 
+                RRdataPoint = (RRdataPoint + 1) % RRFloats.length;
+                RRupdated.setText(String.valueOf(RRFloats[RRdataPoint]));
                 RRupdated.setHorizontalTextPosition(CENTER);
 
                 // card layout to update graph and control layers
@@ -277,30 +296,30 @@ public class RespRatePage implements ActionListener, Launchable{
         RRPanel.add(GraphTitle);
 
         // 02 saturation title:
-        O2SatTitle = new JLabel("<html> Oxygen Saturation:<br> (SpO2%) <html>");
-        O2SatTitle.setForeground(Color.WHITE);
-        O2SatTitle.setBounds((int) (WIDTH *0.3),(int) (HEIGHT *0.09),450,280);
-        O2SatTitle.setFont(new Font("Roboto", Font.BOLD, 20));
-        O2SatTitle.setVisible(true);
-        RRPanel.add(O2SatTitle);
+//        O2SatTitle = new JLabel("<html> Oxygen Saturation:<br> (SpO2%) <html>");
+//        O2SatTitle.setForeground(Color.WHITE);
+//        O2SatTitle.setBounds((int) (WIDTH *0.3),(int) (HEIGHT *0.09),450,280);
+//        O2SatTitle.setFont(new Font("Roboto", Font.BOLD, 20));
+//        O2SatTitle.setVisible(true);
+//        RRPanel.add(O2SatTitle);
 
         // 02 saturation box:
-        O2SatBox = new JLabel(" ");
-        O2SatBox.setBounds((int) (WIDTH * 0.285), (int) (HEIGHT * 0.2), 300, 270);
-        O2SatBox.setBackground(BLUE);
-        O2SatBox.setOpaque(true);
-        RRPanel.add(O2SatBox);
+//        O2SatBox = new JLabel(" ");
+//        O2SatBox.setBounds((int) (WIDTH * 0.285), (int) (HEIGHT * 0.2), 300, 270);
+//        O2SatBox.setBackground(BLUE);
+//        O2SatBox.setOpaque(true);
+//        RRPanel.add(O2SatBox);
 
         // O2 live and inner white box:
-        O2Updated = new JLabel(" ");
-        O2Updated.setFont(new Font("Roboto", Font.BOLD, 40));
-        O2Updated.setHorizontalTextPosition(CENTER);
-        O2Updated.setBounds((int) (WIDTH * 0.3), (int) (HEIGHT * 0.31), 260, 150);
-        O2Updated.setForeground(Color.black);
-        O2Updated.setOpaque(true);
-        O2Updated.setBackground(Color.WHITE);
-        O2Updated.setVisible(true);
-        RRPanel.add(O2Updated);
+//        O2Updated = new JLabel(" ");
+//        O2Updated.setFont(new Font("Roboto", Font.BOLD, 40));
+//        O2Updated.setHorizontalTextPosition(CENTER);
+//        O2Updated.setBounds((int) (WIDTH * 0.3), (int) (HEIGHT * 0.31), 260, 150);
+//        O2Updated.setForeground(Color.black);
+//        O2Updated.setOpaque(true);
+//        O2Updated.setBackground(Color.WHITE);
+//        O2Updated.setVisible(true);
+//        RRPanel.add(O2Updated);
 
 
 
@@ -330,26 +349,35 @@ public class RespRatePage implements ActionListener, Launchable{
         //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 
-        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
+        for (int i=RRdataPoint-graphWidth;i<RRdataPoint;i=i+1)
         {
-            inputDataset.setValue(getHR(i), "patient data", String.valueOf(i));
+            inputDataset.setValue(getRR(i), "patient data", String.valueOf(i));
         }
 
         return inputDataset;
     }
 
-    public int getHR(int i){
-        int new_i = i%ECGList.length;
+    public float getRR(int i){
+        int new_i = i%RRFloats.length;
         if (i<0){
-            return ECGList[ECGList.length-1 + new_i];
+            return RRFloats[RRFloats.length-1 + new_i];
         }
         else {
-            return ECGList[new_i];
+            return RRFloats[new_i];
         }
     }
 
     public JPanel getmainpanel() {
         return mainpanel;
+    }
+
+    private static float[] StringToInt(String number){
+        String[] string = number.split(",");
+        float[] arr = new float[string.length];
+        for (int i = 0; i < string.length; i++) {
+            arr[i] = Float.valueOf(string[i]);
+        }
+        return arr;
     }
 
 }
