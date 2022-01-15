@@ -2,20 +2,12 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.sql.*;
 
-import Controller.UIController;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 
 // imports for ECG graph
@@ -24,7 +16,6 @@ import Database.myDB;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -36,11 +27,9 @@ public class ECGPage implements ActionListener,Launchable{
     int WIDTH = 1200;
     int HEIGHT = 800;
 
-    //   static GraphicsConfiguration gc;
-    //   static JFrame MainFrame = new JFrame(gc);
     private JPanel mainpanel;
     private JPanel HRPanel;
-    private JLabel HRTitle; // main title
+    private JLabel HRTitle;
     private JLabel LiveHRBox;
     private JLabel LiveHRTitle;
     private JLabel ECGBox;
@@ -48,20 +37,19 @@ public class ECGPage implements ActionListener,Launchable{
     private JLabel TimeSelectBox;
     private JLabel TimeSelectTitle;
     private JLabel PatientName;
-    private JLabel PatientHospNo;
+
     private JLabel HRupdated;
     private JTextField TimeSelect;
-    private JLabel PatientInfo1;
-    private JLabel PatientInfo2;
     private int HRdataPoint = 0;
     private int ECGdataPoint = 0;
 
     private int dataPointmod = 0;
     private float[] HRList;
     private String HRString;
-//    private int[] HRList = {60, 63, 10, 150, 70, 72, 56, 67, 86, 54, 55, 57, 58, 59, 30, 36, 45, 67};
 
-    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private float[] ECGList;
+    private String ECGString;
+
     private int graphWidth = 10;
     public JPanel newECGGraph;
     private CardLayout card;
@@ -137,9 +125,11 @@ public class ECGPage implements ActionListener,Launchable{
         prpStm.close();
 
         while(rs.next()){
-            HRString = rs.getString("ecg");
+            HRString = rs.getString("hr");
+            ECGString = rs.getString("ecg");
         }
         HRList = StringToInt(HRString);
+        ECGList = StringToInt(ECGString);
 
       // main title format
         HRTitle = new JLabel("Heart Rate");
@@ -209,6 +199,13 @@ public class ECGPage implements ActionListener,Launchable{
         ECGTitle.setVisible(true);
         HRPanel.add(ECGTitle);
 
+        // ECG box set-up
+        ECGBox = new JLabel(" ");
+        ECGBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
+        ECGBox.setBackground(BLUE);
+        ECGBox.setOpaque(true);
+        HRPanel.add(ECGBox);
+
 
         // timer for HRUpdated
         Timer timer = new Timer(1000, new ActionListener() {
@@ -238,14 +235,6 @@ public class ECGPage implements ActionListener,Launchable{
         timer.setCoalesce(true);
         timer.setInitialDelay(0);
         timer.start();
-
-        // ECG box set-up
-        ECGBox = new JLabel(" ");
-        ECGBox.setBounds((int) (WIDTH * 0.02), (int) (HEIGHT * 0.57), 950, 300);
-        ECGBox.setBackground(BLUE);
-        ECGBox.setOpaque(true);
-        HRPanel.add(ECGBox);
-
     }
 
 
@@ -271,9 +260,6 @@ public class ECGPage implements ActionListener,Launchable{
     }
 
     public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
-        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-
         for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
         {
             inputDataset.setValue(getHR(i), "patient data", String.valueOf(i));
@@ -282,7 +268,7 @@ public class ECGPage implements ActionListener,Launchable{
         return inputDataset;
     }
 
-    public int getHR(int i){
+    public float getHR(int i){
         int new_i = i%ECGList.length;
         if (i<0){
             return ECGList[ECGList.length-1 + new_i];
