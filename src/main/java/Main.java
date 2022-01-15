@@ -16,8 +16,8 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         myDB db = new myDB();
         db.createPatientsTable();
-//        db.createDoctorTable();
-//        db.createAlertTable();
+        db.createDoctorTable();
+        db.createAlertTable();
 
         new UIController();
     }
