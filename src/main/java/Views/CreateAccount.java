@@ -91,7 +91,7 @@ public class CreateAccount extends JPanel {
                     throwables.printStackTrace();
                 }
                 try {
-                    UIController.laucnhLoginPage();
+                    UIController.launchLoginPage();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

@@ -2,6 +2,10 @@ package Views;
 
 import Controller.UIController;
 import Database.myDB;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,9 +22,10 @@ public class PatientDashboard implements Launchable {
     myDB dbConn = new myDB();
     Connection conn = dbConn.getConnection();
 
-    private JLabel title, name, sex, age, blood,sBP, dBP, alert, temp;
+    private JLabel title, name, sex, age, blood,sBP, dBP, alert;
     private String sbpVal,dbpVal, RRVal, HRVal, tempVal;
-    private JButton HR, RR;
+    private float[] tempInt;
+    private JButton HR, RR, temp;
     public int WIDTH = 1200;
     public int HEIGHT = 800;
     private JPanel mainpanel;
@@ -28,6 +33,14 @@ public class PatientDashboard implements Launchable {
     private JPanel info;
     private JPanel backpanel;
     private JPanel bottompanel;
+    private int tempDatapoint = 0;
+    private float Temp = 0;
+    private int[] ECGList = {20, 21, 24, 25, 24, 27, 30, 24, 21, 23, 50, 55, 57, 58, 59, 30, 36, 45, 67};
+    private int graphWidth = 10;
+    public JPanel newECGGraph, cardPanel;
+    private CardLayout card;
+    public DefaultCategoryDataset globalDataset;
+    private int ECGdataPoint = 0;
 
     protected final Color RED = new Color(195,60,86);
     protected final Color BLUE  = new Color(37,78,112);
@@ -37,7 +50,7 @@ public class PatientDashboard implements Launchable {
         mainpanel = new JPanel();
         mainpanel.setLayout(new BorderLayout());
 
-        Sidebar sidebar = new Sidebar();
+        Sidebar sidebar = new Sidebar(patientid);
 
         centerpanel = new JPanel();
         centerpanel.setLayout(new GridLayout(2,3,50,50));
@@ -53,6 +66,8 @@ public class PatientDashboard implements Launchable {
 
         bottompanel = new JPanel();
         bottompanel.setPreferredSize(new Dimension(1000,380));
+        bottompanel.setLayout(null);
+        bottompanel.setBorder(new EmptyBorder(0,0,10,0));
 
         backpanel.add(info);
         backpanel.add(centerpanel);
@@ -65,7 +80,6 @@ public class PatientDashboard implements Launchable {
     }
 
     public void displayComponents(int patientid) throws SQLException {
-
         String stringpatientID = String.valueOf(patientid);
         String sqlStr = "select * from patients where id = " + stringpatientID;
         PreparedStatement prpStm = conn.prepareStatement(sqlStr);
@@ -78,12 +92,15 @@ public class PatientDashboard implements Launchable {
             sex = new JLabel("Sex: " + rs.getString("sex"));
             age = new JLabel("Age: "+ rs.getString("age"));
             blood = new JLabel("Blood: " + rs.getString("blood"));
-            sbpVal = new String(rs.getString("sbp") + " mmHg");
-            dbpVal = new String(rs.getString("dbp") + " mmHg");
-            RRVal = new String(rs.getString("rr") + " rpm");
-            HRVal = new String(rs.getString("hr") + " bpm");
-            tempVal = new String(rs.getString("temp") + " °C");
+            sbpVal = (rs.getString("sbp") + " mmHg");
+            dbpVal = (rs.getString("dbp") + " mmHg");
+            RRVal = (rs.getString("rr") + " rpm");
+            HRVal = (rs.getString("hr") + " bpm");
+            tempVal = rs.getString("temp");
+            System.out.println(tempVal);
         }
+
+        tempInt = StringToInt(tempVal);
 
 //        Info Panel at the top
 //        Dashboard title
@@ -114,17 +131,7 @@ public class PatientDashboard implements Launchable {
         blood.setForeground(Color.black);
         info.add(blood);
 
-//        Centerpanel
-//        Systolic Blood Pressure
-//        sBP = new JLabel("<html>Systolic BP<br/><br/>" + sbpVal+"</html>");
-//        sBP.setFont(new Font("Roboto",Font.BOLD, 28));
-//        sBP.setAlignmentX(JLabel.CENTER);
-//        sBP.setForeground(BLUE);
-//        sBP.setBackground(Color.white);
-//        sBP.setOpaque(true);
-//        sBP.setBorder(new EmptyBorder(10,10,10,10));
-//        centerpanel.add(sBP);
-
+//      Center Panel
         JButton sBP = new JButton("<html>Systolic BP<br/><br/>"+sbpVal+"</html>");
         sBP.setFont(new Font("Roboto",Font.BOLD, 28));
         sBP.setAlignmentX(JButton.CENTER);
@@ -136,7 +143,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchBloodPresPage();
+                    UIController.launchBloodPresPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -156,7 +163,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchBloodPresPage();
+                    UIController.launchBloodPresPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -194,7 +201,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchRespPage();
+                    UIController.launchRespPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -203,7 +210,7 @@ public class PatientDashboard implements Launchable {
         centerpanel.add(RR);
 
 //        Heart Rate
-        HR = new JButton("<html>Heart Rate<br/><br/>"+HRVal+"</html>");
+        HR = new JButton("<html>Heart Rate<br/><br/>"+HRVal+ "</html>");
         HR.setFont(new Font("Roboto",Font.BOLD, 28));
         HR.setForeground(BLUE);
         HR.setBackground(Color.white);
@@ -213,7 +220,7 @@ public class PatientDashboard implements Launchable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UIController.launchECGPage();
+                    UIController.launchECGPage(patientid);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -222,13 +229,98 @@ public class PatientDashboard implements Launchable {
         centerpanel.add(HR);
 
 //        Temperature
-        temp = new JLabel("<html>Temperature<br/><br/>"+tempVal+"</html>");
+        temp = new JButton(" ");
         temp.setFont(new Font("Roboto",Font.BOLD, 28));
         temp.setForeground(BLUE);
         temp.setBackground(Color.white);
         temp.setOpaque(true);
         temp.setBorder(new EmptyBorder(10,10,10,10));
+        temp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    UIController.launchBodyTempPage(patientid);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         centerpanel.add(temp);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tempDatapoint = (tempDatapoint + 1) % tempInt.length;
+                Temp = tempInt[tempDatapoint];
+                temp.setText("<html>Temperature<br/><br/>"+ String.valueOf(Temp)+" °C </html>");
+
+                ECGdataPoint = (ECGdataPoint + 1) % ECGList.length;
+
+                // card layout to update graph and control layers
+                cardPanel = new JPanel();
+                cardPanel.setBounds((int) (WIDTH * 0.04), 2, 900, 220);
+                newECGGraph = createChartPanel();
+                card = new CardLayout();
+                cardPanel.setLayout(card);
+                newECGGraph.setOpaque(true);
+                newECGGraph.setVisible(true);
+                newECGGraph.setBounds((int) (WIDTH * 0.135), 2, 900, 220);
+                cardPanel.add(newECGGraph);
+                cardPanel.setVisible(true);
+                card.next(cardPanel);
+                bottompanel.add(cardPanel);
+
+            }
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.setInitialDelay(0);
+        timer.start();
+    }
+
+    private static float[] StringToInt(String number){
+        String[] string = number.split(",");
+        float[] arr = new float[string.length];
+        for (int i = 0; i < string.length; i++) {
+            arr[i] = Float.valueOf(string[i]);
+        }
+        return arr;
+    }
+
+    public JPanel createChartPanel() {
+        String chartTitle = "ECG Values for Patient:";
+        String categoryAxisLabel = "Time";
+        String valueAxisLabel = "mV";
+
+        globalDataset = createDataset(new DefaultCategoryDataset());
+
+        JFreeChart chart = ChartFactory.createLineChart(chartTitle,
+                categoryAxisLabel, valueAxisLabel, globalDataset);
+
+        return new ChartPanel(chart);
+    }
+
+    // creates dataset for ECG
+    public DefaultCategoryDataset createDataset(DefaultCategoryDataset inputDataset) {
+        //DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+
+        for (int i=ECGdataPoint-graphWidth;i<ECGdataPoint;i=i+1)
+        {
+            inputDataset.setValue(getECGValue(i), "patient data", String.valueOf(i));
+        }
+
+        return inputDataset;
+    }
+
+    // method to cycle through ECG List values
+    public int getECGValue(int i) {
+        int new_i = i % ECGList.length;
+        if (i < 0) {
+            return ECGList[ECGList.length - 1 + new_i];
+        } else {
+            return ECGList[new_i];
+        }
     }
 
     public JPanel getmainpanel(){
